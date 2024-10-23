@@ -1,5 +1,10 @@
 /* eslint-disable prettier/prettier */
-import { Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from './user.schema';
@@ -17,7 +22,7 @@ export class UsersService {
     // Verifica si el usuario ya existe
     const existingUser = await this.userModel.findOne({ username });
     if (existingUser) {
-      throw new Error('Username already exists'); // O lanza una excepción personalizada
+      throw new HttpException('Username already exists', HttpStatus.CONFLICT);
     }
 
     const saltRounds = 10; // Define la cantidad de rondas de sal
@@ -27,7 +32,18 @@ export class UsersService {
     return newUser.save();
   }
 
+  async deleteUser(id: string): Promise<void> {
+    const result = await this.userModel.deleteOne({ _id: id });
+    if (result.deletedCount === 0) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
+  }
+
   async findOne(username: string): Promise<User | undefined> {
     return this.userModel.findOne({ username });
+  }
+
+  async findAll(): Promise<User[]> {
+    return this.userModel.find().select('-password').exec(); // Excluye el campo 'password'
   }
 }
