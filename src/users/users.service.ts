@@ -1,35 +1,24 @@
 /* eslint-disable prettier/prettier */
 import {
-  HttpException,
-  HttpStatus,
   Injectable,
+  ConflictException,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User } from './user.schema';
 import * as bcrypt from 'bcrypt';
+import { User } from './user.schema'; // Asegúrate de que esta ruta sea correcta
 
 @Injectable()
 export class UsersService {
   constructor(@InjectModel('User') private userModel: Model<User>) {}
 
-  async create(username: string, password: string): Promise<User> {
-    if (!password) {
-      throw new Error('Password is required'); // Para depurar
-    }
+  async findOne(username: string): Promise<User | null> {
+    return this.userModel.findOne({ username });
+  }
 
-    // Verifica si el usuario ya existe
-    const existingUser = await this.userModel.findOne({ username });
-    if (existingUser) {
-      throw new HttpException('Username already exists', HttpStatus.CONFLICT);
-    }
-
-    const saltRounds = 10; // Define la cantidad de rondas de sal
-    const hashedPassword = await bcrypt.hash(password, saltRounds); // Asegúrate de pasar saltRounds
-
-    const newUser = new this.userModel({ username, password: hashedPassword });
-    return newUser.save();
+  async findAll(): Promise<User[]> {
+    return this.userModel.find().select('-password').exec(); // Excluye el campo 'password'
   }
 
   async deleteUser(id: string): Promise<void> {
@@ -39,11 +28,24 @@ export class UsersService {
     }
   }
 
-  async findOne(username: string): Promise<User | undefined> {
-    return this.userModel.findOne({ username });
+  async validateUser(username: string, password: string): Promise<any> {
+    const user = await this.findOne(username);
+    if (user && (await bcrypt.compare(password, user.password))) {
+      const { password, ...result } = user.toObject(); // Excluye la contraseña
+      return result;
+    }
+    return null; // Retorna null si las credenciales son inválidas
   }
 
-  async findAll(): Promise<User[]> {
-    return this.userModel.find().select('-password').exec(); // Excluye el campo 'password'
+  async create(username: string, password: string): Promise<User> {
+    const existingUser = await this.findOne(username);
+    if (existingUser) {
+      throw new ConflictException('Username already exists');
+    }
+
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    const newUser = new this.userModel({ username, password: hashedPassword });
+    return newUser.save();
   }
 }

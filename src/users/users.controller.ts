@@ -12,11 +12,15 @@ import {
   Param,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { AuthService } from '../auth/auth.service'; // Asegúrate de importar el servicio de autenticación
 import * as bcrypt from 'bcrypt';
 
 @Controller('auth')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly authService: AuthService, // Inyecta el servicio de autenticación
+  ) {}
 
   @Post('register')
   async register(
@@ -43,7 +47,7 @@ export class UsersController {
     try {
       return await this.usersService.create(username, password);
     } catch (error) {
-      return { message: error.message };
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -54,17 +58,15 @@ export class UsersController {
   ) {
     const user = await this.usersService.findOne(username);
     if (user && (await bcrypt.compare(password, user.password))) {
-      // Aquí puedes generar un token JWT si lo necesitas
-      return { message: 'Login successful' };
+      const token = await this.authService.login(username, password);
+      return { message: 'Login successful', access_token: token.access_token };
     }
-    return { message: 'Invalid credentials' };
+    throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
   }
 
   @Post('logout')
   async logout(@Req() req, @Res() res) {
-    // Aquí puedes invalidar el token del lado del servidor, si es necesario.
-    // Si usas JWT, simplemente elimina el token del lado del cliente.
-    res.clearCookie('auth'); // Si usas cookies, por ejemplo
+    res.clearCookie('auth');
     return res.send({ message: 'Logout successful' });
   }
 
