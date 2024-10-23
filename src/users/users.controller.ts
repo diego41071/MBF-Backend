@@ -1,5 +1,13 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Post, Body, Req, Res } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Req,
+  Res,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import * as bcrypt from 'bcrypt';
 
@@ -8,14 +16,18 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post('register')
-  async register(
-    @Body('username') username: string,
-    @Body('password') password: string,
-  ) {
+  async register(@Body() body: { username: string; password: string }) {
+    const { username, password } = body;
     if (!username || !password) {
-      throw new Error('Username and password are required'); // Para depurar
+      throw new HttpException('Username already exists', HttpStatus.CONFLICT);
     }
-    return this.usersService.create(username, password);
+
+    try {
+      return await this.usersService.create(username, password);
+    } catch (error) {
+      // Manejo de errores
+      return { message: error.message };
+    }
   }
 
   @Post('login')

@@ -14,6 +14,12 @@ export class UsersService {
       throw new Error('Password is required'); // Para depurar
     }
 
+    // Verifica si el usuario ya existe
+    const existingUser = await this.userModel.findOne({ username });
+    if (existingUser) {
+      throw new Error('Username already exists'); // O lanza una excepción personalizada
+    }
+
     const saltRounds = 10; // Define la cantidad de rondas de sal
     const hashedPassword = await bcrypt.hash(password, saltRounds); // Asegúrate de pasar saltRounds
 
