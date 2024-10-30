@@ -20,14 +20,40 @@ export class AuthController {
   async register(
     @Body()
     body: {
+      name: string;
+      lastname: string;
+      company: string;
+      doc: string;
+      position: string;
       username: string;
       password: string;
       confirmPassword: string;
+      check: number;
     },
   ) {
-    const { username, password, confirmPassword } = body;
+    const {
+      name,
+      lastname,
+      company,
+      doc,
+      position,
+      username,
+      password,
+      confirmPassword,
+      check,
+    } = body;
 
-    if (!username || !password || !confirmPassword) {
+    if (
+      !name ||
+      !lastname ||
+      !company ||
+      !doc ||
+      !position ||
+      !username ||
+      !password ||
+      !confirmPassword ||
+      !check
+    ) {
       throw new HttpException(
         'All fields are required',
         HttpStatus.BAD_REQUEST,
@@ -39,7 +65,17 @@ export class AuthController {
     }
 
     try {
-      const user = await this.usersService.create(username, password);
+      const user = await this.usersService.create(
+        name,
+        lastname,
+        company,
+        doc,
+        position,
+        username,
+        password,
+        confirmPassword,
+        check,
+      );
       return { message: 'User registered successfully', user };
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);

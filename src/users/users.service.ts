@@ -37,7 +37,17 @@ export class UsersService {
     return null; // Retorna null si las credenciales son inválidas
   }
 
-  async create(username: string, password: string): Promise<User> {
+  async create(
+    name: string,
+    lastname: string,
+    company: string,
+    doc: string,
+    position: string,
+    username: string,
+    password: string,
+    confirmPassword: string,
+    check: number,
+  ): Promise<User> {
     const existingUser = await this.findOne(username);
     if (existingUser) {
       throw new ConflictException('Username already exists');
@@ -45,7 +55,17 @@ export class UsersService {
 
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
-    const newUser = new this.userModel({ username, password: hashedPassword });
+    const newUser = new this.userModel({
+      name,
+      lastname,
+      company,
+      doc,
+      position,
+      username,
+      password: hashedPassword,
+      confirmPassword: hashedPassword,
+      check,
+    });
     return newUser.save();
   }
 }
