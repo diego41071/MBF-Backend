@@ -10,6 +10,7 @@ import {
   Get,
   Delete,
   Param,
+  BadRequestException,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { AuthService } from '../auth/auth.service'; // Asegúrate de importar el servicio de autenticación
@@ -115,5 +116,18 @@ export class UsersController {
   async deleteUser(@Param('id') id: string) {
     await this.usersService.deleteUser(id);
     return { message: `User with ID ${id} deleted successfully` };
+  }
+
+  @Post('forgot-password')
+  async forgotPassword(@Body('username') username: string) {
+    return await this.authService.forgotPassword(username);
+  }
+
+  @Post('reset-password')
+  async resetPassword(
+    @Body('token') token: string,
+    @Body('newPassword') newPassword: string,
+  ) {
+    return await this.authService.resetPassword(token, newPassword);
   }
 }

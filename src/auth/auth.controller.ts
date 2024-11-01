@@ -88,17 +88,4 @@ export class AuthController {
     const token = await this.authService.login(username, password); // Asegúrate de que estás pasando ambos parámetros
     return { message: 'Login successful', access_token: token.access_token };
   }
-
-  @Post('forgot-password')
-  async forgotPassword(@Body('email') email: string) {
-    return await this.authService.forgotPassword(email);
-  }
-
-  @Post('reset-password')
-  async resetPassword(
-    @Body('token') token: string,
-    @Body('newPassword') newPassword: string,
-  ) {
-    return await this.authService.resetPassword(token, newPassword);
-  }
 }

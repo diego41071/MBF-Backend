@@ -75,7 +75,7 @@ export class UsersService {
   }
 
   // Método para encontrar un usuario por correo electrónico
-  async findByEmail(email: string): Promise<User | null> {
-    return this.userModel.findOne({ email }).exec();
+  async findByEmail(username: string): Promise<User | null> {
+    return this.userModel.findOne({ username }).exec();
   }
 }

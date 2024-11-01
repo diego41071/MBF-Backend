@@ -25,8 +25,8 @@ export class AuthService {
     };
   }
 
-  async forgotPassword(email: string) {
-    const user = await this.usersService.findByEmail(email);
+  async forgotPassword(username: string) {
+    const user = await this.usersService.findByEmail(username);
     if (!user) throw new BadRequestException('Email no encontrado');
 
     const token = crypto.randomBytes(32).toString('hex');
