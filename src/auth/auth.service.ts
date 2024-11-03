@@ -3,12 +3,14 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import * as crypto from 'crypto';
+import { MailerService } from '../mailer/mailer.service'; // Importa MailerService
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
+    private readonly mailerService: MailerService, // Inyecta MailerService
   ) {}
 
   async login(
@@ -25,19 +27,20 @@ export class AuthService {
     };
   }
 
-  async forgotPassword(username: string) {
-    const user = await this.usersService.findByEmail(username);
+  async forgotPassword(email: string) {
+    const user = await this.usersService.findByEmail(email);
     if (!user) throw new BadRequestException('Email no encontrado');
 
+    // Generar el token y establecer la fecha de expiración
     const token = crypto.randomBytes(32).toString('hex');
     user.resetPasswordToken = token;
-    user.resetPasswordExpires = new Date(Date.now() + 3600000); // 1 hora de expiración
-    // 1 hora de expiración
-
+    user.resetPasswordExpires = new Date(Date.now() + 3600000); // 1 hora
     await user.save();
-    // Aquí podrías enviar el token al correo electrónico del usuario
 
-    return { message: 'Correo enviado para recuperación de contraseña' };
+    // Enviar el correo electrónico con el token
+    await this.mailerService.sendResetPasswordEmail(email, token);
+
+    return { message: 'Correo de restablecimiento enviado' };
   }
 
   async resetPassword(token: string, newPassword: string) {
