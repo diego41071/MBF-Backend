@@ -4,6 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import * as crypto from 'crypto';
 import { MailerService } from '../mailer/mailer.service'; // Importa MailerService
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -49,7 +50,7 @@ export class AuthService {
       throw new BadRequestException('Token inválido o expirado');
     }
 
-    user.password = newPassword; // Asegúrate de hacer hashing
+    user.password = await bcrypt.hash(newPassword, 10); // Asegúrate de hacer hashing
     user.resetPasswordToken = null;
     user.resetPasswordExpires = null;
 
