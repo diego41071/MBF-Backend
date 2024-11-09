@@ -69,6 +69,13 @@ export class UsersService {
     return newUser.save();
   }
 
+  // Método para actualizar el usuario en la base de datos
+  async updateUser(user: User): Promise<User> {
+    return await this.userModel.findByIdAndUpdate(user._id, user, {
+      new: true,
+    });
+  }
+
   // Método para encontrar un usuario por su token de restablecimiento
   async findByResetToken(token: string): Promise<User | null> {
     return this.userModel.findOne({ resetPasswordToken: token }).exec();

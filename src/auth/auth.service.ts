@@ -1,8 +1,7 @@
 /* eslint-disable prettier/prettier */
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
-import * as crypto from 'crypto';
 import { MailerService } from '../mailer/mailer.service'; // Importa MailerService
 import * as bcrypt from 'bcrypt';
 
@@ -28,33 +27,54 @@ export class AuthService {
     };
   }
 
-  async forgotPassword(email: string) {
-    const user = await this.usersService.findByEmail(email);
-    if (!user) throw new BadRequestException('Email no encontrado');
-
-    // Generar el token y establecer la fecha de expiración
-    const token = crypto.randomBytes(32).toString('hex');
-    user.resetPasswordToken = token;
-    user.resetPasswordExpires = new Date(Date.now() + 3600000); // 1 hora
-    await user.save();
-
-    // Enviar el correo electrónico con el token
-    await this.mailerService.sendResetPasswordEmail(email, token);
-
-    return { message: 'Correo de restablecimiento enviado' };
+  private async hashPassword(password: string): Promise<string> {
+    const saltRounds = 10;
+    return await bcrypt.hash(password, saltRounds);
   }
 
-  async resetPassword(token: string, newPassword: string) {
-    const user = await this.usersService.findByResetToken(token);
-    if (!user || user.resetPasswordExpires.getTime() < Date.now()) {
-      throw new BadRequestException('Token inválido o expirado');
+  async resetPassword(email: string, newPassword: string) {
+    const user = await this.usersService.findByEmail(email);
+    user.password = await this.hashPassword(newPassword);
+    user.resetPasswordCode = null; // Eliminar el código usado
+    user.resetPasswordExpires = null; // Eliminar la expiración
+    await this.usersService.updateUser(user);
+    return { message: 'Contraseña cambiada exitosamente' };
+  }
+
+  async sendRecoveryCode(email: string) {
+    const user = await this.usersService.findByEmail(email);
+    if (!user) throw new Error('Usuario no encontrado');
+
+    const code = Math.floor(100000 + Math.random() * 900000); // Código de 6 dígitos
+    const expiration = new Date(Date.now() + 15 * 60 * 1000); // Expira en 15 minutos
+
+    // Guardar el código y la expiración en el usuario
+    user.resetPasswordCode = code;
+    user.resetPasswordExpires = expiration;
+    await this.usersService.updateUser(user); // Usa el nuevo método `updateUser`
+
+    // Enviar el código por correo electrónico
+    await this.mailerService.sendMail(
+      email,
+      'Código de recuperación de contraseña',
+      `Tu código de recuperación es: ${code}`,
+    );
+
+    return { message: 'Código enviado al correo electrónico' };
+  }
+
+  async verifyRecoveryCode(email: string, code: number) {
+    const user = await this.usersService.findByEmail(email);
+    if (!user || user.resetPasswordCode !== code) {
+      throw new Error('Código inválido o expirado');
     }
 
-    user.password = await bcrypt.hash(newPassword, 10); // Asegúrate de hacer hashing
-    user.resetPasswordToken = null;
-    user.resetPasswordExpires = null;
+    // Verificar que el código no esté expirado
+    if (user.resetPasswordExpires < new Date()) {
+      throw new Error('El código ha expirado');
+    }
 
-    await user.save();
-    return { message: 'Contraseña actualizada' };
+    // Permitir el cambio de contraseña
+    return { message: 'Código verificado' };
   }
 }

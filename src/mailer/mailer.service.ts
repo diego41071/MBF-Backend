@@ -19,17 +19,12 @@ export class MailerService {
     });
   }
 
-  async sendResetPasswordEmail(to: string, token: string) {
-    const resetLink = `https://tudominio.com/reset-password?token=${token}`;
-
-    const mailOptions = {
-      from: this.configService.get<string>('SMTP_USER'),
+  async sendMail(to: string, subject: string, text: string): Promise<void> {
+    await this.transporter.sendMail({
+      from: this.configService.get<string>('SMTP_USER'), // Dirección de remitente
       to,
-      subject: 'Restablecimiento de contraseña',
-      text: `Para restablecer tu contraseña, haz clic en el siguiente enlace: ${resetLink}`,
-      html: `<p>Para restablecer tu contraseña, haz clic en el siguiente enlace:</p><a href="${resetLink}">${resetLink}</a>`,
-    };
-
-    await this.transporter.sendMail(mailOptions);
+      subject,
+      text,
+    });
   }
 }

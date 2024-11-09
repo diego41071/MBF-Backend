@@ -10,7 +10,6 @@ import {
   Get,
   Delete,
   Param,
-  BadRequestException,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { AuthService } from '../auth/auth.service'; // Asegúrate de importar el servicio de autenticación
@@ -120,7 +119,7 @@ export class UsersController {
 
   @Post('forgot-password')
   async forgotPassword(@Body('username') username: string) {
-    return await this.authService.forgotPassword(username);
+    return await this.authService.sendRecoveryCode(username);
   }
 
   @Post('reset-password')

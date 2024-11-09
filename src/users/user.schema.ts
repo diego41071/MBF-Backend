@@ -26,6 +26,6 @@ export interface User extends Document {
   password: string;
   confirmPassword: string;
   check: number;
-  resetPasswordToken?: string | null; // Marca el campo como opcional
+  resetPasswordCode?: number | null; // Marca el campo como opcional
   resetPasswordExpires?: Date | null; // Marca el campo como opcional
 }
