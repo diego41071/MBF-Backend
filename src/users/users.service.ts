@@ -76,11 +76,6 @@ export class UsersService {
     });
   }
 
-  // Método para encontrar un usuario por su token de restablecimiento
-  async findByResetToken(token: string): Promise<User | null> {
-    return this.userModel.findOne({ resetPasswordToken: token }).exec();
-  }
-
   // Método para encontrar un usuario por correo electrónico
   async findByEmail(username: string): Promise<User | null> {
     return this.userModel.findOne({ username }).exec();

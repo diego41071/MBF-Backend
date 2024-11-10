@@ -11,7 +11,7 @@ export const UserSchema = new Schema({
   position: { type: String, required: true },
   confirmPassword: { type: String, required: true },
   check: { type: String, required: true },
-  resetPasswordToken: { type: String, required: false }, // Campo opcional
+  resetPasswordCode: { type: Number, required: false }, // Campo opcional
   resetPasswordExpires: { type: Date, required: false }, // Campo opcional
 });
 

@@ -124,9 +124,10 @@ export class UsersController {
 
   @Post('reset-password')
   async resetPassword(
-    @Body('token') token: string,
+    @Body('code') code: number, // Cambia 'token' por 'code'
+    @Body('username') username: string, // Añade email para identificar al usuario
     @Body('newPassword') newPassword: string,
   ) {
-    return await this.authService.resetPassword(token, newPassword);
+    return await this.authService.resetPassword(username, code, newPassword);
   }
 }
