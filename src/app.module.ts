@@ -7,6 +7,7 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { MailerService } from './mailer/mailer.service';
 import { ConfigModule } from '@nestjs/config';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { ConfigModule } from '@nestjs/config';
     ),
     UsersModule,
     AuthModule,
+    HttpModule,
   ],
   controllers: [AppController],
   providers: [AppService, MailerService],

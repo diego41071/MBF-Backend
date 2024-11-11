@@ -10,16 +10,19 @@ import {
   Get,
   Delete,
   Param,
+  BadRequestException,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { AuthService } from '../auth/auth.service'; // Asegúrate de importar el servicio de autenticación
 import * as bcrypt from 'bcrypt';
+import { RecaptchaService } from 'src/recaptcha/recaptcha.service';
 
 @Controller('auth')
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
     private readonly authService: AuthService, // Inyecta el servicio de autenticación
+    private recaptchaService: RecaptchaService,
   ) {}
 
   @Post('register')
@@ -91,7 +94,13 @@ export class UsersController {
   async login(
     @Body('username') username: string,
     @Body('password') password: string,
+    @Body('captchaToken ') captchaToken: string,
   ) {
+    const isCaptchaValid =
+      await this.recaptchaService.validateCaptcha(captchaToken);
+    if (!isCaptchaValid) {
+      throw new BadRequestException('Invalid reCAPTCHA');
+    }
     const user = await this.usersService.findOne(username);
     if (user && (await bcrypt.compare(password, user.password))) {
       const token = await this.authService.login(username, password);
