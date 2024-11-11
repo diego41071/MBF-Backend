@@ -38,6 +38,7 @@ export class UsersController {
       password: string;
       confirmPassword: string;
       check: number;
+      captchaToken: string;
     },
   ) {
     const {
@@ -50,7 +51,14 @@ export class UsersController {
       password,
       confirmPassword,
       check,
+      captchaToken,
     } = body;
+
+    const isCaptchaValid =
+      await this.recaptchaService.validateCaptcha(captchaToken);
+    if (!isCaptchaValid) {
+      throw new BadRequestException('reCAPTCHA falló, intenta nuevamente.');
+    }
 
     if (
       !name ||
@@ -61,7 +69,8 @@ export class UsersController {
       !username ||
       !password ||
       !confirmPassword ||
-      !check
+      !check ||
+      !captchaToken
     ) {
       throw new HttpException(
         'All fields are required',
