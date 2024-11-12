@@ -1,9 +1,14 @@
 /* eslint-disable prettier/prettier */
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { MailerService } from '../mailer/mailer.service';
 import * as bcrypt from 'bcrypt';
+import { OAuth2Client } from 'google-auth-library';
 
 @Injectable()
 export class AuthService {
@@ -12,6 +17,34 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly mailerService: MailerService,
   ) {}
+
+  private client = new OAuth2Client(
+    '143084504266-m64qjq4oio23hrpc55s0qs86fq84o7sq.apps.googleusercontent.com',
+  );
+
+  async verifyGoogleToken(idToken: string) {
+    const ticket = await this.client.verifyIdToken({
+      idToken,
+      audience: 'TU_CLIENT_ID',
+    });
+    const payload = ticket.getPayload();
+
+    if (!payload) {
+      throw new UnauthorizedException('Token de Google no válido');
+    }
+
+    // Extrae la información del usuario desde el payload de Google
+    const { sub, email, name, picture } = payload;
+    // Verifica si el usuario existe en la base de datos, o crea un nuevo registro
+    // Aquí puedes continuar con tu lógica de autenticación o creación de usuario
+
+    return {
+      userId: sub,
+      email,
+      name,
+      picture,
+    };
+  }
 
   async login(
     username: string,

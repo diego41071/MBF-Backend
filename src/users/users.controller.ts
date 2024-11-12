@@ -148,4 +148,9 @@ export class UsersController {
   ) {
     return await this.authService.resetPassword(username, code, newPassword);
   }
+
+  @Post('google')
+  async googleLogin(@Body('idToken') idToken: string) {
+    return this.authService.verifyGoogleToken(idToken);
+  }
 }
