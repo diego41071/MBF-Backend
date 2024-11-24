@@ -13,6 +13,7 @@ export const UserSchema = new Schema({
   check: { type: String, required: true },
   resetPasswordCode: { type: Number, required: false }, // Campo opcional
   resetPasswordExpires: { type: Date, required: false }, // Campo opcional
+  Role: { type: String, required: true },
 });
 
 export interface User extends Document {
@@ -28,4 +29,5 @@ export interface User extends Document {
   check: number;
   resetPasswordCode?: number | null; // Marca el campo como opcional
   resetPasswordExpires?: Date | null; // Marca el campo como opcional
+  role: string;
 }

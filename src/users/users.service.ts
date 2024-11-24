@@ -47,6 +47,7 @@ export class UsersService {
     password: string,
     confirmPassword: string,
     check: number,
+    role: string,
   ): Promise<User> {
     const existingUser = await this.findOne(username);
     if (existingUser) {
@@ -55,6 +56,10 @@ export class UsersService {
 
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
+    const hashedConfirmPassword = await bcrypt.hash(
+      confirmPassword,
+      saltRounds,
+    );
     const newUser = new this.userModel({
       name,
       lastname,
@@ -63,8 +68,9 @@ export class UsersService {
       position,
       username,
       password: hashedPassword,
-      confirmPassword: hashedPassword,
+      confirmPassword: hashedConfirmPassword,
       check,
+      role,
     });
     return newUser.save();
   }

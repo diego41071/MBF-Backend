@@ -39,6 +39,7 @@ export class UsersController {
       confirmPassword: string;
       check: number;
       captchaToken: string;
+      role: string;
     },
   ) {
     const {
@@ -52,6 +53,7 @@ export class UsersController {
       confirmPassword,
       check,
       captchaToken,
+      role,
     } = body;
 
     const isCaptchaValid =
@@ -70,7 +72,8 @@ export class UsersController {
       !password ||
       !confirmPassword ||
       !check ||
-      !captchaToken
+      !captchaToken ||
+      !role
     ) {
       throw new HttpException(
         'All fields are required',
@@ -93,6 +96,7 @@ export class UsersController {
         password,
         confirmPassword,
         check,
+        role,
       );
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
