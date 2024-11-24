@@ -29,6 +29,7 @@ export class AuthController {
       password: string;
       confirmPassword: string;
       check: number;
+      role: string;
     },
   ) {
     const {
@@ -41,6 +42,7 @@ export class AuthController {
       password,
       confirmPassword,
       check,
+      role,
     } = body;
 
     if (
@@ -52,7 +54,8 @@ export class AuthController {
       !username ||
       !password ||
       !confirmPassword ||
-      !check
+      !check ||
+      !role
     ) {
       throw new HttpException(
         'All fields are required',
@@ -75,6 +78,7 @@ export class AuthController {
         password,
         confirmPassword,
         check,
+        role,
       );
       return { message: 'User registered successfully', user };
     } catch (error) {
