@@ -49,13 +49,19 @@ export class AuthService {
   async login(
     username: string,
     password: string,
-  ): Promise<{ access_token: string }> {
+  ): Promise<{ access_token: string; role: string }> {
     const user = await this.usersService.validateUser(username, password);
     if (!user) {
       throw new Error('Invalid credentials');
     }
-    const payload = { username: user.username, sub: user._id };
-    return { access_token: this.jwtService.sign(payload) };
+
+    const payload = { username: user.username, sub: user._id, role: user.role }; // Incluye el rol en el payload
+    const accessToken = this.jwtService.sign(payload);
+
+    return {
+      access_token: accessToken,
+      role: user.role, // Devuelve el rol junto con el token
+    };
   }
 
   private async hashPassword(password: string): Promise<string> {

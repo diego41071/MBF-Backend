@@ -89,7 +89,14 @@ export class AuthController {
   @Post('login')
   async login(@Body() body: { username: string; password: string }) {
     const { username, password } = body;
-    const token = await this.authService.login(username, password); // Asegúrate de que estás pasando ambos parámetros
-    return { message: 'Login successful', access_token: token.access_token };
+    const { access_token, role } = await this.authService.login(
+      username,
+      password,
+    ); // Obtén el token y el rol desde el servicio
+    return {
+      message: 'Login successful',
+      access_token,
+      role, // Incluye el rol en la respuesta
+    };
   }
 }
