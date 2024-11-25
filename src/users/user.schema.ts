@@ -13,7 +13,7 @@ export const UserSchema = new Schema({
   check: { type: String, required: true },
   resetPasswordCode: { type: Number, required: false }, // Campo opcional
   resetPasswordExpires: { type: Date, required: false }, // Campo opcional
-  Role: { type: String, required: true },
+  role: { type: String, required: true },
 });
 
 export interface User extends Document {
