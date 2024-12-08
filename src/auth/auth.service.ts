@@ -49,18 +49,32 @@ export class AuthService {
   async login(
     username: string,
     password: string,
-  ): Promise<{ access_token: string; role: string }> {
+  ): Promise<{
+    access_token: string;
+    role: string;
+    name: string;
+    email: string;
+    lastname: string;
+  }> {
     const user = await this.usersService.validateUser(username, password);
     if (!user) {
       throw new Error('Invalid credentials');
     }
 
-    const payload = { username: user.username, sub: user._id, role: user.role }; // Incluye el rol en el payload
+    const payload = {
+      email: user.username,
+      sub: user._id,
+      role: user.role,
+      lastname: user.lastname,
+    }; // Incluye el rol en el payload
     const accessToken = this.jwtService.sign(payload);
 
     return {
       access_token: accessToken,
       role: user.role, // Devuelve el rol junto con el token
+      name: user.name,
+      lastname: user.lastname,
+      email: user.username, // Incluye el correo del usuario
     };
   }
 

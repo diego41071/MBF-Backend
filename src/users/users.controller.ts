@@ -116,14 +116,15 @@ export class UsersController {
     }
     const user = await this.usersService.findOne(username);
     if (user && (await bcrypt.compare(password, user.password))) {
-      const { access_token, role } = await this.authService.login(
-        username,
-        password,
-      ); // Obtén el token y el rol desde el servicio
+      const { access_token, role, name, lastname } =
+        await this.authService.login(username, password); // Obtén el token y el rol desde el servicio
       return {
         message: 'Login successful',
         access_token,
-        role, // Incluye el rol en la respuesta
+        role,
+        name,
+        email: username,
+        lastname,
       };
     }
     throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
