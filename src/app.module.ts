@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { MailerService } from './mailer/mailer.service';
 import { ConfigModule } from '@nestjs/config';
 import { HttpModule } from '@nestjs/axios';
+import { InventoryModule } from './inventory/inventory.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { HttpModule } from '@nestjs/axios';
     UsersModule,
     AuthModule,
     HttpModule,
+    InventoryModule,
   ],
   controllers: [AppController],
   providers: [AppService, MailerService],
