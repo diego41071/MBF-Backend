@@ -44,7 +44,7 @@ export class Inventory {
 
   @Prop({
     required: true,
-    enum: ['Mecánico', 'Eléctrico', 'Hidráulico', 'Electrónico', 'Neumático'],
+    enum: ['Mecanico', 'Electrico', 'Hidraulico', 'Electronico', 'Neumatico'],
   }) // Campo para "Tecnología predominante"
   technology: string;
 
