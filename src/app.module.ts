@@ -9,6 +9,7 @@ import { MailerService } from './mailer/mailer.service';
 import { ConfigModule } from '@nestjs/config';
 import { HttpModule } from '@nestjs/axios';
 import { InventoryModule } from './inventory/inventory.module';
+import { EquipmentModule } from './equipment/equipment.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { InventoryModule } from './inventory/inventory.module';
     AuthModule,
     HttpModule,
     InventoryModule,
+    EquipmentModule,
   ],
   controllers: [AppController],
   providers: [AppService, MailerService],
