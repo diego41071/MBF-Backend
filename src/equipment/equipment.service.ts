@@ -11,15 +11,29 @@ export class EquipmentService {
     private equipmentModel: Model<EquipmentDocument>,
   ) {}
 
-  async create(data: Partial<Equipment>): Promise<Equipment> {
-    const newEquipment = new this.equipmentModel(data);
+  // Crear un nuevo equipo con fotos y factura
+  async create(
+    data: Partial<Equipment>,
+    photos?: Express.Multer.File[],
+    invoice?: Express.Multer.File,
+  ): Promise<Equipment> {
+    const photoBuffers = photos?.map((file) => file.buffer) || [];
+    const invoiceBuffer = invoice?.buffer || null;
+
+    const newEquipment = new this.equipmentModel({
+      ...data,
+      photos: photoBuffers,
+      invoice: invoiceBuffer,
+    });
     return newEquipment.save();
   }
 
+  // Obtener todos los equipos
   async findAll(): Promise<Equipment[]> {
     return this.equipmentModel.find().exec();
   }
 
+  // Obtener un equipo por su ID
   async findOne(id: string): Promise<Equipment> {
     const equipment = await this.equipmentModel.findById(id).exec();
     if (!equipment) {
@@ -28,6 +42,23 @@ export class EquipmentService {
     return equipment;
   }
 
+  async getPhotos(id: string): Promise<Buffer[]> {
+    const equipment = await this.equipmentModel.findById(id).exec();
+    if (!equipment || !equipment.photos) {
+      throw new NotFoundException('Fotos no encontradas');
+    }
+    return equipment.photos;
+  }
+
+  async getInvoice(id: string): Promise<Buffer> {
+    const equipment = await this.equipmentModel.findById(id).exec();
+    if (!equipment || !equipment.invoice) {
+      throw new NotFoundException('Factura no encontrada');
+    }
+    return equipment.invoice;
+  }
+
+  // Actualizar un equipo
   async update(id: string, data: Partial<Equipment>): Promise<Equipment> {
     const updatedEquipment = await this.equipmentModel
       .findByIdAndUpdate(id, data, { new: true })
@@ -38,6 +69,7 @@ export class EquipmentService {
     return updatedEquipment;
   }
 
+  // Eliminar un equipo
   async delete(id: string): Promise<void> {
     const result = await this.equipmentModel.findByIdAndDelete(id).exec();
     if (!result) {

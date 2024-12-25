@@ -1,28 +1,31 @@
 /* eslint-disable prettier/prettier */
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, SchemaTypes } from 'mongoose';
 
 export type EquipmentDocument = Equipment & Document;
 
-@Schema({ timestamps: true })
+@Schema()
 export class Equipment {
-  @Prop({ required: true })
+  @Prop()
   name: string;
 
-  @Prop({ required: true })
+  @Prop()
   brand: string;
 
-  @Prop({ required: true })
+  @Prop()
   model: string;
 
-  @Prop({ required: true })
+  @Prop()
   serial: string;
 
-  @Prop({ required: true })
+  @Prop()
   issue: string;
 
-  @Prop({ required: false })
-  photo: string;
+  @Prop({ type: [SchemaTypes.Buffer] })
+  photos: Buffer[];
+
+  @Prop({ type: SchemaTypes.Buffer })
+  invoice: Buffer;
 }
 
 export const EquipmentSchema = SchemaFactory.createForClass(Equipment);
