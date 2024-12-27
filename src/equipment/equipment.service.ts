@@ -30,7 +30,13 @@ export class EquipmentService {
 
   // Obtener todos los equipos
   async findAll(): Promise<Equipment[]> {
-    return this.equipmentModel.find().exec();
+    const equipments = await this.equipmentModel.find().exec();
+    return equipments.map((equipment) => ({
+      ...equipment.toObject(),
+      invoice: equipment.invoice
+        ? equipment.invoice.toString('base64') // Convertir factura a Base64
+        : null,
+    }));
   }
 
   // Obtener un equipo por su ID
@@ -50,12 +56,14 @@ export class EquipmentService {
     return equipment.photos;
   }
 
-  async getInvoice(id: string): Promise<Buffer> {
+  async getInvoice(id: string): Promise<string> {
     const equipment = await this.equipmentModel.findById(id).exec();
     if (!equipment || !equipment.invoice) {
       throw new NotFoundException('Factura no encontrada');
     }
-    return equipment.invoice;
+
+    // Convertir el Buffer de la factura a Base64
+    return (equipment.invoice as Buffer).toString('base64');
   }
 
   // Actualizar un equipo

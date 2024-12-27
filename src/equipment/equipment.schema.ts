@@ -24,8 +24,11 @@ export class Equipment {
   @Prop()
   photos: Buffer[];
 
+  @Prop({ type: Buffer }) // Tipo explícito para evitar ambigüedades
+  invoice: string | Buffer;
+
   @Prop()
-  invoice: Buffer;
+  assignedTechnician?: string; // Nuevo campo agregado
 
   // Ficha técnica ahora es opcional
   @Prop({ unique: true, sparse: true })

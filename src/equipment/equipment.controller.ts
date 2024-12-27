@@ -76,14 +76,12 @@ export class EquipmentController {
 
   @Get(':id/invoice')
   async getInvoice(@Param('id') id: string, @Res() res: Response) {
-    const invoice = await this.service.getInvoice(id);
-    if (!invoice) {
-      return res.status(404).json({ message: 'Factura no encontrada.' });
+    try {
+      const base64Invoice = await this.service.getInvoice(id);
+      res.json({ invoice: base64Invoice });
+    } catch (error) {
+      res.status(404).json({ message: error.message });
     }
-
-    // Establecer el tipo MIME genérico de PDF
-    res.setHeader('Content-Type', 'application/pdf');
-    res.send(invoice); // Enviar directamente el buffer
   }
 
   @Put(':id')
