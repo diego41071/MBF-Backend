@@ -1,31 +1,38 @@
 /* eslint-disable prettier/prettier */
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, SchemaTypes } from 'mongoose';
+import { Document } from 'mongoose';
 
 export type EquipmentDocument = Equipment & Document;
 
 @Schema()
 export class Equipment {
-  @Prop()
+  @Prop({ required: true })
   name: string;
 
-  @Prop()
+  @Prop({ required: true })
   brand: string;
 
-  @Prop()
+  @Prop({ required: true })
   model: string;
 
   @Prop()
   serial: string;
 
-  @Prop()
+  @Prop({ required: true })
   issue: string;
 
-  @Prop({ type: [SchemaTypes.Buffer] })
+  @Prop()
   photos: Buffer[];
 
-  @Prop({ type: SchemaTypes.Buffer })
+  @Prop()
   invoice: Buffer;
+
+  // Ficha técnica ahora es opcional
+  @Prop({ unique: true, sparse: true })
+  technicalDataSheet?: string;
+
+  @Prop()
+  diagnosis: string;
 }
 
 export const EquipmentSchema = SchemaFactory.createForClass(Equipment);

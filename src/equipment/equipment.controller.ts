@@ -45,7 +45,8 @@ export class EquipmentController {
       files.photo_2?.[0],
     ].filter(Boolean); // Elimina valores undefined
     const invoice = files.invoice?.[0] || null; // Toma la factura si existe
-    return this.service.create(data, photos, invoice);
+
+    return this.service.create({ ...data }, photos, invoice);
   }
 
   @Get()
@@ -90,7 +91,7 @@ export class EquipmentController {
     @Param('id') id: string,
     @Body() data: Partial<Equipment>,
   ): Promise<Equipment> {
-    return this.service.update(id, data);
+    return this.service.update(id, data); // Mongoose maneja las propiedades automáticamente
   }
 
   @Delete(':id')
