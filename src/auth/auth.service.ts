@@ -55,6 +55,8 @@ export class AuthService {
     name: string;
     email: string;
     lastname: string;
+    address?: string;
+    phone?: string;
   }> {
     const user = await this.usersService.validateUser(username, password);
     if (!user) {
@@ -67,6 +69,7 @@ export class AuthService {
       role: user.role,
       lastname: user.lastname,
     }; // Incluye el rol en el payload
+
     const accessToken = this.jwtService.sign(payload);
 
     return {
@@ -75,6 +78,8 @@ export class AuthService {
       name: user.name,
       lastname: user.lastname,
       email: user.username, // Incluye el correo del usuario
+      address: user.address, // Incluye la dirección
+      phone: user.phone, // Incluye el teléfono
     };
   }
 

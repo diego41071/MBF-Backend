@@ -48,6 +48,8 @@ export class UsersService {
     confirmPassword: string,
     check: number,
     role: string,
+    address?: string, // Campo opcional
+    phone?: string, // Campo opcional
   ): Promise<User> {
     const existingUser = await this.findOne(username);
     if (existingUser) {
@@ -71,15 +73,24 @@ export class UsersService {
       confirmPassword: hashedConfirmPassword,
       check,
       role,
+      address, // Agregar campo opcional
+      phone, // Agregar campo opcional
     });
     return newUser.save();
   }
 
   // Método para actualizar el usuario en la base de datos
-  async updateUser(user: User): Promise<User> {
-    return await this.userModel.findByIdAndUpdate(user._id, user, {
-      new: true,
-    });
+  async updateUser(user: Partial<User>): Promise<User> {
+    const { _id, ...updateData } = user; // Extraer el ID y los datos a actualizar
+    if (!_id) {
+      throw new NotFoundException('User ID is required for updates');
+    }
+
+    return await this.userModel
+      .findByIdAndUpdate(_id, updateData, {
+        new: true,
+      })
+      .exec();
   }
 
   // Método para encontrar un usuario por correo electrónico

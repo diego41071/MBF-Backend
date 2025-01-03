@@ -40,6 +40,8 @@ export class UsersController {
       check: number;
       captchaToken: string;
       role: string;
+      address?: string; // Campo opcional
+      phone?: string; // Campo opcional
     },
   ) {
     const {
@@ -54,14 +56,18 @@ export class UsersController {
       check,
       captchaToken,
       role,
+      address, // Nuevo campo
+      phone, // Nuevo campo
     } = body;
 
+    // Validación del reCAPTCHA
     const isCaptchaValid =
       await this.recaptchaService.validateCaptcha(captchaToken);
     if (!isCaptchaValid) {
       throw new BadRequestException('reCAPTCHA falló, intenta nuevamente.');
     }
 
+    // Validación de campos obligatorios
     if (
       !name ||
       !lastname ||
@@ -76,11 +82,12 @@ export class UsersController {
       !role
     ) {
       throw new HttpException(
-        'All fields are required',
+        'All required fields must be filled',
         HttpStatus.BAD_REQUEST,
       );
     }
 
+    // Validación de contraseñas
     if (password !== confirmPassword) {
       throw new HttpException('Passwords do not match', HttpStatus.BAD_REQUEST);
     }
@@ -97,6 +104,8 @@ export class UsersController {
         confirmPassword,
         check,
         role,
+        address, // Nuevo campo
+        phone, // Nuevo campo
       );
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -107,7 +116,7 @@ export class UsersController {
   async login(
     @Body('username') username: string,
     @Body('password') password: string,
-    @Body('captchaToken ') captchaToken: string,
+    @Body('captchaToken') captchaToken: string,
   ) {
     const isCaptchaValid =
       await this.recaptchaService.validateCaptcha(captchaToken);
@@ -116,8 +125,8 @@ export class UsersController {
     }
     const user = await this.usersService.findOne(username);
     if (user && (await bcrypt.compare(password, user.password))) {
-      const { access_token, role, name, lastname } =
-        await this.authService.login(username, password); // Obtén el token y el rol desde el servicio
+      const { access_token, role, name, lastname, address, phone } =
+        await this.authService.login(username, password); // Incluye address y phone en el login
       return {
         message: 'Login successful',
         access_token,
@@ -125,20 +134,16 @@ export class UsersController {
         name,
         email: username,
         lastname,
+        address, // Nuevo campo
+        phone, // Nuevo campo
       };
     }
     throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
   }
 
-  @Post('logout')
-  async logout(@Req() req, @Res() res) {
-    res.clearCookie('auth');
-    return res.send({ message: 'Logout successful' });
-  }
-
   @Get('users')
   async getAllUsers() {
-    return await this.usersService.findAll();
+    return await this.usersService.findAll(); // Asegúrate de que estos datos incluyan address y phone
   }
 
   @Delete('users/:id')
@@ -154,8 +159,8 @@ export class UsersController {
 
   @Post('reset-password')
   async resetPassword(
-    @Body('code') code: number, // Cambia 'token' por 'code'
-    @Body('username') username: string, // Añade email para identificar al usuario
+    @Body('code') code: number,
+    @Body('username') username: string,
     @Body('newPassword') newPassword: string,
   ) {
     return await this.authService.resetPassword(username, code, newPassword);
