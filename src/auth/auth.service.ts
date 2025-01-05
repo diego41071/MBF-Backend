@@ -55,6 +55,7 @@ export class AuthService {
     name: string;
     email: string;
     lastname: string;
+    userId: string; // Incluimos el userId en la respuesta
     address?: string;
     phone?: string;
   }> {
@@ -68,16 +69,17 @@ export class AuthService {
       sub: user._id,
       role: user.role,
       lastname: user.lastname,
-    }; // Incluye el rol en el payload
+    };
 
     const accessToken = this.jwtService.sign(payload);
 
     return {
       access_token: accessToken,
-      role: user.role, // Devuelve el rol junto con el token
+      role: user.role,
       name: user.name,
       lastname: user.lastname,
-      email: user.username, // Incluye el correo del usuario
+      email: user.username,
+      userId: user._id.toString(), // Incluye el ID del usuario
       address: user.address, // Incluye la dirección
       phone: user.phone, // Incluye el teléfono
     };
@@ -96,9 +98,10 @@ export class AuthService {
     const expiration = new Date(Date.now() + 15 * 60 * 1000); // Expira en 15 minutos
 
     // Guardar el código y la expiración en el usuario
-    user.resetPasswordCode = code;
-    user.resetPasswordExpires = expiration;
-    await this.usersService.updateUser(user);
+    await this.usersService.updateUser(user._id as string, {
+      resetPasswordCode: code,
+      resetPasswordExpires: expiration,
+    });
 
     // Enviar el código por correo electrónico
     await this.mailerService.sendMail(
@@ -138,10 +141,12 @@ export class AuthService {
     }
 
     // Cambiar la contraseña y limpiar campos
-    user.password = await this.hashPassword(newPassword);
-    user.resetPasswordCode = null;
-    user.resetPasswordExpires = null;
-    await this.usersService.updateUser(user);
+    const hashedPassword = await this.hashPassword(newPassword);
+    await this.usersService.updateUser(user._id as string, {
+      password: hashedPassword,
+      resetPasswordCode: null,
+      resetPasswordExpires: null,
+    });
 
     return { success: true, message: 'Contraseña cambiada exitosamente' };
   }

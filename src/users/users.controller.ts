@@ -11,6 +11,7 @@ import {
   Delete,
   Param,
   BadRequestException,
+  Put,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { AuthService } from '../auth/auth.service'; // Asegúrate de importar el servicio de autenticación
@@ -125,7 +126,7 @@ export class UsersController {
     }
     const user = await this.usersService.findOne(username);
     if (user && (await bcrypt.compare(password, user.password))) {
-      const { access_token, role, name, lastname, address, phone } =
+      const { access_token, role, name, lastname, address, phone, userId } =
         await this.authService.login(username, password); // Incluye address y phone en el login
       return {
         message: 'Login successful',
@@ -136,6 +137,7 @@ export class UsersController {
         lastname,
         address, // Nuevo campo
         phone, // Nuevo campo
+        userId,
       };
     }
     throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
@@ -144,6 +146,85 @@ export class UsersController {
   @Get('users')
   async getAllUsers() {
     return await this.usersService.findAll(); // Asegúrate de que estos datos incluyan address y phone
+  }
+
+  @Put('users/:id')
+  async updateUser(
+    @Param('id') id: string,
+    @Body()
+    body: {
+      name?: string;
+      lastname?: string;
+      company?: string;
+      doc?: string;
+      position?: string;
+      username?: string;
+      password?: string;
+      role?: string;
+      address?: string;
+      phone?: string;
+    },
+  ) {
+    const {
+      name,
+      lastname,
+      company,
+      doc,
+      position,
+      username,
+      password,
+      role,
+      address,
+      phone,
+    } = body;
+
+    // Validar si hay campos a actualizar
+    if (
+      !name &&
+      !lastname &&
+      !company &&
+      !doc &&
+      !position &&
+      !username &&
+      !password &&
+      !role &&
+      !address &&
+      !phone
+    ) {
+      throw new BadRequestException('No fields provided to update');
+    }
+
+    // Validación opcional para la contraseña
+    let hashedPassword: string | undefined;
+    if (password) {
+      hashedPassword = await bcrypt.hash(password, 10);
+    }
+
+    try {
+      const updatedUser = await this.usersService.updateUser(id, {
+        name,
+        lastname,
+        company,
+        doc,
+        position,
+        username,
+        password: hashedPassword,
+        role,
+        address,
+        phone,
+      });
+
+      if (!updatedUser) {
+        throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+      }
+
+      return { message: 'User updated successfully', user: updatedUser };
+    } catch (error) {
+      throw new HttpException(
+        error.message || 'Failed to update user',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Delete('users/:id')

@@ -80,17 +80,14 @@ export class UsersService {
   }
 
   // Método para actualizar el usuario en la base de datos
-  async updateUser(user: Partial<User>): Promise<User> {
-    const { _id, ...updateData } = user; // Extraer el ID y los datos a actualizar
-    if (!_id) {
-      throw new NotFoundException('User ID is required for updates');
-    }
-
-    return await this.userModel
-      .findByIdAndUpdate(_id, updateData, {
-        new: true,
-      })
-      .exec();
+  async updateUser(
+    id: string,
+    updateData: Partial<User>,
+  ): Promise<User | null> {
+    const user = await this.userModel.findByIdAndUpdate(id, updateData, {
+      new: true,
+    });
+    return user;
   }
 
   // Método para encontrar un usuario por correo electrónico
