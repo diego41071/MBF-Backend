@@ -53,17 +53,61 @@ export class InventoryService {
       // Crear contenido del PDF
       doc.fontSize(16).text('Detalles del Inventario', { align: 'center' });
       doc.moveDown();
-      doc.fontSize(12).text(`Nombre: ${inventory.name}`);
-      doc.text(`Marca: ${inventory.brand}`);
-      doc.text(`Modelo: ${inventory.model}`);
-      doc.text(`Número de serie: ${inventory.serialNumber}`);
-      doc.text(`Ubicación: ${inventory.location}`);
-      if (inventory.purchaseDate) {
-        doc.text(`Fecha de compra: ${inventory.purchaseDate}`);
-      }
-      doc.text(`Voltaje: ${inventory.voltage || 'No disponible'}`);
-      doc.text(`Capacidad: ${inventory.capacity || 'No disponible'}`);
-      doc.text(`Prioridad de mantenimiento: ${inventory.maintenancePriority}`);
+      doc
+        .fontSize(16)
+        .text(
+          'IMPORTACIONES MEDIBÁSCULAS ZOMAC S.AS. Whatsapp 304 1301189 serviciotecnico@medibasculas.com CRA 45D #60-72, Medellin, Antioquia',
+          { align: 'center' },
+        );
+
+      doc.moveDown(2);
+
+      // Definir las coordenadas iniciales y tamaños de las celdas
+      const startX = 50; // Coordenada X inicial
+      const startY = doc.y; // Coordenada Y inicial basada en la posición actual
+      const cellWidth = 250;
+      const cellHeight = 20;
+
+      // Dibujar las celdas y el contenido
+      const drawRow = (x: number, y: number, data: string[]) => {
+        data.forEach((text, index) => {
+          // Dibujar borde de la celda
+          doc.rect(x + index * cellWidth, y, cellWidth, cellHeight).stroke();
+          // Escribir el texto dentro de la celda
+          doc.fontSize(12).text(text, x + index * cellWidth + 5, y + 5, {
+            width: cellWidth - 10,
+            height: cellHeight - 10,
+            ellipsis: true,
+          });
+        });
+      };
+
+      // Encabezados
+      drawRow(startX, startY, ['Campo', 'Valor']);
+      let currentY = startY + cellHeight;
+
+      // Filas de datos
+      const rows = [
+        ['Nombre', inventory.name || 'No disponible'],
+        ['Marca', inventory.brand || 'No disponible'],
+        ['Modelo', inventory.model || 'No disponible'],
+        ['Número de serie', inventory.serialNumber || 'No disponible'],
+        ['Ubicación', inventory.location || 'No disponible'],
+        ['Fecha de compra', inventory.purchaseDate || 'No disponible'],
+        ['Voltaje', inventory.voltage || 'No disponible'],
+        ['Capacidad', inventory.capacity || 'No disponible'],
+        [
+          'Prioridad de mantenimiento',
+          inventory.maintenancePriority || 'No disponible',
+        ],
+      ];
+
+      rows.forEach((row) => {
+        drawRow(startX, currentY, row);
+        currentY += cellHeight;
+      });
+
+      // Finalizar el documento
       doc.end();
     });
   }
