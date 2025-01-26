@@ -61,6 +61,10 @@ export class InventoryService {
         );
 
       doc.moveDown(2);
+      doc.fontSize(16).text('FICHA TÉCNICA	FT- 145', { align: 'center' });
+      doc.fontSize(16).text('FECHA SERVICIO	23	11	2023', { align: 'center' });
+      doc.fontSize(16).text('PRÓXIMO SERVICIO	23	5	2024', { align: 'center' });
+      doc.fontSize(16).text('PRIORIDAD	BAJA	MEDIA	ALTA', { align: 'center' });
 
       // Definir las coordenadas iniciales y tamaños de las celdas
       const startX = 50; // Coordenada X inicial
