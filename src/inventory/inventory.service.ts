@@ -53,7 +53,7 @@ export class InventoryService {
       // // Crear encabezado principal
       // doc.image('path/to/logo.png', 50, 30, { width: 50 }); // Agrega el logo (ajusta la ruta)
       // Dibujar el recuadro
-      doc.rect(50, 30, 500, 60).stroke(); // Rectángulo con posición (x: 50, y: 30), ancho: 500, alto: 60
+      doc.rect(50, 30, 500, 75).stroke(); // Rectángulo con posición (x: 50, y: 30), ancho: 500, alto: 60
 
       // Escribir el texto dentro del recuadro
       doc.fontSize(12).text('IMPORTACIONES MEDIBÁSCULAS ZOMAC S.A.S.', 0, 40, {
@@ -77,7 +77,7 @@ export class InventoryService {
       });
 
       // Sección derecha de la cabecera con texto ajustado
-      doc.rect(400, 30, 150, 60).stroke();
+      doc.rect(400, 30, 150, 75).stroke();
 
       doc
         .fontSize(10)
