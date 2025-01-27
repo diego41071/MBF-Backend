@@ -50,65 +50,83 @@ export class InventoryService {
       doc.on('end', () => resolve(Buffer.concat(buffers)));
       doc.on('error', (err) => reject(err));
 
-      // Crear contenido del PDF
-      doc.fontSize(16).text('Detalles del Inventario', { align: 'center' });
-      doc.moveDown();
+      // // Crear encabezado principal
+      // doc.image('path/to/logo.png', 50, 30, { width: 50 }); // Agrega el logo (ajusta la ruta)
+      // Dibujar el recuadro
+      doc.rect(50, 30, 500, 60).stroke(); // Rectángulo con posición (x: 50, y: 30), ancho: 500, alto: 60
+
+      // Escribir el texto dentro del recuadro
+      doc.fontSize(12).text('IMPORTACIONES MEDIBÁSCULAS ZOMAC S.A.S.', 0, 40, {
+        align: 'center',
+        width: 500, // Ajustar el ancho al tamaño del recuadro
+      });
       doc
-        .fontSize(16)
+        .fontSize(10)
         .text(
-          'IMPORTACIONES MEDIBÁSCULAS ZOMAC S.AS. Whatsapp 304 1301189 serviciotecnico@medibasculas.com CRA 45D #60-72, Medellin, Antioquia',
-          { align: 'center' },
+          'Whatsapp 304 1301189 | serviciotecnico@medibasculas.com',
+          0,
+          55,
+          {
+            align: 'center',
+            width: 500,
+          },
         );
+      doc.fontSize(10).text('CRA 45D #60-72, Medellín, Antioquia', 0, 70, {
+        align: 'center',
+        width: 500,
+      });
 
-      doc.moveDown(2);
-      doc.fontSize(16).text('FICHA TÉCNICA	FT- 145', { align: 'center' });
-      doc.fontSize(16).text('FECHA SERVICIO	23	11	2023', { align: 'center' });
-      doc.fontSize(16).text('PRÓXIMO SERVICIO	23	5	2024', { align: 'center' });
-      doc.fontSize(16).text('PRIORIDAD	BAJA	MEDIA	ALTA', { align: 'center' });
+      // Sección derecha de la cabecera con texto ajustado
+      doc.rect(400, 30, 150, 60).stroke();
 
-      // Definir las coordenadas iniciales y tamaños de las celdas
-      const startX = 50; // Coordenada X inicial
-      const startY = doc.y; // Coordenada Y inicial basada en la posición actual
-      const cellWidth = 250;
-      const cellHeight = 20;
+      doc
+        .fontSize(10)
+        .text('FICHA TÉCNICA', 405, 35, { width: 180, align: 'left' });
+      doc.fontSize(10).text('FT-145', 405, 50, { width: 180, align: 'left' });
+      doc.text('FECHA SERVICIO: 23/11/2023', 405, 65, {
+        width: 180,
+        align: 'left',
+      });
+      doc.text('PRÓXIMO SERVICIO: 23/05/2024', 405, 80, {
+        width: 180,
+        align: 'left',
+      });
+      doc.text('PRIORIDAD: ALTA', 405, 95, { width: 180, align: 'left' });
 
-      // Dibujar las celdas y el contenido
-      const drawRow = (x: number, y: number, data: string[]) => {
-        data.forEach((text, index) => {
-          // Dibujar borde de la celda
-          doc.rect(x + index * cellWidth, y, cellWidth, cellHeight).stroke();
-          // Escribir el texto dentro de la celda
-          doc.fontSize(12).text(text, x + index * cellWidth + 5, y + 5, {
-            width: cellWidth - 10,
-            height: cellHeight - 10,
-            ellipsis: true,
-          });
-        });
-      };
+      // Datos generales
+      doc.moveDown(1.5);
+      doc.fontSize(10).text('Nombre del Equipo:', 50, 120);
+      doc.text(inventory.name || 'No disponible', 180, 120);
+      doc.text('Marca:', 50, 135);
+      doc.text(inventory.brand || 'No disponible', 180, 135);
+      doc.text('Modelo:', 50, 150);
+      doc.text(inventory.model || 'No disponible', 180, 150);
+      doc.text('Serie:', 50, 165);
+      doc.text(inventory.serialNumber || 'No disponible', 180, 165);
+      doc.text('Fecha de Compra:', 50, 180);
+      doc.text(inventory.purchaseDate || 'No disponible', 180, 180);
 
-      // Encabezados
-      drawRow(startX, startY, ['Campo', 'Valor']);
-      let currentY = startY + cellHeight;
+      // Especificaciones técnicas
+      const startY = 200; // Posición Y inicial para las tablas
+      doc.rect(50, startY, 500, 20).stroke(); // Título de la tabla
+      doc.text('Especificaciones Técnicas', 55, startY + 5);
 
-      // Filas de datos
+      // Dibujar celdas de la tabla
       const rows = [
-        ['Nombre', inventory.name || 'No disponible'],
-        ['Marca', inventory.brand || 'No disponible'],
-        ['Modelo', inventory.model || 'No disponible'],
-        ['Número de serie', inventory.serialNumber || 'No disponible'],
-        ['Ubicación', inventory.location || 'No disponible'],
-        ['Fecha de compra', inventory.purchaseDate || 'No disponible'],
-        ['Voltaje', inventory.voltage || 'No disponible'],
-        ['Capacidad', inventory.capacity || 'No disponible'],
-        [
-          'Prioridad de mantenimiento',
-          inventory.maintenancePriority || 'No disponible',
-        ],
+        ['Capacidad', `${inventory.capacity || 'No disponible'}`],
+        ['Material', `${inventory.material || 'No disponible'}`],
+        ['Voltaje del Equipo', `${inventory.voltage || 'No disponible'}`],
+        ['Peso del Equipo', `${inventory.weight || 'No disponible'}`],
+        ['Potencia del Equipo', `${inventory.power || 'No disponible'}`],
       ];
 
+      let currentY = startY + 25;
       rows.forEach((row) => {
-        drawRow(startX, currentY, row);
-        currentY += cellHeight;
+        doc.rect(50, currentY, 250, 20).stroke(); // Columna 1
+        doc.text(row[0], 55, currentY + 5);
+        doc.rect(300, currentY, 250, 20).stroke(); // Columna 2
+        doc.text(row[1], 305, currentY + 5);
+        currentY += 20;
       });
 
       // Finalizar el documento
