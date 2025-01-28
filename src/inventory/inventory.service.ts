@@ -7,8 +7,8 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Inventory, InventoryDocument } from './inventory.schema';
-import { createWriteStream } from 'fs';
 import * as PDFDocument from 'pdfkit';
+import { join } from 'path';
 
 @Injectable()
 export class InventoryService {
@@ -52,6 +52,13 @@ export class InventoryService {
 
       // Encabezado principal
       doc.rect(50, 30, 515, 75).stroke(); // Rectángulo superior
+      // Agregar imagen al encabezado
+      try {
+        const imagePath = join(__dirname, '..', 'assets', 'logo.png');
+        doc.image(imagePath, 60, 35, { width: 50, height: 50 });
+      } catch (error) {
+        console.error('Error al cargar la imagen:', error.message);
+      }
       doc.fontSize(12).text('IMPORTACIONES MEDIBÁSCULAS ZOMAC S.A.S.', 0, 40, {
         align: 'center',
         width: 500,

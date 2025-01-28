@@ -11,6 +11,8 @@ import { HttpModule } from '@nestjs/axios';
 import { InventoryModule } from './inventory/inventory.module';
 import { EquipmentModule } from './equipment/equipment.module';
 import { EventsModule } from './events/events.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -20,6 +22,10 @@ import { EventsModule } from './events/events.module';
     MongooseModule.forRoot(
       'mongodb+srv://alexanderdiego2007:diegonacional123@cluster0.lnrft.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
     ),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'assets'), // Ruta a la carpeta 'assets'
+      serveRoot: '/assets', // Opcional: ruta base en la URL, por ejemplo, http://localhost:3000/assets
+    }),
     UsersModule,
     AuthModule,
     HttpModule,
