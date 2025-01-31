@@ -53,18 +53,36 @@ export class InventoryService {
       // Encabezado principal
       doc.rect(50, 30, 515, 75).stroke(); // Rectángulo superior
       // Agregar imagen al encabezado
+      const cellX = 50; // Posición X de la celda
+      const cellY = 30; // Posición Y de la celda
+      const cellWidth = 130; // Ancho de la celda
+
+      // Dibujar la celda
+      doc.rect(cellX, cellY, cellWidth, 75).stroke();
+
+      // Definir tamaño del logo
+      const logoWidth = 40; // Ancho de la imagen
+      const logoHeight = 40; // Alto de la imagen
+
+      // Calcular posición para centrar la imagen en la celda
+      const logoX = cellX + (cellWidth - logoWidth) / 2;
+      const logoY = cellY + (50 - logoHeight) / 2;
+
       try {
         const imagePath = join(__dirname, '..', 'assets', 'logo.png');
-        doc.image(imagePath, 60, 35, { width: 50, height: 50 });
+        doc.image(imagePath, logoX, logoY, {
+          width: logoWidth,
+          height: logoHeight,
+        });
       } catch (error) {
         console.error('Error al cargar la imagen:', error.message);
       }
-      doc.fontSize(12).text('IMPORTACIONES MEDIBÁSCULAS ZOMAC S.A.S.', 0, 40, {
+      doc.fontSize(8).text('IMPORTACIONES MEDIBÁSCULAS ZOMAC S.A.S.', 0, 40, {
         align: 'center',
         width: 500,
       });
       doc
-        .fontSize(10)
+        .fontSize(8)
         .text(
           'Whatsapp 304 1301189 | serviciotecnico@medibasculas.com',
           0,
@@ -74,7 +92,7 @@ export class InventoryService {
             width: 500,
           },
         );
-      doc.fontSize(10).text('CRA 45D #60-72, Medellín, Antioquia', 0, 70, {
+      doc.fontSize(8).text('CRA 45D #60-72, Medellín, Antioquia', 0, 70, {
         align: 'center',
         width: 500,
       });
