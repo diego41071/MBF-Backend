@@ -115,7 +115,9 @@ export class InventoryService {
         width: 180,
         align: 'left',
       });
-      doc.text('PRIORIDAD: ALTA', 405, 95, { width: 180, align: 'left' });
+      doc.text('PRIORIDAD:', 405, 95, { width: 180, align: 'left' });
+
+      doc.text('ALTA', 530, 95, { width: 180, align: 'left' });
 
       // Datos generales
       const startY = 120; // Y inicial para datos generales
