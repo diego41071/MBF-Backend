@@ -99,11 +99,11 @@ export class InventoryService {
       doc.fontSize(10).text('FICHA TÉCNICA:', 405, 35);
       doc.fontSize(10).text('FT-145', 500, 35); // Alineado a la derecha de la misma fila
 
-      doc.text('FECHA SERVICIO:', 405, 65, {
+      doc.text('FECHA SERVICIO:', 405, 55, {
         width: 180,
         align: 'left',
       });
-      doc.text('23/11/2023', 515, 65, {
+      doc.text('23/11/2023', 515, 55, {
         width: 180,
         align: 'left',
       });
