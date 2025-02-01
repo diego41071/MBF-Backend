@@ -96,15 +96,22 @@ export class InventoryService {
 
       // Sección derecha de la cabecera
       doc.rect(400, 30, 165, 75).stroke();
-      doc
-        .fontSize(10)
-        .text('FICHA TÉCNICA', 405, 35, { width: 180, align: 'left' });
-      doc.fontSize(10).text('FT-145', 405, 50, { width: 180, align: 'left' });
-      doc.text('FECHA SERVICIO: 23/11/2023', 405, 65, {
+      doc.fontSize(10).text('FICHA TÉCNICA:', 405, 35);
+      doc.fontSize(10).text('FT-145', 500, 35); // Alineado a la derecha de la misma fila
+
+      doc.text('FECHA SERVICIO:', 405, 65, {
         width: 180,
         align: 'left',
       });
-      doc.text('PRÓXIMO SERVICIO: 23/05/2024', 405, 80, {
+      doc.text('23/11/2023', 515, 65, {
+        width: 180,
+        align: 'left',
+      });
+      doc.text('PRÓXIMO SERVICIO:', 405, 80, {
+        width: 180,
+        align: 'left',
+      });
+      doc.text('23/05/2024', 515, 80, {
         width: 180,
         align: 'left',
       });
