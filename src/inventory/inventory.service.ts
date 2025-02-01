@@ -77,22 +77,19 @@ export class InventoryService {
       } catch (error) {
         console.error('Error al cargar la imagen:', error.message);
       }
-      doc.fontSize(8).text('IMPORTACIONES MEDIBÁSCULAS ZOMAC S.A.S.', 0, 40, {
+      doc.fontSize(8).text('IMPORTACIONES MEDIBÁSCULAS ZOMAC S.A.S.', 40, 40, {
         align: 'center',
         width: 500,
       });
-      doc
-        .fontSize(8)
-        .text(
-          'Whatsapp 304 1301189 | serviciotecnico@medibasculas.com',
-          0,
-          55,
-          {
-            align: 'center',
-            width: 500,
-          },
-        );
-      doc.fontSize(8).text('CRA 45D #60-72, Medellín, Antioquia', 0, 70, {
+      doc.fontSize(8).text('Whatsapp 304 1301189', 40, 55, {
+        align: 'center',
+        width: 500,
+      });
+      doc.fontSize(8).text('serviciotecnico@medibasculas.com', 40, 65, {
+        align: 'center',
+        width: 500,
+      });
+      doc.fontSize(8).text('CRA 45D #60-72, Medellín, Antioquia', 40, 75, {
         align: 'center',
         width: 500,
       });
