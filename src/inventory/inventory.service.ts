@@ -15,7 +15,7 @@ export class InventoryService {
   constructor(
     @InjectModel(Inventory.name)
     private inventoryModel: Model<InventoryDocument>,
-  ) {}
+  ) { }
 
   async create(data: Partial<Inventory>): Promise<Inventory> {
     try {
@@ -128,12 +128,12 @@ export class InventoryService {
         const rowNumber = Math.floor(index / 2);
         const extraOffset =
           row[0] === 'Marca' ||
-          row[0] === 'Serie' ||
-          row[0] === 'Ubicación' ||
-          row[0] === 'Responsable' ||
-          row[0] === 'Garantía' ||
-          row[0] === 'Última Revisión' ||
-          row[0] === 'Notas Adicionales'
+            row[0] === 'Serie' ||
+            row[0] === 'Ubicación' ||
+            row[0] === 'Responsable' ||
+            row[0] === 'Garantía' ||
+            row[0] === 'Última Revisión' ||
+            row[0] === 'Notas Adicionales'
             ? offsetX
             : 0;
 
@@ -152,9 +152,10 @@ export class InventoryService {
       // Especificaciones técnicas
       doc.rect(50, currentY, 500, 20).stroke();
       doc.text('Especificaciones Técnicas', 55, currentY + 5);
+      doc.text(' | Tecnologia Predominante', 200, currentY + 5);
+      doc.text(' | Uso', 330, currentY + 5);
       currentY += 25;
-      doc.text('Tecnologia Predominante', 55, currentY + 5);
-      currentY += 25;
+
 
       const specifications = [
         ['Capacidad', inventory.capacity || 'No disponible'],
@@ -165,9 +166,9 @@ export class InventoryService {
       ];
 
       specifications.forEach((row) => {
-        doc.rect(50, currentY, 250, 20).stroke();
+        doc.rect(50, currentY, 150, 20).stroke();
         doc.text(row[0], 55, currentY + 5);
-        doc.rect(300, currentY, 250, 20).stroke();
+        doc.rect(300, currentY, 150, 20).stroke();
         doc.text(row[1], 305, currentY + 5);
         currentY += 20;
       });
