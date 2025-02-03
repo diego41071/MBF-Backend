@@ -160,19 +160,42 @@ export class InventoryService {
       const specifications = [
         ['Capacidad', inventory.capacity || 'No disponible'],
         ['Material', inventory.material || 'No disponible'],
-        ['Voltaje del Equipo', inventory.voltage || 'No disponible'],
-        ['Peso del Equipo', inventory.weight || 'No disponible'],
-        ['Potencia del Equipo', inventory.power || 'No disponible'],
       ];
 
       specifications.forEach((row) => {
-        doc.rect(50, currentY, 150, 20).stroke();
+        doc.rect(50, currentY, 70, 20).stroke();
         doc.text(row[0], 55, currentY + 5);
-        doc.rect(300, currentY, 150, 20).stroke();
-        doc.text(row[1], 305, currentY + 5);
+        doc.rect(120, currentY, 70, 20).stroke();
+        doc.text(row[1], 125, currentY + 5);
         currentY += 20;
       });
+      // Posición inicial
+      const startY = 300;
 
+      // Datos para la tabla
+      const data = ['Mecánico', 'Eléctrico', 'Hidráulico', 'Eléctrico', 'Neumático'];
+
+      // Establecer el tamaño de fuente
+      doc.fontSize(12);
+
+      // Dibujar las celdas y centrar el texto
+      data.forEach((text, index) => {
+        const x = 200 + index * 60;
+
+        // Dibujar celda (rectángulo)
+        doc.rect(x, startY, 60, cellHeight).stroke();
+
+        // Obtener el ancho y alto del texto
+        const textWidth = doc.widthOfString(text);
+        const textHeight = doc.currentLineHeight();
+
+        // Calcular la posición centrada dentro de la celda
+        const textX = x + (60 - textWidth) / 2;
+        const textY = startY + (30 - textHeight) / 2;
+
+        // Agregar el texto centrado
+        doc.text(text, textX, textY);
+      });
       doc.end();
     });
   }
