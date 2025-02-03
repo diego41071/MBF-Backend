@@ -106,6 +106,7 @@ export class InventoryService {
       const cellHeight = 20;
       const columnWidth = 150; // Ahora hay solo 2 columnas
       const startX = 70;
+      const offsetX = 40; // Desplazamiento extra para "Marca"
 
       const generalData = [
         ['Nombre del Equipo', inventory.name || 'No disponible'],
@@ -132,8 +133,19 @@ export class InventoryService {
       generalData.forEach((row, index) => {
         const col = index % 2; // Solo 2 columnas ahora
         const rowNumber = Math.floor(index / 2);
+        const extraOffset =
+          row[0] === 'Marca' ||
+          row[0] === 'Serie' ||
+          row[0] === 'Ubicación' ||
+          row[0] === 'Responsable' ||
+          row[0] === 'Garantía' ||
+          row[0] === 'Última Revisión' ||
+          row[0] === 'Próxima Inspección' ||
+          row[0] === 'Notas Adicionales'
+            ? offsetX
+            : 0;
 
-        const x = startX + col * columnWidth;
+        const x = startX + col * columnWidth + extraOffset;
         const y = currentY + rowNumber * cellHeight;
 
         doc.rect(x, y, columnWidth, cellHeight).stroke();
