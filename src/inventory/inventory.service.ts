@@ -104,9 +104,9 @@ export class InventoryService {
       // Datos generales en formato 2x2
       let currentY = 120;
       const cellHeight = 20;
-      const columnWidth = 100; // Ahora hay solo 2 columnas
+      const columnWidth = 120; // Ahora hay solo 2 columnas
       const startX = 70;
-      const offsetX = 40; // Desplazamiento extra para "Marca"
+      const offsetX = 140; // Desplazamiento extra para "Marca"
 
       const generalData = [
         ['Nombre del Equipo', inventory.name || 'No disponible'],
@@ -121,9 +121,6 @@ export class InventoryService {
         ['Garantía', inventory.warranty || 'No disponible'],
         ['Costo', inventory.cost || 'No disponible'],
         ['Última Revisión', inventory.lastReview || 'No disponible'],
-        ['Próxima Inspección', inventory.nextInspection || 'No disponible'],
-        ['Condición Actual', inventory.condition || 'No disponible'],
-        ['Notas Adicionales', inventory.notes || 'No disponible'],
       ];
 
       generalData.forEach((row, index) => {
@@ -136,7 +133,6 @@ export class InventoryService {
           row[0] === 'Responsable' ||
           row[0] === 'Garantía' ||
           row[0] === 'Última Revisión' ||
-          row[0] === 'Próxima Inspección' ||
           row[0] === 'Notas Adicionales'
             ? offsetX
             : 0;
@@ -156,6 +152,8 @@ export class InventoryService {
       // Especificaciones técnicas
       doc.rect(50, currentY, 500, 20).stroke();
       doc.text('Especificaciones Técnicas', 55, currentY + 5);
+      currentY += 25;
+      doc.text('Tecnologia Predominante', 55, currentY + 5);
       currentY += 25;
 
       const specifications = [
