@@ -104,7 +104,7 @@ export class InventoryService {
       // Datos generales en formato 2x2
       let currentY = 120;
       const cellHeight = 20;
-      const columnWidth = 150; // Ahora hay solo 2 columnas
+      const columnWidth = 100; // Ahora hay solo 2 columnas
       const startX = 70;
       const offsetX = 40; // Desplazamiento extra para "Marca"
 
@@ -121,10 +121,6 @@ export class InventoryService {
         ['Garantía', inventory.warranty || 'No disponible'],
         ['Costo', inventory.cost || 'No disponible'],
         ['Última Revisión', inventory.lastReview || 'No disponible'],
-        [
-          'Frecuencia de Mantenimiento',
-          inventory.maintenanceFrequency || 'No disponible',
-        ],
         ['Próxima Inspección', inventory.nextInspection || 'No disponible'],
         ['Condición Actual', inventory.condition || 'No disponible'],
         ['Notas Adicionales', inventory.notes || 'No disponible'],
