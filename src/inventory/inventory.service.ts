@@ -15,7 +15,7 @@ export class InventoryService {
   constructor(
     @InjectModel(Inventory.name)
     private inventoryModel: Model<InventoryDocument>,
-  ) { }
+  ) {}
 
   async create(data: Partial<Inventory>): Promise<Inventory> {
     try {
@@ -128,12 +128,12 @@ export class InventoryService {
         const rowNumber = Math.floor(index / 2);
         const extraOffset =
           row[0] === 'Marca' ||
-            row[0] === 'Serie' ||
-            row[0] === 'Ubicación' ||
-            row[0] === 'Responsable' ||
-            row[0] === 'Garantía' ||
-            row[0] === 'Última Revisión' ||
-            row[0] === 'Notas Adicionales'
+          row[0] === 'Serie' ||
+          row[0] === 'Ubicación' ||
+          row[0] === 'Responsable' ||
+          row[0] === 'Garantía' ||
+          row[0] === 'Última Revisión' ||
+          row[0] === 'Notas Adicionales'
             ? offsetX
             : 0;
 
@@ -156,7 +156,6 @@ export class InventoryService {
       doc.text(' | Uso', 330, currentY + 5);
       currentY += 25;
 
-
       const specifications = [
         ['Capacidad', inventory.capacity || 'No disponible'],
         ['Material', inventory.material || 'No disponible'],
@@ -173,7 +172,13 @@ export class InventoryService {
       const startY = 300;
 
       // Datos para la tabla
-      const data = ['Mecánico', 'Eléctrico', 'Hidráulico', 'Eléctrico', 'Neumático'];
+      const data = [
+        'Mecánico',
+        'Eléctrico',
+        'Hidráulico',
+        'Eléctrico',
+        'Neumático',
+      ];
 
       // Establecer el tamaño de fuente
       doc.fontSize(12);
@@ -195,6 +200,8 @@ export class InventoryService {
 
         // Agregar el texto centrado
         doc.text(text, textX, textY);
+        doc.fontSize(10).text('Fijo', 530, 300, { width: 80, align: 'left' });
+        doc.fontSize(10).text('Móvil', 550, 300, { width: 80, align: 'left' });
       });
       doc.end();
     });
