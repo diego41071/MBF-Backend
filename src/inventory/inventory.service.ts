@@ -200,8 +200,28 @@ export class InventoryService {
 
         // Agregar el texto centrado
         doc.text(text, textX, textY);
-        doc.fontSize(10).text('Fijo', 530, 300, { width: 80, align: 'left' });
-        doc.fontSize(10).text('Móvil', 550, 300, { width: 80, align: 'left' });
+        const cellWidth = 80;
+        const cellHeightcell = 20;
+        const startXcell = 520; // Ajusta la posición según sea necesario
+        const startYcell = 300;
+
+        // Celda para "Fijo"
+        doc.rect(startXcell, startYcell, cellWidth, cellHeightcell).stroke();
+        doc.fontSize(10).text('Fijo', startXcell + 5, startYcell + 5, {
+          width: cellWidth - 10,
+          align: 'center',
+        });
+
+        // Celda para "Móvil"
+        doc
+          .rect(startXcell + cellWidth, startYcell, cellWidth, cellHeightcell)
+          .stroke();
+        doc
+          .fontSize(10)
+          .text('Móvil', startXcell + cellWidth + 5, startYcell + 5, {
+            width: cellWidth - 10,
+            align: 'center',
+          });
       });
       doc.end();
     });
