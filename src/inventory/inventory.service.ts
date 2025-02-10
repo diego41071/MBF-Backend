@@ -92,14 +92,35 @@ export class InventoryService {
 
       // Sección derecha de la cabecera
       doc.rect(400, 30, 165, 75).stroke();
-      doc.fontSize(10).text('FICHA TÉCNICA:', 405, 35);
-      doc.fontSize(10).text('FT-145', 500, 35);
-      doc.text('FECHA SERVICIO:', 405, 55);
-      doc.text('23/11/2023', 515, 55, { width: 100 });
-      doc.text('PRÓXIMO SERVICIO:', 405, 80);
-      doc.text('23/05/2024', 515, 80, { width: 100 });
-      doc.text('PRIORIDAD:', 405, 95);
-      doc.text('ALTA', 530, 95, { width: 100 });
+      const cellHeightRight = 20;
+      const labelWidth = 150;
+      const valueWidth = 100;
+      const startXRight = 400;
+      let startYRight = 35;
+
+      // Función para dibujar una celda con texto
+      const drawCell = (label: string, value: string, x: number, y: number) => {
+        doc.rect(x, y, labelWidth, cellHeightRight).stroke(); // Celda del título
+        doc.text(label, x + 5, y + 5, {
+          width: labelWidth - 10,
+          align: 'left',
+        });
+
+        doc.rect(x + labelWidth, y, valueWidth, cellHeightRight).stroke(); // Celda del valor
+        doc.text(value, x + labelWidth + 5, y + 5, {
+          width: valueWidth - 10,
+          align: 'left',
+        });
+      };
+
+      // Dibujar las celdas con los datos
+      drawCell('FICHA TÉCNICA:', 'FT-145', startXRight, startYRight);
+      startYRight += cellHeightRight;
+      drawCell('FECHA SERVICIO:', '23/11/2023', startXRight, startYRight);
+      startYRight += cellHeightRight;
+      drawCell('PRÓXIMO SERVICIO:', '23/05/2024', startXRight, startYRight);
+      startYRight += cellHeightRight;
+      drawCell('PRIORIDAD:', 'ALTA', startXRight, startYRight);
 
       // Datos generales en formato 2x2
       let currentY = 120;
@@ -151,9 +172,53 @@ export class InventoryService {
 
       // Especificaciones técnicas
       doc.rect(50, currentY, 500, 20).stroke();
-      doc.text('Especificaciones Técnicas', 55, currentY + 5);
-      doc.text(' | Tecnologia Predominante', 200, currentY + 5);
-      doc.text(' | Uso', 330, currentY + 5);
+      const cellHeightSpec = 25;
+      const columnWidths = [150, 150, 150]; // Ancho de cada celda
+      const startXspec = 50;
+      let currentYspec = 300; // Ajusta según sea necesario
+
+      // Dibujar celdas y texto para la cabecera de Especificaciones Técnicas
+      doc
+        .rect(startXspec, currentYspec, columnWidths[0], cellHeightSpec)
+        .stroke();
+      doc.text('Especificaciones Técnicas', startXspec + 5, currentYspec + 7, {
+        width: columnWidths[0] - 10,
+        align: 'left',
+      });
+
+      doc
+        .rect(
+          startXspec + columnWidths[0],
+          currentYspec,
+          columnWidths[1],
+          cellHeightSpec,
+        )
+        .stroke();
+      doc.text(
+        'Tecnología Predominante',
+        startXspec + columnWidths[0] + 5,
+        currentYspec + 7,
+        { width: columnWidths[1] - 10, align: 'left' },
+      );
+
+      doc
+        .rect(
+          startXspec + columnWidths[0] + columnWidths[1],
+          currentYspec,
+          columnWidths[2],
+          cellHeightSpec,
+        )
+        .stroke();
+      doc.text(
+        'Uso',
+        startXspec + columnWidths[0] + columnWidths[1] + 5,
+        currentYspec + 7,
+        { width: columnWidths[2] - 10, align: 'left' },
+      );
+
+      // Aumentar la posición Y para continuar con más contenido si es necesario
+      currentYspec += cellHeightSpec;
+
       currentY += 25;
 
       const specifications = [
