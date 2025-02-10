@@ -15,7 +15,7 @@ export class InventoryService {
   constructor(
     @InjectModel(Inventory.name)
     private inventoryModel: Model<InventoryDocument>,
-  ) {}
+  ) { }
 
   async create(data: Partial<Inventory>): Promise<Inventory> {
     try {
@@ -149,12 +149,12 @@ export class InventoryService {
         const rowNumber = Math.floor(index / 2);
         const extraOffset =
           row[0] === 'Marca' ||
-          row[0] === 'Serie' ||
-          row[0] === 'Ubicación' ||
-          row[0] === 'Responsable' ||
-          row[0] === 'Garantía' ||
-          row[0] === 'Última Revisión' ||
-          row[0] === 'Notas Adicionales'
+            row[0] === 'Serie' ||
+            row[0] === 'Ubicación' ||
+            row[0] === 'Responsable' ||
+            row[0] === 'Garantía' ||
+            row[0] === 'Última Revisión' ||
+            row[0] === 'Notas Adicionales'
             ? offsetX
             : 0;
 
@@ -175,7 +175,7 @@ export class InventoryService {
       const cellHeightSpec = 25;
       const columnWidths = [150, 150, 150]; // Ancho de cada celda
       const startXspec = 50;
-      let currentYspec = 300; // Ajusta según sea necesario
+      let currentYspec = 260; // Ajusta según sea necesario
 
       // Dibujar celdas y texto para la cabecera de Especificaciones Técnicas
       doc
