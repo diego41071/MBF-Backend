@@ -95,11 +95,11 @@ export class InventoryService {
       doc.fontSize(10).text('FICHA TÉCNICA:', 405, 35);
       doc.fontSize(10).text('FT-145', 500, 35);
       doc.text('FECHA SERVICIO:', 405, 55);
-      doc.text('23/11/2023', 515, 55);
+      doc.text('23/11/2023', 515, 55, { width: 100 });
       doc.text('PRÓXIMO SERVICIO:', 405, 80);
-      doc.text('23/05/2024', 515, 80);
+      doc.text('23/05/2024', 515, 80, { width: 100 });
       doc.text('PRIORIDAD:', 405, 95);
-      doc.text('ALTA', 530, 95);
+      doc.text('ALTA', 530, 95, { width: 100 });
 
       // Datos generales en formato 2x2
       let currentY = 120;
