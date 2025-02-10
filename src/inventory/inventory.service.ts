@@ -171,7 +171,6 @@ export class InventoryService {
       currentY += Math.ceil(generalData.length / 2) * cellHeight + 20;
 
       // Especificaciones técnicas
-      doc.rect(50, currentY, 500, 20).stroke();
       const cellHeightSpec = 25;
       const columnWidths = [150, 150, 150]; // Ancho de cada celda
       const startXspec = 50;
