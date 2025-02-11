@@ -171,7 +171,7 @@ export class InventoryService {
 
       // Especificaciones técnicas
       const cellHeightSpec = 25;
-      const columnWidths = [150, 150, 150]; // Ancho de cada celda
+      const columnWidths = [150, 300, 70]; // Ancho de cada celda
       const startXspec = 50;
       let currentYspec = 260; // Ajusta según sea necesario
 
