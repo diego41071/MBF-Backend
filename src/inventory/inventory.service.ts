@@ -15,7 +15,7 @@ export class InventoryService {
   constructor(
     @InjectModel(Inventory.name)
     private inventoryModel: Model<InventoryDocument>,
-  ) { }
+  ) {}
 
   async create(data: Partial<Inventory>): Promise<Inventory> {
     try {
@@ -91,12 +91,11 @@ export class InventoryService {
       });
 
       // Sección derecha de la cabecera
-      doc.rect(400, 30, 165, 75).stroke();
-      const cellHeightRight = 20;
-      const labelWidth = 150;
-      const valueWidth = 100;
-      const startXRight = 400;
-      let startYRight = 35;
+      const cellHeightRight = 19;
+      const labelWidth = 100;
+      const valueWidth = 60;
+      const startXRight = 405;
+      let startYRight = 30;
 
       // Función para dibujar una celda con texto
       const drawCell = (label: string, value: string, x: number, y: number) => {
@@ -149,12 +148,12 @@ export class InventoryService {
         const rowNumber = Math.floor(index / 2);
         const extraOffset =
           row[0] === 'Marca' ||
-            row[0] === 'Serie' ||
-            row[0] === 'Ubicación' ||
-            row[0] === 'Responsable' ||
-            row[0] === 'Garantía' ||
-            row[0] === 'Última Revisión' ||
-            row[0] === 'Notas Adicionales'
+          row[0] === 'Serie' ||
+          row[0] === 'Ubicación' ||
+          row[0] === 'Responsable' ||
+          row[0] === 'Garantía' ||
+          row[0] === 'Última Revisión' ||
+          row[0] === 'Notas Adicionales'
             ? offsetX
             : 0;
 
