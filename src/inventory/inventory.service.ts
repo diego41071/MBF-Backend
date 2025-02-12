@@ -9,6 +9,7 @@ import { Model } from 'mongoose';
 import { Inventory, InventoryDocument } from './inventory.schema';
 import * as PDFDocument from 'pdfkit';
 import { join } from 'path';
+import formatDate from 'src/utils/formatDate';
 
 @Injectable()
 export class InventoryService {
@@ -126,14 +127,17 @@ export class InventoryService {
       const cellHeight = 20;
       const columnWidth = 120; // Ahora hay solo 2 columnas
       const startX = 70;
-      const offsetX = 140; // Desplazamiento extra para "Marca"
+      const offsetX = 121; // Desplazamiento extra para "Marca"
 
       const generalData = [
         ['Nombre del Equipo', inventory.name || 'No disponible'],
         ['Marca', inventory.brand || 'No disponible'],
         ['Modelo', inventory.model || 'No disponible'],
         ['Serie', inventory.serialNumber || 'No disponible'],
-        ['Fecha de Compra', inventory.purchaseDate || 'No disponible'],
+        [
+          'Fecha de Compra',
+          formatDate(inventory.purchaseDate) || 'No disponible',
+        ],
         ['Ubicación', inventory.location || 'No disponible'],
         ['Estado', inventory.status || 'No disponible'],
         ['Responsable', inventory.responsible || 'No disponible'],
