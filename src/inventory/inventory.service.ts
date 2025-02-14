@@ -267,9 +267,9 @@ export class InventoryService {
 
         // Agregar el texto centrado
         doc.text(text, textX, textY);
-        const cellWidth = 80;
+        const cellWidth = 40;
         const cellHeightcell = 20;
-        const startXcell = 520; // Ajusta la posición según sea necesario
+        const startXcell = 500; // Ajusta la posición según sea necesario
         const startYcell = 300;
 
         // Celda para "Fijo"
