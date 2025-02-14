@@ -219,7 +219,6 @@ export class InventoryService {
       );
 
       // Aumentar la posición Y para continuar con más contenido si es necesario
-      currentYspec += cellHeightSpec;
 
       currentY += 25;
 
@@ -236,7 +235,7 @@ export class InventoryService {
         currentY += 20;
       });
       // Posición inicial
-      const startY = 300;
+      const startY = 286;
 
       // Datos para la tabla
       const data = [
@@ -267,10 +266,10 @@ export class InventoryService {
 
         // Agregar el texto centrado
         doc.text(text, textX, textY);
-        const cellWidth = 40;
+        const cellWidth = 35;
         const cellHeightcell = 20;
         const startXcell = 500; // Ajusta la posición según sea necesario
-        const startYcell = 300;
+        const startYcell = 286;
 
         // Celda para "Fijo"
         doc.rect(startXcell, startYcell, cellWidth, cellHeightcell).stroke();
