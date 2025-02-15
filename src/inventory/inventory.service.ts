@@ -125,9 +125,9 @@ export class InventoryService {
       // Datos generales en formato 2x2
       let currentY = 120;
       const cellHeight = 20;
-      const columnWidth = 120; // Ahora hay solo 2 columnas
-      const startX = 70;
-      const offsetX = 121; // Desplazamiento extra para "Marca"
+      const columnWidth = 130; // Ahora hay solo 2 columnas
+      const startX = 51;
+      const offsetX = 130; // Desplazamiento extra para "Marca"
 
       const generalData = [
         ['Nombre del Equipo', inventory.name || 'No disponible'],
