@@ -228,9 +228,9 @@ export class InventoryService {
       ];
 
       specifications.forEach((row) => {
-        doc.rect(50, currentY, 70, 20).stroke();
+        doc.rect(50, currentY, 75, 20).stroke();
         doc.text(row[0], 55, currentY + 5);
-        doc.rect(120, currentY, 70, 20).stroke();
+        doc.rect(125, currentY, 75, 20).stroke();
         doc.text(row[1], 125, currentY + 5);
         currentY += 20;
       });
