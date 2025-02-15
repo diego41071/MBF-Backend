@@ -103,13 +103,13 @@ export class InventoryService {
         doc.rect(x, y, labelWidth, cellHeightRight).stroke(); // Celda del título
         doc.text(label, x + 5, y + 5, {
           width: labelWidth - 10,
-          align: 'left',
+          align: 'center',
         });
 
         doc.rect(x + labelWidth, y, valueWidth, cellHeightRight).stroke(); // Celda del valor
         doc.text(value, x + labelWidth + 5, y + 5, {
           width: valueWidth - 10,
-          align: 'left',
+          align: 'center',
         });
       };
 
