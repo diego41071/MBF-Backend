@@ -195,7 +195,7 @@ export class InventoryService {
         .stroke();
       doc.text('Especificaciones Técnicas', startXspec + 5, currentYspec + 7, {
         width: columnWidths[0] - 10,
-        align: 'left',
+        align: 'center',
       });
 
       doc
@@ -210,7 +210,7 @@ export class InventoryService {
         'Tecnología Predominante',
         startXspec + columnWidths[0] + 5,
         currentYspec + 7,
-        { width: columnWidths[1] - 10, align: 'left' },
+        { width: columnWidths[1] - 10, align: 'center' },
       );
 
       doc
@@ -225,7 +225,7 @@ export class InventoryService {
         'Uso',
         startXspec + columnWidths[0] + columnWidths[1] + 5,
         currentYspec + 7,
-        { width: columnWidths[2] - 10, align: 'left' },
+        { width: columnWidths[2] - 10, align: 'center' },
       );
 
       // Aumentar la posición Y para continuar con más contenido si es necesario
@@ -238,12 +238,29 @@ export class InventoryService {
       ];
 
       specifications.forEach((row) => {
-        doc.rect(50, currentY, 75, 20).stroke();
-        doc.text(row[0], 55, currentY + 5);
-        doc.rect(125, currentY, 75, 20).stroke();
-        doc.text(row[1], 125, currentY + 5);
-        currentY += 20;
+        const cellWidth = 75;
+        const cellHeight = 20;
+
+        doc.rect(50, currentY, cellWidth, cellHeight).stroke();
+        doc.rect(125, currentY, cellWidth, cellHeight).stroke();
+
+        // Obtener el ancho de los textos
+        const textWidth1 = doc.widthOfString(row[0]);
+        const textWidth2 = doc.widthOfString(row[1]);
+
+        // Calcular la posición X centrada dentro de la celda
+        const textX1 = 50 + (cellWidth - textWidth1) / 2;
+        const textX2 = 125 + (cellWidth - textWidth2) / 2;
+
+        // Calcular la posición Y centrada dentro de la celda (ajustado para altura de texto)
+        const textY = currentY + (cellHeight - 10) / 2;
+
+        doc.text(row[0], textX1, textY);
+        doc.text(row[1], textX2, textY);
+
+        currentY += cellHeight;
       });
+
       // Posición inicial
       const startY = 286;
 
