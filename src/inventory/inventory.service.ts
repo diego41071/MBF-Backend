@@ -165,9 +165,19 @@ export class InventoryService {
         const y = currentY + rowNumber * cellHeight;
 
         doc.rect(x, y, columnWidth, cellHeight).stroke();
-        doc.text(row[0], x + 5, y + 5);
+
+        // Centrar el texto en la celda
+        const textWidth1 = doc.widthOfString(row[0]);
+        const textWidth2 = doc.widthOfString(row[1]);
+
+        const textX1 = x + (columnWidth - textWidth1) / 2;
+        const textX2 = x + columnWidth + (columnWidth - textWidth2) / 2;
+
+        const textY = y + (cellHeight - 10) / 2; // Ajuste vertical simple
+
+        doc.text(row[0], textX1, textY);
         doc.rect(x + columnWidth, y, columnWidth, cellHeight).stroke();
-        doc.text(row[1], x + columnWidth + 5, y + 5);
+        doc.text(row[1], textX2, textY);
       });
 
       // Ajustar la posición después de la tabla 2x2
