@@ -62,7 +62,7 @@ export class InventoryService {
       const logoWidth = 40;
       const logoHeight = 40;
       const logoX = cellX + (headerCellWidth - logoWidth) / 2;
-      const logoY = cellY + (50 - logoHeight) / 2;
+      const logoY = cellY + (75 - logoHeight) / 2;
 
       try {
         const imagePath = join(__dirname, '..', 'assets', 'logo.png');
