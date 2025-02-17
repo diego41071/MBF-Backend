@@ -82,11 +82,11 @@ export class InventoryService {
         align: 'center',
         width: 500,
       });
-      doc.fontSize(8).text('serviciotecnico@medibasculas.com', 40, 65, {
+      doc.fontSize(8).text('serviciotecnico@medibasculas.com', 40, 70, {
         align: 'center',
         width: 500,
       });
-      doc.fontSize(8).text('CRA 45D #60-72, Medellín, Antioquia', 40, 75, {
+      doc.fontSize(8).text('CRA 45D #60-72, Medellín, Antioquia', 40, 85, {
         align: 'center',
         width: 500,
       });
