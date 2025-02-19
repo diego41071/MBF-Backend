@@ -261,6 +261,26 @@ export class InventoryService {
         currentY += cellHeight;
       });
 
+      const cellXcell = 200; // Posición X de la celda
+      const cellYcell = 300; // Posición Y de la celda
+      const cellWidth = 90; // Ancho de la celda
+      const cellHeightcell = 30; // Alto de la celda
+      const text = 'Dimenciones del equipo';
+
+      // Dibujar la celda
+      doc.rect(cellXcell, cellYcell, cellWidth, cellHeightcell).stroke();
+
+      // Calcular el ancho del texto
+      const textWidth = doc.widthOfString(text);
+      const textHeight = 10; // Aproximado, ya que PDFKit no da altura exacta
+
+      // Calcular posición centrada
+      const textX = cellXcell + (cellWidth - textWidth) / 2;
+      const textY = cellYcell + (cellHeightcell - textHeight) / 2;
+
+      // Agregar el texto centrado
+      doc.text(text, textX, textY);
+
       // Posición inicial
       const startY = 286;
 
