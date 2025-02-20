@@ -281,6 +281,26 @@ export class InventoryService {
       // Agregar el texto centrado
       doc.text(text, textX, textY);
 
+      const cellXsize = 340; // Posición X de la celda
+      const cellYsize = 300; // Posición Y de la celda
+      const cellWidthsize = 100; // Ancho de la celda
+      const cellHeightsize = 30; // Alto de la celda
+      const textsize = '40x30x10cm';
+
+      // Dibujar la celda
+      doc.rect(cellXsize, cellYsize, cellWidthsize, cellHeightsize).stroke();
+
+      // Calcular el ancho del texto
+      const textWidthsize = doc.widthOfString(textsize);
+      const textHeightsize = 10; // Estimación de altura del texto
+
+      // Calcular posición centrada
+      const textXsize = cellXsize + (cellWidthsize - textWidthsize) / 2;
+      const textYsize = cellYsize + (cellHeightsize - textHeightsize) / 2;
+
+      // Agregar el texto centrado
+      doc.text(textsize, textXsize, textYsize);
+
       // Posición inicial
       const startY = 286;
 
