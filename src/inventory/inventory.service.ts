@@ -16,7 +16,7 @@ export class InventoryService {
   constructor(
     @InjectModel(Inventory.name)
     private inventoryModel: Model<InventoryDocument>,
-  ) {}
+  ) { }
 
   async create(data: Partial<Inventory>): Promise<Inventory> {
     try {
@@ -74,11 +74,11 @@ export class InventoryService {
         console.error('Error al cargar la imagen:', error.message);
       }
 
-      doc.fontSize(8).text('IMPORTACIONES MEDIBÁSCULAS ZOMAC S.A.S.', 40, 40, {
+      doc.font('Helvetica-Bold').fontSize(8).text('IMPORTACIONES MEDIBÁSCULAS ZOMAC S.A.S.', 43, 40, {
         align: 'center',
         width: 500,
       });
-      doc.fontSize(8).text('Whatsapp 304 1301189', 40, 55, {
+      doc.font('Helvetica').fontSize(8).text('Whatsapp 304 1301189', 40, 55, {
         align: 'center',
         width: 500,
       });
@@ -101,13 +101,13 @@ export class InventoryService {
       // Función para dibujar una celda con texto
       const drawCell = (label: string, value: string, x: number, y: number) => {
         doc.rect(x, y, labelWidth, cellHeightRight).stroke(); // Celda del título
-        doc.text(label, x + 5, y + 5, {
+        doc.font("Helvetica-Bold").text(label, x + 5, y + 5, {
           width: labelWidth - 10,
           align: 'center',
         });
 
         doc.rect(x + labelWidth, y, valueWidth, cellHeightRight).stroke(); // Celda del valor
-        doc.text(value, x + labelWidth + 5, y + 5, {
+        doc.font("Helvetica").text(value, x + labelWidth + 5, y + 5, {
           width: valueWidth - 10,
           align: 'center',
         });
@@ -152,12 +152,12 @@ export class InventoryService {
         const rowNumber = Math.floor(index / 2);
         const extraOffset =
           row[0] === 'Marca' ||
-          row[0] === 'Serie' ||
-          row[0] === 'Ubicación' ||
-          row[0] === 'Responsable' ||
-          row[0] === 'Garantía' ||
-          row[0] === 'Última Revisión' ||
-          row[0] === 'Notas Adicionales'
+            row[0] === 'Serie' ||
+            row[0] === 'Ubicación' ||
+            row[0] === 'Responsable' ||
+            row[0] === 'Garantía' ||
+            row[0] === 'Última Revisión' ||
+            row[0] === 'Notas Adicionales'
             ? offsetX
             : 0;
 
@@ -175,9 +175,9 @@ export class InventoryService {
 
         const textY = y + (cellHeight - 10) / 2; // Ajuste vertical simple
 
-        doc.text(row[0], textX1, textY);
+        doc.font("Helvetica-Bold").text(row[0], textX1, textY);
         doc.rect(x + columnWidth, y, columnWidth, cellHeight).stroke();
-        doc.text(row[1], textX2, textY);
+        doc.font("Helvetica").text(row[1], textX2, textY);
       });
 
       // Ajustar la posición después de la tabla 2x2
@@ -193,7 +193,7 @@ export class InventoryService {
       doc
         .rect(startXspec, currentYspec, columnWidths[0], cellHeightSpec)
         .stroke();
-      doc.text('Especificaciones Técnicas', startXspec + 5, currentYspec + 7, {
+      doc.font("Helvetica-Bold").text('Especificaciones Técnicas', startXspec + 5, currentYspec + 7, {
         width: columnWidths[0] - 10,
         align: 'center',
       });
@@ -255,8 +255,8 @@ export class InventoryService {
         // Calcular la posición Y centrada dentro de la celda (ajustado para altura de texto)
         const textY = currentY + (cellHeight - 10) / 2;
 
-        doc.text(row[0], textX1, textY);
-        doc.text(row[1], textX2, textY);
+        doc.font("Helvetica-Bold").text(row[0], textX1, textY);
+        doc.font("Helvetica").text(row[1], textX2, textY);
 
         currentY += cellHeight;
       });
