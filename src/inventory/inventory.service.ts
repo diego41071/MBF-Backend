@@ -262,9 +262,9 @@ export class InventoryService {
       });
 
       const cellXcell = 200; // Posición X de la celda
-      const cellYcell = 300; // Posición Y de la celda
+      const cellYcell = 305; // Posición Y de la celda
       const cellWidth = 150; // Ancho de la celda
-      const cellHeightcell = 30; // Alto de la celda
+      const cellHeightcell = 20; // Alto de la celda
       const text = 'Dimenciones del equipo';
 
       // Dibujar la celda
@@ -282,9 +282,9 @@ export class InventoryService {
       doc.text(text, textX, textY);
 
       const cellXsize = 350; // Posición X de la celda
-      const cellYsize = 300; // Posición Y de la celda
+      const cellYsize = 305; // Posición Y de la celda
       const cellWidthsize = 150; // Ancho de la celda
-      const cellHeightsize = 30; // Alto de la celda
+      const cellHeightsize = 20; // Alto de la celda
       const textsize = '40x30x10cm';
 
       // Dibujar la celda
