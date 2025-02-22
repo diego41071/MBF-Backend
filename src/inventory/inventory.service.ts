@@ -16,7 +16,7 @@ export class InventoryService {
   constructor(
     @InjectModel(Inventory.name)
     private inventoryModel: Model<InventoryDocument>,
-  ) { }
+  ) {}
 
   async create(data: Partial<Inventory>): Promise<Inventory> {
     try {
@@ -74,10 +74,13 @@ export class InventoryService {
         console.error('Error al cargar la imagen:', error.message);
       }
 
-      doc.font('Helvetica-Bold').fontSize(8).text('IMPORTACIONES MEDIBÁSCULAS ZOMAC S.A.S.', 43, 40, {
-        align: 'center',
-        width: 500,
-      });
+      doc
+        .font('Helvetica-Bold')
+        .fontSize(8)
+        .text('IMPORTACIONES MEDIBÁSCULAS ZOMAC S.A.S.', 43, 40, {
+          align: 'center',
+          width: 500,
+        });
       doc.font('Helvetica').fontSize(8).text('Whatsapp 304 1301189', 40, 55, {
         align: 'center',
         width: 500,
@@ -101,13 +104,13 @@ export class InventoryService {
       // Función para dibujar una celda con texto
       const drawCell = (label: string, value: string, x: number, y: number) => {
         doc.rect(x, y, labelWidth, cellHeightRight).stroke(); // Celda del título
-        doc.font("Helvetica-Bold").text(label, x + 5, y + 5, {
+        doc.font('Helvetica-Bold').text(label, x + 5, y + 5, {
           width: labelWidth - 10,
           align: 'center',
         });
 
         doc.rect(x + labelWidth, y, valueWidth, cellHeightRight).stroke(); // Celda del valor
-        doc.font("Helvetica").text(value, x + labelWidth + 5, y + 5, {
+        doc.font('Helvetica').text(value, x + labelWidth + 5, y + 5, {
           width: valueWidth - 10,
           align: 'center',
         });
@@ -152,12 +155,12 @@ export class InventoryService {
         const rowNumber = Math.floor(index / 2);
         const extraOffset =
           row[0] === 'Marca' ||
-            row[0] === 'Serie' ||
-            row[0] === 'Ubicación' ||
-            row[0] === 'Responsable' ||
-            row[0] === 'Garantía' ||
-            row[0] === 'Última Revisión' ||
-            row[0] === 'Notas Adicionales'
+          row[0] === 'Serie' ||
+          row[0] === 'Ubicación' ||
+          row[0] === 'Responsable' ||
+          row[0] === 'Garantía' ||
+          row[0] === 'Última Revisión' ||
+          row[0] === 'Notas Adicionales'
             ? offsetX
             : 0;
 
@@ -175,9 +178,9 @@ export class InventoryService {
 
         const textY = y + (cellHeight - 10) / 2; // Ajuste vertical simple
 
-        doc.font("Helvetica-Bold").text(row[0], textX1, textY);
+        doc.font('Helvetica-Bold').text(row[0], textX1, textY);
         doc.rect(x + columnWidth, y, columnWidth, cellHeight).stroke();
-        doc.font("Helvetica").text(row[1], textX2, textY);
+        doc.font('Helvetica').text(row[1], textX2, textY);
       });
 
       // Ajustar la posición después de la tabla 2x2
@@ -193,10 +196,12 @@ export class InventoryService {
       doc
         .rect(startXspec, currentYspec, columnWidths[0], cellHeightSpec)
         .stroke();
-      doc.font("Helvetica-Bold").text('Especificaciones Técnicas', startXspec + 5, currentYspec + 7, {
-        width: columnWidths[0] - 10,
-        align: 'center',
-      });
+      doc
+        .font('Helvetica-Bold')
+        .text('Especificaciones Técnicas', startXspec + 5, currentYspec + 7, {
+          width: columnWidths[0] - 10,
+          align: 'center',
+        });
 
       doc
         .rect(
@@ -255,8 +260,8 @@ export class InventoryService {
         // Calcular la posición Y centrada dentro de la celda (ajustado para altura de texto)
         const textY = currentY + (cellHeight - 10) / 2;
 
-        doc.font("Helvetica-Bold").text(row[0], textX1, textY);
-        doc.font("Helvetica").text(row[1], textX2, textY);
+        doc.font('Helvetica-Bold').text(row[0], textX1, textY);
+        doc.font('Helvetica').text(row[1], textX2, textY);
 
         currentY += cellHeight;
       });
@@ -265,7 +270,7 @@ export class InventoryService {
       const cellYcell = 305; // Posición Y de la celda
       const cellWidth = 150; // Ancho de la celda
       const cellHeightcell = 20; // Alto de la celda
-      const text = 'Dimenciones del equipo';
+      const text = 'Dimensiones del equipo';
 
       // Dibujar la celda
       doc.rect(cellXcell, cellYcell, cellWidth, cellHeightcell).stroke();
@@ -279,7 +284,7 @@ export class InventoryService {
       const textY = cellYcell + (cellHeightcell - textHeight) / 2;
 
       // Agregar el texto centrado
-      doc.text(text, textX, textY);
+      doc.font('Helvetica-Bold').text(text, textX, textY);
 
       const cellXsize = 350; // Posición X de la celda
       const cellYsize = 305; // Posición Y de la celda
@@ -299,7 +304,7 @@ export class InventoryService {
       const textYsize = cellYsize + (cellHeightsize - textHeightsize) / 2;
 
       // Agregar el texto centrado
-      doc.text(textsize, textXsize, textYsize);
+      doc.font('Helvetica').text(textsize, textXsize, textYsize);
 
       // Posición inicial
       const startY = 286;
@@ -312,9 +317,6 @@ export class InventoryService {
         'Eléctrico',
         'Neumático',
       ];
-
-      // Establecer el tamaño de fuente
-      doc.fontSize(12);
 
       // Dibujar las celdas y centrar el texto
       data.forEach((text, index) => {
@@ -329,29 +331,33 @@ export class InventoryService {
 
         // Calcular la posición centrada dentro de la celda
         const textX = x + (60 - textWidth) / 2;
-        const textY = startY + (30 - textHeight) / 2;
+        const textY = startY + (18 - textHeight) / 2;
 
         // Agregar el texto centrado
         doc.text(text, textX, textY);
         const cellWidth = 35;
-        const cellHeightcell = 20;
+        const cellHeightcell = 39;
         const startXcell = 500; // Ajusta la posición según sea necesario
         const startYcell = 286;
 
         // Celda para "Fijo"
         doc.rect(startXcell, startYcell, cellWidth, cellHeightcell).stroke();
-        doc.fontSize(10).text('Fijo', startXcell + 5, startYcell + 5, {
-          width: cellWidth - 10,
-          align: 'center',
-        });
+        doc
+          .font('Helvetica')
+          .fontSize(8)
+          .text('Fijo', startXcell + 5, startYcell + 15, {
+            width: cellWidth - 10,
+            align: 'center',
+          });
 
         // Celda para "Móvil"
         doc
           .rect(startXcell + cellWidth, startYcell, cellWidth, cellHeightcell)
           .stroke();
         doc
-          .fontSize(10)
-          .text('Móvil', startXcell + cellWidth + 5, startYcell + 5, {
+          .font('Helvetica')
+          .fontSize(8)
+          .text('Móvil', startXcell + cellWidth + 5, startYcell + 15, {
             width: cellWidth - 10,
             align: 'center',
           });
