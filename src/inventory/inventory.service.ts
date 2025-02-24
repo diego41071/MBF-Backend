@@ -50,7 +50,7 @@ export class InventoryService {
       doc.on('error', (err) => reject(err));
 
       // Encabezado principal
-      doc.rect(50, 30, 515, 75).stroke();
+      doc.rect(50, 30, 520, 75).stroke();
 
       // Logo y empresa
       const cellX = 50;
@@ -97,20 +97,20 @@ export class InventoryService {
       // Sección derecha de la cabecera
       const cellHeightRight = 19;
       const labelWidth = 100;
-      const valueWidth = 60;
+      const valueWidth = 65;
       const startXRight = 405;
       let startYRight = 30;
 
       // Función para dibujar una celda con texto
       const drawCell = (label: string, value: string, x: number, y: number) => {
         doc.rect(x, y, labelWidth, cellHeightRight).stroke(); // Celda del título
-        doc.font('Helvetica-Bold').text(label, x + 5, y + 5, {
+        doc.font('Helvetica-Bold').text(label, x + 5, y + 7, {
           width: labelWidth - 10,
           align: 'center',
         });
 
         doc.rect(x + labelWidth, y, valueWidth, cellHeightRight).stroke(); // Celda del valor
-        doc.font('Helvetica').text(value, x + labelWidth + 5, y + 5, {
+        doc.font('Helvetica').text(value, x + labelWidth + 5, y + 7, {
           width: valueWidth - 10,
           align: 'center',
         });
@@ -176,7 +176,7 @@ export class InventoryService {
         const textX1 = x + (columnWidth - textWidth1) / 2;
         const textX2 = x + columnWidth + (columnWidth - textWidth2) / 2;
 
-        const textY = y + (cellHeight - 10) / 2; // Ajuste vertical simple
+        const textY = y + (cellHeight - 6) / 2; // Ajuste vertical simple
 
         doc.font('Helvetica-Bold').text(row[0], textX1, textY);
         doc.rect(x + columnWidth, y, columnWidth, cellHeight).stroke();
@@ -198,7 +198,7 @@ export class InventoryService {
         .stroke();
       doc
         .font('Helvetica-Bold')
-        .text('Especificaciones Técnicas', startXspec + 5, currentYspec + 7, {
+        .text('Especificaciones Técnicas', startXspec + 5, currentYspec + 9, {
           width: columnWidths[0] - 10,
           align: 'center',
         });
@@ -214,7 +214,7 @@ export class InventoryService {
       doc.text(
         'Tecnología Predominante',
         startXspec + columnWidths[0] + 5,
-        currentYspec + 7,
+        currentYspec + 9,
         { width: columnWidths[1] - 10, align: 'center' },
       );
 
@@ -229,7 +229,7 @@ export class InventoryService {
       doc.text(
         'Uso',
         startXspec + columnWidths[0] + columnWidths[1] + 5,
-        currentYspec + 7,
+        currentYspec + 9,
         { width: columnWidths[2] - 10, align: 'center' },
       );
 
@@ -258,7 +258,7 @@ export class InventoryService {
         const textX2 = 125 + (cellWidth - textWidth2) / 2;
 
         // Calcular la posición Y centrada dentro de la celda (ajustado para altura de texto)
-        const textY = currentY + (cellHeight - 10) / 2;
+        const textY = currentY + (cellHeight - 6) / 2;
 
         doc.font('Helvetica-Bold').text(row[0], textX1, textY);
         doc.font('Helvetica').text(row[1], textX2, textY);
@@ -277,7 +277,7 @@ export class InventoryService {
 
       // Calcular el ancho del texto
       const textWidth = doc.widthOfString(text);
-      const textHeight = 10; // Aproximado, ya que PDFKit no da altura exacta
+      const textHeight = 5; // Aproximado, ya que PDFKit no da altura exacta
 
       // Calcular posición centrada
       const textX = cellXcell + (cellWidth - textWidth) / 2;
@@ -297,7 +297,7 @@ export class InventoryService {
 
       // Calcular el ancho del texto
       const textWidthsize = doc.widthOfString(textsize);
-      const textHeightsize = 10; // Estimación de altura del texto
+      const textHeightsize = 5; // Estimación de altura del texto
 
       // Calcular posición centrada
       const textXsize = cellXsize + (cellWidthsize - textWidthsize) / 2;
