@@ -16,7 +16,7 @@ export class InventoryService {
   constructor(
     @InjectModel(Inventory.name)
     private inventoryModel: Model<InventoryDocument>,
-  ) {}
+  ) { }
 
   async create(data: Partial<Inventory>): Promise<Inventory> {
     try {
@@ -111,20 +111,41 @@ export class InventoryService {
       const startXRight = 405;
       let startYRight = 30;
 
-      // Función para dibujar una celda con texto
       const drawCell = (label: string, value: string, x: number, y: number) => {
-        doc.rect(x, y, labelWidth, cellHeightRight).stroke(); // Celda del título
-        doc.font('Helvetica-Bold').text(label, x + 5, y + 7, {
-          width: labelWidth - 10,
-          align: 'center',
-        });
+        // Dibujar el fondo de la celda del título
+        doc.save()
+          .fillColor('#f0f0f0') // Color de fondo gris claro
+          .rect(x, y, labelWidth, cellHeightRight)
+          .fill()
+          .restore(); // Restaurar configuración de color para evitar afectar el texto
 
-        doc.rect(x + labelWidth, y, valueWidth, cellHeightRight).stroke(); // Celda del valor
-        doc.font('Helvetica').text(value, x + labelWidth + 5, y + 7, {
-          width: valueWidth - 10,
-          align: 'center',
-        });
+        // Dibujar el fondo de la celda del valor (opcional, si quieres un fondo distinto)
+        doc.save()
+          .fillColor('white') // Fondo blanco para la celda de valor
+          .rect(x + labelWidth, y, valueWidth, cellHeightRight)
+          .fill()
+          .restore();
+
+        // Dibujar los bordes de ambas celdas
+        doc.rect(x, y, labelWidth, cellHeightRight).stroke();
+        doc.rect(x + labelWidth, y, valueWidth, cellHeightRight).stroke();
+
+        // Escribir el texto en la celda del título
+        doc.font('Helvetica-Bold')
+          .fillColor("black") // Asegurar color negro para el texto
+          .text(label, x + 5, y + 7, {
+            width: labelWidth - 10,
+            align: 'center',
+          });
+
+        // Escribir el texto en la celda del valor
+        doc.font('Helvetica')
+          .text(value, x + labelWidth + 5, y + 7, {
+            width: valueWidth - 10,
+            align: 'center',
+          });
       };
+
 
       // Dibujar las celdas con los datos
       drawCell('FICHA TÉCNICA:', 'FT-145', startXRight, startYRight);
@@ -165,12 +186,12 @@ export class InventoryService {
         const rowNumber = Math.floor(index / 2);
         const extraOffset =
           row[0] === 'Marca' ||
-          row[0] === 'Serie' ||
-          row[0] === 'Ubicación' ||
-          row[0] === 'Responsable' ||
-          row[0] === 'Garantía' ||
-          row[0] === 'Última Revisión' ||
-          row[0] === 'Notas Adicionales'
+            row[0] === 'Serie' ||
+            row[0] === 'Ubicación' ||
+            row[0] === 'Responsable' ||
+            row[0] === 'Garantía' ||
+            row[0] === 'Última Revisión' ||
+            row[0] === 'Notas Adicionales'
             ? offsetX
             : 0;
 
