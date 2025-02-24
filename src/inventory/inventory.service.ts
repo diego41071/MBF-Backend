@@ -57,10 +57,20 @@ export class InventoryService {
       const cellY = 30;
       const headerCellWidth = 130;
 
-      doc.rect(cellX, cellY, headerCellWidth, 75).stroke();
+      doc
+        .fillColor('#f0f0f0') // Color de fondo (gris claro)
+        .rect(cellX, cellY, headerCellWidth, 75)
+        .fill();
+      // Si quieres también un borde, añade `stroke()`
+      doc
+        .strokeColor('black') // Color del borde
+        .lineWidth(1) // Grosor del borde
+        .rect(cellX, cellY, headerCellWidth, 75)
+        .stroke(); // Dibuja el borde
+      doc.fillColor('black');
 
-      const logoWidth = 40;
-      const logoHeight = 40;
+      const logoWidth = 60;
+      const logoHeight = 60;
       const logoX = cellX + (headerCellWidth - logoWidth) / 2;
       const logoY = cellY + (75 - logoHeight) / 2;
 
