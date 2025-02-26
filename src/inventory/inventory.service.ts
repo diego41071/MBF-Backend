@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 /* eslint-disable prettier/prettier */
 import {
   BadRequestException,
@@ -228,6 +229,9 @@ export class InventoryService {
       let currentYspec = 260; // Ajusta según sea necesario
 
       // Dibujar celdas y texto para la cabecera de Especificaciones Técnicas
+      doc.save()
+        .fillColor('#f0f0f0').rect(startXspec, currentYspec, columnWidths[0], cellHeightSpec)
+        .fill().restore();
       doc
         .rect(startXspec, currentYspec, columnWidths[0], cellHeightSpec)
         .stroke();
@@ -238,6 +242,17 @@ export class InventoryService {
           align: 'center',
         });
 
+      doc.save()
+        .fillColor('#f0f0f0')
+        .rect(
+          startXspec + columnWidths[0],
+          currentYspec,
+          columnWidths[1],
+          cellHeightSpec,
+        )
+        .fill()
+        .restore();
+
       doc
         .rect(
           startXspec + columnWidths[0],
@@ -245,7 +260,8 @@ export class InventoryService {
           columnWidths[1],
           cellHeightSpec,
         )
-        .stroke();
+        .stroke()
+
       doc.text(
         'Tecnología Predominante',
         startXspec + columnWidths[0] + 5,
@@ -253,6 +269,15 @@ export class InventoryService {
         { width: columnWidths[1] - 10, align: 'center' },
       );
 
+      doc.save()
+        .fillColor('#f0f0f0')
+        .rect(
+          startXspec + columnWidths[0] + columnWidths[1],
+          currentYspec,
+          columnWidths[2],
+          cellHeightSpec,
+        )
+        .fill().restore();
       doc
         .rect(
           startXspec + columnWidths[0] + columnWidths[1],
@@ -281,6 +306,8 @@ export class InventoryService {
         const cellWidth = 75;
         const cellHeight = 20;
 
+        doc.save()
+          .fillColor('#f0f0f0').rect(50, currentY, cellWidth, cellHeight).fill().restore();
         doc.rect(50, currentY, cellWidth, cellHeight).stroke();
         doc.rect(125, currentY, cellWidth, cellHeight).stroke();
 
@@ -308,6 +335,9 @@ export class InventoryService {
       const text = 'Dimensiones del equipo';
 
       // Dibujar la celda
+      doc.save()
+        .fillColor('#f0f0f0').rect(cellXcell, cellYcell, cellWidth, cellHeightcell).fill().restore();
+
       doc.rect(cellXcell, cellYcell, cellWidth, cellHeightcell).stroke();
 
       // Calcular el ancho del texto
