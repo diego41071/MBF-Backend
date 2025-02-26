@@ -198,6 +198,10 @@ export class InventoryService {
         const x = startX + col * columnWidth + extraOffset;
         const y = currentY + rowNumber * cellHeight;
 
+        doc.save()
+          .fillColor('#f0f0f0').rect(x, y, columnWidth, cellHeight).fill()
+          .restore();
+
         doc.rect(x, y, columnWidth, cellHeight).stroke();
 
         // Centrar el texto en la celda
