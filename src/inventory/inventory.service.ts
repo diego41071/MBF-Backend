@@ -233,6 +233,14 @@ export class InventoryService {
 
       // Dibujar celdas y texto para la cabecera de Especificaciones Técnicas
       doc
+        .save()
+        .fillColor('#f0f0f0')
+        .rect(startXspec, currentYspec, columnWidths[0], cellHeightSpec)
+        .fill()
+        .restore()
+        .stroke();
+
+      doc
         .rect(startXspec, currentYspec, columnWidths[0], cellHeightSpec)
         .stroke();
       doc
