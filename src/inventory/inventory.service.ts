@@ -425,7 +425,20 @@ export class InventoryService {
         const startYcell = 286;
 
         // Celda para "Fijo"
+        // Dibuja la celda
         doc.rect(startXcell, startYcell, cellWidth, cellHeightcell).stroke();
+
+        // Dibuja la "X" en la celda (líneas diagonales)
+        doc
+          .moveTo(startXcell, startYcell)
+          .lineTo(startXcell + cellWidth, startYcell + cellHeightcell)
+          .stroke();
+        doc
+          .moveTo(startXcell + cellWidth, startYcell)
+          .lineTo(startXcell, startYcell + cellHeightcell)
+          .stroke();
+
+        // Agrega el texto en el centro
         doc
           .font('Helvetica')
           .fontSize(8)
