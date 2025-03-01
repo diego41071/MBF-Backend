@@ -17,7 +17,7 @@ export class InventoryService {
   constructor(
     @InjectModel(Inventory.name)
     private inventoryModel: Model<InventoryDocument>,
-  ) { }
+  ) {}
 
   async create(data: Partial<Inventory>): Promise<Inventory> {
     try {
@@ -114,14 +114,16 @@ export class InventoryService {
 
       const drawCell = (label: string, value: string, x: number, y: number) => {
         // Dibujar el fondo de la celda del título
-        doc.save()
+        doc
+          .save()
           .fillColor('#f0f0f0') // Color de fondo gris claro
           .rect(x, y, labelWidth, cellHeightRight)
           .fill()
           .restore(); // Restaurar configuración de color para evitar afectar el texto
 
         // Dibujar el fondo de la celda del valor (opcional, si quieres un fondo distinto)
-        doc.save()
+        doc
+          .save()
           .fillColor('white') // Fondo blanco para la celda de valor
           .rect(x + labelWidth, y, valueWidth, cellHeightRight)
           .fill()
@@ -132,21 +134,20 @@ export class InventoryService {
         doc.rect(x + labelWidth, y, valueWidth, cellHeightRight).stroke();
 
         // Escribir el texto en la celda del título
-        doc.font('Helvetica-Bold')
-          .fillColor("black") // Asegurar color negro para el texto
+        doc
+          .font('Helvetica-Bold')
+          .fillColor('black') // Asegurar color negro para el texto
           .text(label, x + 5, y + 7, {
             width: labelWidth - 10,
             align: 'center',
           });
 
         // Escribir el texto en la celda del valor
-        doc.font('Helvetica')
-          .text(value, x + labelWidth + 5, y + 7, {
-            width: valueWidth - 10,
-            align: 'center',
-          });
+        doc.font('Helvetica').text(value, x + labelWidth + 5, y + 7, {
+          width: valueWidth - 10,
+          align: 'center',
+        });
       };
-
 
       // Dibujar las celdas con los datos
       drawCell('FICHA TÉCNICA:', 'FT-145', startXRight, startYRight);
@@ -187,20 +188,23 @@ export class InventoryService {
         const rowNumber = Math.floor(index / 2);
         const extraOffset =
           row[0] === 'Marca' ||
-            row[0] === 'Serie' ||
-            row[0] === 'Ubicación' ||
-            row[0] === 'Responsable' ||
-            row[0] === 'Garantía' ||
-            row[0] === 'Última Revisión' ||
-            row[0] === 'Notas Adicionales'
+          row[0] === 'Serie' ||
+          row[0] === 'Ubicación' ||
+          row[0] === 'Responsable' ||
+          row[0] === 'Garantía' ||
+          row[0] === 'Última Revisión' ||
+          row[0] === 'Notas Adicionales'
             ? offsetX
             : 0;
 
         const x = startX + col * columnWidth + extraOffset;
         const y = currentY + rowNumber * cellHeight;
 
-        doc.save()
-          .fillColor('#f0f0f0').rect(x, y, columnWidth, cellHeight).fill()
+        doc
+          .save()
+          .fillColor('#f0f0f0')
+          .rect(x, y, columnWidth, cellHeight)
+          .fill()
           .restore();
 
         doc.rect(x, y, columnWidth, cellHeight).stroke();
@@ -229,9 +233,12 @@ export class InventoryService {
       let currentYspec = 260; // Ajusta según sea necesario
 
       // Dibujar celdas y texto para la cabecera de Especificaciones Técnicas
-      doc.save()
-        .fillColor('#f0f0f0').rect(startXspec, currentYspec, columnWidths[0], cellHeightSpec)
-        .fill().restore();
+      doc
+        .save()
+        .fillColor('#f0f0f0')
+        .rect(startXspec, currentYspec, columnWidths[0], cellHeightSpec)
+        .fill()
+        .restore();
       doc
         .rect(startXspec, currentYspec, columnWidths[0], cellHeightSpec)
         .stroke();
@@ -242,7 +249,8 @@ export class InventoryService {
           align: 'center',
         });
 
-      doc.save()
+      doc
+        .save()
         .fillColor('#f0f0f0')
         .rect(
           startXspec + columnWidths[0],
@@ -260,7 +268,7 @@ export class InventoryService {
           columnWidths[1],
           cellHeightSpec,
         )
-        .stroke()
+        .stroke();
 
       doc.text(
         'Tecnología Predominante',
@@ -269,7 +277,8 @@ export class InventoryService {
         { width: columnWidths[1] - 10, align: 'center' },
       );
 
-      doc.save()
+      doc
+        .save()
         .fillColor('#f0f0f0')
         .rect(
           startXspec + columnWidths[0] + columnWidths[1],
@@ -277,7 +286,8 @@ export class InventoryService {
           columnWidths[2],
           cellHeightSpec,
         )
-        .fill().restore();
+        .fill()
+        .restore();
       doc
         .rect(
           startXspec + columnWidths[0] + columnWidths[1],
@@ -306,8 +316,12 @@ export class InventoryService {
         const cellWidth = 75;
         const cellHeight = 20;
 
-        doc.save()
-          .fillColor('#f0f0f0').rect(50, currentY, cellWidth, cellHeight).fill().restore();
+        doc
+          .save()
+          .fillColor('#f0f0f0')
+          .rect(50, currentY, cellWidth, cellHeight)
+          .fill()
+          .restore();
         doc.rect(50, currentY, cellWidth, cellHeight).stroke();
         doc.rect(125, currentY, cellWidth, cellHeight).stroke();
 
@@ -335,8 +349,12 @@ export class InventoryService {
       const text = 'Dimensiones del equipo';
 
       // Dibujar la celda
-      doc.save()
-        .fillColor('#f0f0f0').rect(cellXcell, cellYcell, cellWidth, cellHeightcell).fill().restore();
+      doc
+        .save()
+        .fillColor('#f0f0f0')
+        .rect(cellXcell, cellYcell, cellWidth, cellHeightcell)
+        .fill()
+        .restore();
 
       doc.rect(cellXcell, cellYcell, cellWidth, cellHeightcell).stroke();
 
@@ -400,7 +418,7 @@ export class InventoryService {
 
         // Agregar el texto centrado
         doc.text(text, textX, textY);
-        const cellWidth = 35;
+        const cellWidth = 70;
         const cellHeightcell = 39;
         const startXcell = 500; // Ajusta la posición según sea necesario
         const startYcell = 286;
@@ -411,18 +429,6 @@ export class InventoryService {
           .font('Helvetica')
           .fontSize(8)
           .text('Fijo', startXcell + 5, startYcell + 15, {
-            width: cellWidth - 10,
-            align: 'center',
-          });
-
-        // Celda para "Móvil"
-        doc
-          .rect(startXcell + cellWidth, startYcell, cellWidth, cellHeightcell)
-          .stroke();
-        doc
-          .font('Helvetica')
-          .fontSize(8)
-          .text('Móvil', startXcell + cellWidth + 5, startYcell + 15, {
             width: cellWidth - 10,
             align: 'center',
           });
