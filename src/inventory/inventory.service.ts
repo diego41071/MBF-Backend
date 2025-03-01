@@ -1,4 +1,3 @@
-/* eslint-disable prefer-const */
 /* eslint-disable prettier/prettier */
 import {
   BadRequestException,
@@ -205,8 +204,8 @@ export class InventoryService {
           .fillColor('#f0f0f0')
           .rect(x, y, columnWidth, cellHeight)
           .fill()
-          .restore();
-
+          .restore()
+          .stroke();
         doc.rect(x, y, columnWidth, cellHeight).stroke();
 
         // Centrar el texto en la celda
@@ -234,12 +233,6 @@ export class InventoryService {
 
       // Dibujar celdas y texto para la cabecera de Especificaciones Técnicas
       doc
-        .save()
-        .fillColor('#f0f0f0')
-        .rect(startXspec, currentYspec, columnWidths[0], cellHeightSpec)
-        .fill()
-        .restore();
-      doc
         .rect(startXspec, currentYspec, columnWidths[0], cellHeightSpec)
         .stroke();
       doc
@@ -250,18 +243,6 @@ export class InventoryService {
         });
 
       doc
-        .save()
-        .fillColor('#f0f0f0')
-        .rect(
-          startXspec + columnWidths[0],
-          currentYspec,
-          columnWidths[1],
-          cellHeightSpec,
-        )
-        .fill()
-        .restore();
-
-      doc
         .rect(
           startXspec + columnWidths[0],
           currentYspec,
@@ -269,7 +250,6 @@ export class InventoryService {
           cellHeightSpec,
         )
         .stroke();
-
       doc.text(
         'Tecnología Predominante',
         startXspec + columnWidths[0] + 5,
@@ -277,17 +257,6 @@ export class InventoryService {
         { width: columnWidths[1] - 10, align: 'center' },
       );
 
-      doc
-        .save()
-        .fillColor('#f0f0f0')
-        .rect(
-          startXspec + columnWidths[0] + columnWidths[1],
-          currentYspec,
-          columnWidths[2],
-          cellHeightSpec,
-        )
-        .fill()
-        .restore();
       doc
         .rect(
           startXspec + columnWidths[0] + columnWidths[1],
@@ -316,12 +285,6 @@ export class InventoryService {
         const cellWidth = 75;
         const cellHeight = 20;
 
-        doc
-          .save()
-          .fillColor('#f0f0f0')
-          .rect(50, currentY, cellWidth, cellHeight)
-          .fill()
-          .restore();
         doc.rect(50, currentY, cellWidth, cellHeight).stroke();
         doc.rect(125, currentY, cellWidth, cellHeight).stroke();
 
@@ -349,13 +312,6 @@ export class InventoryService {
       const text = 'Dimensiones del equipo';
 
       // Dibujar la celda
-      doc
-        .save()
-        .fillColor('#f0f0f0')
-        .rect(cellXcell, cellYcell, cellWidth, cellHeightcell)
-        .fill()
-        .restore();
-
       doc.rect(cellXcell, cellYcell, cellWidth, cellHeightcell).stroke();
 
       // Calcular el ancho del texto
@@ -418,7 +374,7 @@ export class InventoryService {
 
         // Agregar el texto centrado
         doc.text(text, textX, textY);
-        const cellWidth = 70;
+        const cellWidth = 35;
         const cellHeightcell = 39;
         const startXcell = 500; // Ajusta la posición según sea necesario
         const startYcell = 286;
@@ -429,6 +385,18 @@ export class InventoryService {
           .font('Helvetica')
           .fontSize(8)
           .text('Fijo', startXcell + 5, startYcell + 15, {
+            width: cellWidth - 10,
+            align: 'center',
+          });
+
+        // Celda para "Móvil"
+        doc
+          .rect(startXcell + cellWidth, startYcell, cellWidth, cellHeightcell)
+          .stroke();
+        doc
+          .font('Helvetica')
+          .fontSize(8)
+          .text('Móvil', startXcell + cellWidth + 5, startYcell + 15, {
             width: cellWidth - 10,
             align: 'center',
           });
