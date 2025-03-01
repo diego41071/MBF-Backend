@@ -251,6 +251,17 @@ export class InventoryService {
         });
 
       doc
+        .save()
+        .fillColor('#f0f0f0')
+        .rect(
+          startXspec + columnWidths[0],
+          currentYspec,
+          columnWidths[1],
+          cellHeightSpec,
+        )
+        .fill()
+        .restore();
+      doc
         .rect(
           startXspec + columnWidths[0],
           currentYspec,
