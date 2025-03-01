@@ -277,6 +277,18 @@ export class InventoryService {
       );
 
       doc
+        .save()
+        .fillColor('#f0f0f0')
+        .rect(
+          startXspec + columnWidths[0] + columnWidths[1],
+          currentYspec,
+          columnWidths[2],
+          cellHeightSpec,
+        )
+        .fill()
+        .restore();
+
+      doc
         .rect(
           startXspec + columnWidths[0] + columnWidths[1],
           currentYspec,
@@ -303,6 +315,13 @@ export class InventoryService {
       specifications.forEach((row) => {
         const cellWidth = 75;
         const cellHeight = 20;
+
+        doc
+          .save()
+          .fillColor('#f0f0f0')
+          .rect(50, currentY, cellWidth, cellHeight)
+          .fill()
+          .restore();
 
         doc.rect(50, currentY, cellWidth, cellHeight).stroke();
         doc.rect(125, currentY, cellWidth, cellHeight).stroke();
@@ -331,6 +350,13 @@ export class InventoryService {
       const text = 'Dimensiones del equipo';
 
       // Dibujar la celda
+      doc
+        .save()
+        .fillColor('#f0f0f0')
+        .rect(cellXcell, cellYcell, cellWidth, cellHeightcell)
+        .fill()
+        .restore();
+
       doc.rect(cellXcell, cellYcell, cellWidth, cellHeightcell).stroke();
 
       // Calcular el ancho del texto
