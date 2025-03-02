@@ -226,10 +226,13 @@ export class InventoryService {
       currentY += Math.ceil(generalData.length / 2) * cellHeight + 20;
 
       // Especificaciones técnicas
+      // Definir la posición inicial del contenedor
+      let containerY = 260; // Ajusta este valor para mover todo el bloque
+
       const cellHeightSpec = 25;
       const columnWidths = [150, 300, 70]; // Ancho de cada celda
       const startXspec = 50;
-      let currentYspec = 260; // Ajusta según sea necesario
+      let currentYspec = containerY; // Se usa containerY en lugar de un valor fijo
 
       // Dibujar celdas y texto para la cabecera de Especificaciones Técnicas
       doc
@@ -303,10 +306,6 @@ export class InventoryService {
         { width: columnWidths[2] - 10, align: 'center' },
       );
 
-      // Aumentar la posición Y para continuar con más contenido si es necesario
-
-      currentY += 25;
-
       const specifications = [
         ['Capacidad', inventory.capacity || 'No disponible'],
         ['Material', inventory.material || 'No disponible'],
@@ -319,12 +318,16 @@ export class InventoryService {
         doc
           .save()
           .fillColor('#f0f0f0')
-          .rect(50, currentY, cellWidth, cellHeight)
+          .rect(50, containerY + cellHeight + 4, cellWidth, cellHeight)
           .fill()
           .restore();
 
-        doc.rect(50, currentY, cellWidth, cellHeight).stroke();
-        doc.rect(125, currentY, cellWidth, cellHeight).stroke();
+        doc
+          .rect(50, containerY + cellHeight + 4, cellWidth, cellHeight)
+          .stroke();
+        doc
+          .rect(125, containerY + cellHeight + 4, cellWidth, cellHeight)
+          .stroke();
 
         // Obtener el ancho de los textos
         const textWidth1 = doc.widthOfString(row[0]);
@@ -335,19 +338,19 @@ export class InventoryService {
         const textX2 = 125 + (cellWidth - textWidth2) / 2;
 
         // Calcular la posición Y centrada dentro de la celda (ajustado para altura de texto)
-        const textY = currentY + (cellHeight - 6) / 2;
+        const textY = containerY + (cellHeight - 6) / 2;
 
-        doc.font('Helvetica-Bold').text(row[0], textX1, textY);
-        doc.font('Helvetica').text(row[1], textX2, textY);
+        doc.font('Helvetica-Bold').text(row[0], textX1, textY + cellHeight + 4);
+        doc.font('Helvetica').text(row[1], textX2, textY + cellHeight + 4);
 
-        currentY += cellHeight;
+        containerY += cellHeight;
       });
 
-      const cellXcell = 200; // Posición X de la celda
-      const cellYcell = 305; // Posición Y de la celda
-      const cellWidth = 150; // Ancho de la celda
-      const cellHeightcell = 20; // Alto de la celda
+      const cellXcell = 200;
+      const cellWidth = 150;
+      const cellHeightcell = 20;
       const text = 'Dimensiones del equipo';
+      const cellYcell = containerY + 4;
 
       // Dibujar la celda
       doc
@@ -361,37 +364,32 @@ export class InventoryService {
 
       // Calcular el ancho del texto
       const textWidth = doc.widthOfString(text);
-      const textHeight = 5; // Aproximado, ya que PDFKit no da altura exacta
+      const textHeight = 5;
 
-      // Calcular posición centrada
       const textX = cellXcell + (cellWidth - textWidth) / 2;
       const textY = cellYcell + (cellHeightcell - textHeight) / 2;
 
-      // Agregar el texto centrado
       doc.font('Helvetica-Bold').text(text, textX, textY);
 
-      const cellXsize = 350; // Posición X de la celda
-      const cellYsize = 305; // Posición Y de la celda
-      const cellWidthsize = 150; // Ancho de la celda
-      const cellHeightsize = 20; // Alto de la celda
+      const cellXsize = 350;
+      const cellYsize = containerY + 4;
+      const cellWidthsize = 150;
+      const cellHeightsize = 20;
       const textsize = '40x30x10cm';
 
       // Dibujar la celda
       doc.rect(cellXsize, cellYsize, cellWidthsize, cellHeightsize).stroke();
 
-      // Calcular el ancho del texto
       const textWidthsize = doc.widthOfString(textsize);
-      const textHeightsize = 5; // Estimación de altura del texto
+      const textHeightsize = 5;
 
-      // Calcular posición centrada
       const textXsize = cellXsize + (cellWidthsize - textWidthsize) / 2;
       const textYsize = cellYsize + (cellHeightsize - textHeightsize) / 2;
 
-      // Agregar el texto centrado
       doc.font('Helvetica').text(textsize, textXsize, textYsize);
 
       // Posición inicial
-      const startY = 286;
+      const startY = containerY - 16;
 
       // Datos para la tabla
       const data = [
@@ -402,27 +400,23 @@ export class InventoryService {
         'Neumático',
       ];
 
-      // Dibujar las celdas y centrar el texto
       data.forEach((text, index) => {
         const x = 200 + index * 60;
 
-        // Dibujar celda (rectángulo)
         doc.rect(x, startY, 60, cellHeight).stroke();
 
-        // Obtener el ancho y alto del texto
         const textWidth = doc.widthOfString(text);
         const textHeight = doc.currentLineHeight();
 
-        // Calcular la posición centrada dentro de la celda
         const textX = x + (60 - textWidth) / 2;
         const textY = startY + (18 - textHeight) / 2;
 
-        // Agregar el texto centrado
         doc.text(text, textX, textY);
         const cellWidth = 35;
         const cellHeightcell = 39;
-        const startXcell = 500; // Ajusta la posición según sea necesario
-        const startYcell = 286;
+        const startXcell = 500;
+        const startYcell = startY;
+
         if (text === 'Eléctrico') {
           doc
             .moveTo(x, startY)
@@ -433,11 +427,10 @@ export class InventoryService {
             .lineTo(x, startY + cellHeight)
             .stroke();
         }
-        // Celda para "Fijo"
-        // Dibuja la celda
-        doc.rect(startXcell, startYcell, cellWidth, cellHeightcell).stroke();
 
-        // Dibuja la "X" en la celda (líneas diagonales)
+        doc
+          .rect(startXcell, startYcell + 1, cellWidth, cellHeightcell)
+          .stroke();
         doc
           .moveTo(startXcell, startYcell)
           .lineTo(startXcell + cellWidth, startYcell + cellHeightcell)
@@ -447,27 +440,31 @@ export class InventoryService {
           .lineTo(startXcell, startYcell + cellHeightcell)
           .stroke();
 
-        // Agrega el texto en el centro
         doc
           .font('Helvetica')
           .fontSize(8)
-          .text('Fijo', startXcell + 5, startYcell + 15, {
+          .text('Fijo', startXcell + 5, startYcell + 17, {
             width: cellWidth - 10,
             align: 'center',
           });
 
-        // Celda para "Móvil"
         doc
-          .rect(startXcell + cellWidth, startYcell, cellWidth, cellHeightcell)
+          .rect(
+            startXcell + cellWidth,
+            startYcell + 1,
+            cellWidth,
+            cellHeightcell,
+          )
           .stroke();
         doc
           .font('Helvetica')
           .fontSize(8)
-          .text('Móvil', startXcell + cellWidth + 5, startYcell + 15, {
+          .text('Móvil', startXcell + cellWidth + 5, startYcell + 17, {
             width: cellWidth - 10,
             align: 'center',
           });
       });
+
       doc.end();
     });
   }
