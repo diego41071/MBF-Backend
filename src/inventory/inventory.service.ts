@@ -105,7 +105,7 @@ export class InventoryService {
       });
 
       // Sección derecha de la cabecera
-      const cellHeightRight = 19;
+      const cellHeightRight = 18.5;
       const labelWidth = 100;
       const valueWidth = 65;
       const startXRight = 405;
@@ -398,7 +398,7 @@ export class InventoryService {
         'Mecánico',
         'Eléctrico',
         'Hidráulico',
-        'Eléctrico',
+        'Electrónico',
         'Neumático',
       ];
 
@@ -423,7 +423,16 @@ export class InventoryService {
         const cellHeightcell = 39;
         const startXcell = 500; // Ajusta la posición según sea necesario
         const startYcell = 286;
-
+        if (text === 'Eléctrico') {
+          doc
+            .moveTo(x, startY)
+            .lineTo(x + 60, startY + cellHeight)
+            .stroke();
+          doc
+            .moveTo(x + 60, startY)
+            .lineTo(x, startY + cellHeight)
+            .stroke();
+        }
         // Celda para "Fijo"
         // Dibuja la celda
         doc.rect(startXcell, startYcell, cellWidth, cellHeightcell).stroke();
