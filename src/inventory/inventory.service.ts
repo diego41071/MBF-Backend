@@ -216,7 +216,7 @@ export class InventoryService {
       });
 
       const cellXVolt = startX; // Posición X de la primera celda
-      const cellYVolt = currentY + 90; // Posición Y de la celda
+      const cellYVolt = currentY + 80; // Posición Y de la celda
       const titleCellWidth = 116; // Ancho de las celdas de títulos
       const dataCellWidth = 53; // Ancho estándar de las celdas de datos
       const specialDataCellWidth = 65; // 🔹 Ancho especial solo para "1A"
@@ -236,7 +236,7 @@ export class InventoryService {
 
       cellTexts.forEach((text, index) => {
         const isTitle = index % 2 === 0; // Identifica si es un título
-        const isSpecialCell = text === '1A'; // 🔹 Solo la celda "1A"
+        const isSpecialCell = index === cellTexts.length - 1; // 🔹 Solo la celda "1A"
         const cellWidth = isTitle
           ? titleCellWidth
           : isSpecialCell
@@ -247,7 +247,7 @@ export class InventoryService {
         if (isTitle) {
           doc
             .rect(currentX, cellYVolt, cellWidth, cellHeightVolt)
-            .fill('#D3D3D3'); // Fondo gris
+            .fill('#f0f0f0'); // Fondo gris
         }
 
         // Dibujar la celda con borde
@@ -255,6 +255,8 @@ export class InventoryService {
 
         // Configurar fuente y color
         doc.fillColor('black').font('Helvetica');
+
+        doc.font(isTitle ? 'Helvetica-Bold' : 'Helvetica'); // 🔹 Negrita si es título
 
         // 🔹 Centrar texto horizontal y verticalmente
         doc.text(text, currentX, cellYVolt + cellHeightVolt / 3, {
@@ -271,7 +273,7 @@ export class InventoryService {
 
       // Especificaciones técnicas
       // Definir la posición inicial del contenedor
-      let containerY = 260; // Ajusta este valor para mover todo el bloque
+      let containerY = 237; // Ajusta este valor para mover todo el bloque
 
       const cellHeightSpec = 25;
       const columnWidths = [150, 300, 70]; // Ancho de cada celda
