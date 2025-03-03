@@ -40,6 +40,7 @@ export class InventoryService {
       );
     }
   }
+
   async generatePDF(inventory: any): Promise<Buffer> {
     return new Promise((resolve, reject) => {
       const doc = new PDFDocument();
@@ -225,11 +226,11 @@ export class InventoryService {
       // Textos para cada celda (pares = títulos, impares = datos)
       const cellTexts = [
         'Voltaje del Equipo',
-        '6 V',
+        inventory.voltage, //poner valor dinamico
         'Peso del Equipo',
-        '10 kg',
+        inventory.weight,
         'Potencia del Equipo',
-        '1A',
+        inventory.power,
       ];
 
       let currentX = cellXVolt; // Variable para llevar la posición en X
@@ -477,15 +478,16 @@ export class InventoryService {
         doc
           .rect(startXcell, startYcell + 1, cellWidth, cellHeightcell)
           .stroke();
-        doc
-          .moveTo(startXcell, startYcell)
-          .lineTo(startXcell + cellWidth, startYcell + cellHeightcell)
-          .stroke();
-        doc
-          .moveTo(startXcell + cellWidth, startYcell)
-          .lineTo(startXcell, startYcell + cellHeightcell)
-          .stroke();
-
+        if (inventory.usage === 'Fijo') {
+          doc
+            .moveTo(startXcell, startYcell)
+            .lineTo(startXcell + cellWidth, startYcell + cellHeightcell)
+            .stroke();
+          doc
+            .moveTo(startXcell + cellWidth, startYcell)
+            .lineTo(startXcell, startYcell + cellHeightcell)
+            .stroke();
+        }
         doc
           .font('Helvetica')
           .fontSize(8)
@@ -494,6 +496,7 @@ export class InventoryService {
             align: 'center',
           });
 
+        // Dibujar la celda de "Móvil"
         doc
           .rect(
             startXcell + cellWidth,
@@ -502,6 +505,29 @@ export class InventoryService {
             cellHeightcell,
           )
           .stroke();
+
+        // Texto "Móvil"
+        doc
+          .font('Helvetica')
+          .fontSize(8)
+          .text('Móvil', startXcell + cellWidth + 5, startYcell + 17, {
+            width: cellWidth - 10,
+            align: 'center',
+          });
+
+        // ✅ Si el valor es "Móvil", dibujar las líneas cruzadas en la celda
+        if (inventory.usage === 'Movil') {
+          doc
+            .moveTo(startXcell + cellWidth, startYcell) // Esquina superior izquierda de la celda
+            .lineTo(startXcell + 2 * cellWidth, startYcell + cellHeightcell) // Esquina inferior derecha
+            .stroke();
+
+          doc
+            .moveTo(startXcell + 2 * cellWidth, startYcell) // Esquina superior derecha
+            .lineTo(startXcell + cellWidth, startYcell + cellHeightcell) // Esquina inferior izquierda
+            .stroke();
+        }
+
         doc
           .font('Helvetica')
           .fontSize(8)
