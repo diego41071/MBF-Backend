@@ -464,7 +464,10 @@ export class InventoryService {
         const startXcell = 500;
         const startYcell = startY;
 
-        if (text === 'Eléctrico') {
+        if (
+          inventory.technology ===
+          text.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        ) {
           doc
             .moveTo(x, startY)
             .lineTo(x + 60, startY + cellHeight)
