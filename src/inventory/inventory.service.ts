@@ -174,12 +174,6 @@ export class InventoryService {
           formatDate(inventory.purchaseDate) || 'No disponible',
         ],
         ['Ubicación', inventory.location || 'No disponible'],
-        ['Estado', inventory.status || 'No disponible'],
-        ['Responsable', inventory.responsible || 'No disponible'],
-        ['Proveedor', inventory.supplier || 'No disponible'],
-        ['Garantía', inventory.warranty || 'No disponible'],
-        ['Costo', inventory.cost || 'No disponible'],
-        ['Última Revisión', inventory.lastReview || 'No disponible'],
       ];
 
       generalData.forEach((row, index) => {
@@ -191,8 +185,7 @@ export class InventoryService {
           row[0] === 'Ubicación' ||
           row[0] === 'Responsable' ||
           row[0] === 'Garantía' ||
-          row[0] === 'Última Revisión' ||
-          row[0] === 'Notas Adicionales'
+          row[0] === 'Última Revisión'
             ? offsetX
             : 0;
 
@@ -220,6 +213,57 @@ export class InventoryService {
         doc.font('Helvetica-Bold').text(row[0], textX1, textY);
         doc.rect(x + columnWidth, y, columnWidth, cellHeight).stroke();
         doc.font('Helvetica').text(row[1], textX2, textY);
+      });
+
+      const cellXVolt = startX; // Posición X de la primera celda
+      const cellYVolt = currentY + 90; // Posición Y de la celda
+      const titleCellWidth = 116; // Ancho de las celdas de títulos
+      const dataCellWidth = 53; // Ancho estándar de las celdas de datos
+      const specialDataCellWidth = 65; // 🔹 Ancho especial solo para "1A"
+      const cellHeightVolt = 20; // Alto de todas las celdas
+
+      // Textos para cada celda (pares = títulos, impares = datos)
+      const cellTexts = [
+        'Voltaje del Equipo',
+        '6 V',
+        'Peso del Equipo',
+        '10 kg',
+        'Potencia del Equipo',
+        '1A',
+      ];
+
+      let currentX = cellXVolt; // Variable para llevar la posición en X
+
+      cellTexts.forEach((text, index) => {
+        const isTitle = index % 2 === 0; // Identifica si es un título
+        const isSpecialCell = text === '1A'; // 🔹 Solo la celda "1A"
+        const cellWidth = isTitle
+          ? titleCellWidth
+          : isSpecialCell
+            ? specialDataCellWidth // 🔹 Usa ancho mayor solo para "1A"
+            : dataCellWidth;
+
+        // Si es un título, dibujar fondo gris
+        if (isTitle) {
+          doc
+            .rect(currentX, cellYVolt, cellWidth, cellHeightVolt)
+            .fill('#D3D3D3'); // Fondo gris
+        }
+
+        // Dibujar la celda con borde
+        doc.rect(currentX, cellYVolt, cellWidth, cellHeightVolt).stroke();
+
+        // Configurar fuente y color
+        doc.fillColor('black').font('Helvetica');
+
+        // 🔹 Centrar texto horizontal y verticalmente
+        doc.text(text, currentX, cellYVolt + cellHeightVolt / 3, {
+          width: cellWidth, // 🔹 Ajusta el ancho al de la celda
+          align: 'center', // 🔹 Centra horizontalmente
+        });
+
+        // Mover X para la siguiente celda
+        currentX += cellWidth;
       });
 
       // Ajustar la posición después de la tabla 2x2
