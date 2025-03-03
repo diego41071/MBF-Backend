@@ -156,7 +156,12 @@ export class InventoryService {
       startYRight += cellHeightRight;
       drawCell('PRÓXIMO SERVICIO:', '23/05/2024', startXRight, startYRight);
       startYRight += cellHeightRight;
-      drawCell('PRIORIDAD:', 'ALTA', startXRight, startYRight);
+      drawCell(
+        'PRIORIDAD:',
+        inventory.maintenancePriority.toUpperCase(),
+        startXRight,
+        startYRight,
+      );
 
       // Datos generales en formato 2x2
       let currentY = 120;
