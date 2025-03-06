@@ -3,6 +3,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Equipment, EquipmentDocument } from './equipment.schema';
+import * as PDFDocument from 'pdfkit';
 
 @Injectable()
 export class EquipmentService {
@@ -83,5 +84,57 @@ export class EquipmentService {
     if (!result) {
       throw new NotFoundException('Equipo no encontrado');
     }
+  }
+
+  async generatePDF(equipment: any): Promise<Buffer> {
+    return new Promise((resolve, reject) => {
+      const doc = new PDFDocument();
+      const buffers: Buffer[] = [];
+
+      doc.on('data', (chunk) => buffers.push(chunk));
+      doc.on('end', () => resolve(Buffer.concat(buffers)));
+      doc.on('error', (err) => reject(err));
+
+      // Título
+      doc.fontSize(16).text('Ficha Técnica del Equipo', { align: 'center' });
+      doc.moveDown(2);
+
+      // Formatear fechas correctamente
+      const createdAt = equipment.createdAt
+        ? new Date(equipment.createdAt).toISOString().split('T')[0]
+        : 'No disponible';
+      const updatedAt = equipment.updatedAt
+        ? new Date(equipment.updatedAt).toISOString().split('T')[0]
+        : 'No disponible';
+
+      // Datos del equipo
+      const data = [
+        { label: 'ID', value: equipment._id || 'No disponible' },
+        { label: 'Nombre', value: equipment.name || 'No disponible' },
+        { label: 'Marca', value: equipment.brand || 'No disponible' },
+        { label: 'Modelo', value: equipment.model || 'No disponible' },
+        {
+          label: 'Número de Serie',
+          value: equipment.serial || 'No disponible',
+        },
+        { label: 'Falla', value: equipment.issue || 'No disponible' },
+        { label: 'Foto', value: equipment.photo || 'No disponible' },
+        { label: 'Fecha de Creación', value: createdAt },
+        { label: 'Última Actualización', value: updatedAt },
+        {
+          label: 'Factura',
+          value: equipment.invoice ? 'Disponible' : 'No disponible',
+        },
+      ];
+
+      doc.fontSize(12);
+      data.forEach(({ label, value }) => {
+        doc.text(`${label}: ${value}`);
+        doc.moveDown(0.5);
+      });
+
+      // Finalizar el documento
+      doc.end();
+    });
   }
 }

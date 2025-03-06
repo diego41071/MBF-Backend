@@ -10,6 +10,8 @@ import {
   UploadedFiles,
   UseInterceptors,
   Res,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { EquipmentService } from './equipment.service';
@@ -95,5 +97,33 @@ export class EquipmentController {
   @Delete(':id')
   async delete(@Param('id') id: string): Promise<void> {
     return this.service.delete(id);
+  }
+
+  @Get('generate-pdf/:id')
+  async generatePDF(@Param('id') id: string, @Res() res: Response) {
+    try {
+      // Obtener el inventario por ID desde la base de datos
+      const equipment = await this.service.findOne(id);
+      if (!equipment) {
+        throw new HttpException(
+          'Inventario no encontrado',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      // Generar el PDF en memoria como buffer
+      const pdfBuffer = await this.service.generatePDF(equipment);
+
+      // Convertir el buffer a Base64
+      const base64PDF = pdfBuffer.toString('base64');
+
+      // Enviar la respuesta como JSON con el Base64
+      res.status(HttpStatus.OK).json({
+        message: 'PDF generado correctamente',
+        base64: base64PDF,
+      });
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 }
