@@ -90,50 +90,98 @@ export class EquipmentService {
     return new Promise((resolve, reject) => {
       const doc = new PDFDocument();
       const buffers: Buffer[] = [];
-
       doc.on('data', (chunk) => buffers.push(chunk));
       doc.on('end', () => resolve(Buffer.concat(buffers)));
       doc.on('error', (err) => reject(err));
+      // **1. Encabezado**
+      doc
+        .fontSize(16)
+        .text('HOJA DE CONTRATO DE SERVICIO', { align: 'center' })
+        .moveDown(1);
+      doc
+        .fontSize(12)
+        .text(`FECHA DE INGRESO: ${new Date().toLocaleDateString('es-ES')}`);
 
-      // Título
-      doc.fontSize(16).text('Ficha Técnica del Equipo', { align: 'center' });
       doc.moveDown(2);
 
-      // Formatear fechas correctamente
-      const createdAt = equipment.createdAt
-        ? new Date(equipment.createdAt).toISOString().split('T')[0]
-        : 'No disponible';
-      const updatedAt = equipment.updatedAt
-        ? new Date(equipment.updatedAt).toISOString().split('T')[0]
-        : 'No disponible';
+      // **2. Datos del Cliente**
+      doc
+        .fontSize(14)
+        .text('DATOS DEL CLIENTE', { underline: true })
+        .moveDown(1);
+      doc
+        .fontSize(12)
+        .text(`NOMBRE: ${equipment.clientName || 'No disponible'}`);
+      doc.text(`C.C / NIT: ${equipment.clientId || 'No disponible'}`);
+      doc.text(`DIRECCIÓN: ${equipment.clientAddress || 'No disponible'}`);
+      doc.text(`TEL/CEL: ${equipment.clientPhone || 'No disponible'}`);
+      doc.text(`CONTACTO: ${equipment.clientContact || 'No disponible'}`);
 
-      // Datos del equipo
-      const data = [
-        { label: 'ID', value: equipment._id || 'No disponible' },
-        { label: 'Nombre', value: equipment.name || 'No disponible' },
-        { label: 'Marca', value: equipment.brand || 'No disponible' },
-        { label: 'Modelo', value: equipment.model || 'No disponible' },
-        {
-          label: 'Número de Serie',
-          value: equipment.serial || 'No disponible',
-        },
-        { label: 'Falla', value: equipment.issue || 'No disponible' },
-        { label: 'Foto', value: equipment.photo || 'No disponible' },
-        { label: 'Fecha de Creación', value: createdAt },
-        { label: 'Última Actualización', value: updatedAt },
-        {
-          label: 'Factura',
-          value: equipment.invoice ? 'Disponible' : 'No disponible',
-        },
-      ];
+      doc.moveDown(2);
 
-      doc.fontSize(12);
-      data.forEach(({ label, value }) => {
-        doc.text(`${label}: ${value}`);
-        doc.moveDown(0.5);
-      });
+      // **3. Datos del Equipo**
+      doc
+        .fontSize(14)
+        .text('DATOS DEL EQUIPO', { underline: true })
+        .moveDown(1);
+      doc.fontSize(12).text(`EQUIPO: ${equipment.name}`);
+      doc.text(`MARCA: ${equipment.brand}`);
+      doc.text(`MODELO: ${equipment.model}`);
+      doc.text(`SERIAL: ${equipment.serial || 'N/A'}`);
+      doc.text(`ACCESORIOS: ${equipment.accessories || 'No disponible'}`);
+      doc.text(`DEFECTOS: ${equipment.issue || 'No especificado'}`);
 
-      // Finalizar el documento
+      doc.moveDown(2);
+
+      // **4. Ficha Técnica**
+      doc.fontSize(14).text('FICHA TÉCNICA', { underline: true }).moveDown(1);
+      doc
+        .fontSize(12)
+        .text(
+          `FALLA REPORTADA POR EL CLIENTE: ${equipment.issue || 'No especificado'}`,
+        );
+
+      doc.moveDown(2);
+
+      // **5. Diagnóstico Técnico**
+      doc
+        .fontSize(14)
+        .text('DIAGNÓSTICO TÉCNICO', { underline: true })
+        .moveDown(1);
+      doc.fontSize(12).text(equipment.diagnosis || 'Pendiente de revisión.');
+
+      doc.moveDown(2);
+
+      // **6. Recepción del Equipo**
+      doc
+        .fontSize(14)
+        .text('RECEPCIÓN EQUIPO', { underline: true })
+        .moveDown(1);
+      doc.fontSize(12).text(`Código de Recepción: ${equipment._id}`);
+      doc.text('APROBACIÓN DEL CLIENTE: SI [ ]   NO [ ]');
+
+      doc.moveDown(2);
+
+      // **7. Términos y Condiciones**
+      doc
+        .fontSize(14)
+        .text('TÉRMINOS Y CONDICIONES DE SERVICIO', { underline: true })
+        .moveDown(1);
+      doc
+        .fontSize(10)
+        .text(
+          '1. No nos hacemos responsables por fallas ocultas no declaradas por el cliente... \n' +
+            '2. La empresa no se hace responsable por equipos dejados más de 30 días... \n' +
+            '3. La garantía cubre solo la pieza reparada... \n' +
+            '4. Se comenzará a cobrar un 3% por día después de 10 días sin retiro del equipo...',
+        );
+
+      doc.moveDown(3);
+
+      // **8. Firma del Cliente**
+      doc.fontSize(12).text('Firma del cliente: ____________________________');
+
+      // **Finalizar PDF**
       doc.end();
     });
   }
