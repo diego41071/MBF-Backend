@@ -121,19 +121,47 @@ export class EquipmentService {
           align: 'center',
         });
 
+        doc.fontSize(10).text('RESPONSABLE DE IVA', marginX, textY + 60, {
+          width: leftColWidth - 10,
+          align: 'center',
+        });
+        doc.fontSize(10).text('APROBACION DEL CLIENTE:', marginX, textY + 80, {
+          width: leftColWidth - 10,
+          align: 'center',
+        });
+        const cellWidth = 40; // Ancho de cada celda
+        const cellHeight = 20; // Alto de cada celda
+        const cellY = textY + 110; // Posición Y de las celdas
+
+        // **Dibujar la celda "SI"**
+        doc.rect(marginX, cellY, cellWidth, cellHeight).stroke(); // Dibuja el rectángulo
+        doc.fontSize(10).text('SI', marginX, cellY + 5, {
+          width: cellWidth,
+          align: 'center',
+        });
+
+        // **Dibujar la celda "NO"**
+        doc
+          .rect(marginX + cellWidth + 10, cellY, cellWidth, cellHeight)
+          .stroke(); // Dibuja el rectángulo
+        doc.fontSize(10).text('NO', marginX + cellWidth + 10, cellY + 5, {
+          width: cellWidth,
+          align: 'center',
+        });
+
         doc
           .fontSize(10)
-          .text('Cra 45D #60-72, Medellín, Colombia', marginX, textY + 70, {
+          .text('Cra 45D #60-72, Medellín, Colombia', marginX, textY + 170, {
             width: leftColWidth - 10,
             align: 'center',
           });
 
-        doc.fontSize(10).text('Tel: +57 304 130 1189', marginX, textY + 100, {
+        doc.fontSize(10).text('Tel: +57 304 130 1189', marginX, textY + 200, {
           width: leftColWidth - 10,
           align: 'center',
         });
 
-        doc.fontSize(10).text('www.medibasculas.com', marginX, textY + 120, {
+        doc.fontSize(10).text('www.medibasculas.com', marginX, textY + 220, {
           width: leftColWidth - 10,
           align: 'center',
         });
