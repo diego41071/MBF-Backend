@@ -193,12 +193,27 @@ export class EquipmentService {
       const contentX = marginX + leftColWidth + 10; // Inicia después de la imagen
       let contentY = 50;
 
+      const text = 'HOJA DE CONTRATO DE SERVICIO';
+      const textX = contentX;
+      const textY = contentY;
+
+      // **Dibujar el texto**
+      doc.fontSize(16).text(text, textX, textY, {
+        width: rightColWidth,
+        align: 'left',
+      });
+
+      // **Dibujar la línea debajo del texto (subrayado)**
+      const textWidth = doc.widthOfString(text); // Ancho del texto
+      const textHeight = doc.currentLineHeight(); // Altura del texto
+
       doc
-        .fontSize(16)
-        .text('HOJA DE CONTRATO DE SERVICIO', contentX, contentY, {
-          width: rightColWidth,
-          align: 'left',
-        });
+        .moveTo(textX, textY + textHeight + 2) // Inicio de la línea (debajo del texto)
+        .lineTo(textX + textWidth, textY + textHeight + 2) // Fin de la línea
+        .lineWidth(1) // Grosor de la línea
+        .strokeColor('#000') // Color negro
+        .stroke(); // Dibujar la línea
+
       contentY += 30;
 
       doc
