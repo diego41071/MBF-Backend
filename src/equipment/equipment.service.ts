@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Equipment, EquipmentDocument } from './equipment.schema';
 import * as PDFDocument from 'pdfkit';
+import { join } from 'path';
 
 @Injectable()
 export class EquipmentService {
@@ -93,80 +94,181 @@ export class EquipmentService {
       doc.on('data', (chunk) => buffers.push(chunk));
       doc.on('end', () => resolve(Buffer.concat(buffers)));
       doc.on('error', (err) => reject(err));
-      // **1. Encabezado**
+      // **Definir columnas**
+      const pageWidth = doc.page.width - 100; // Ancho total (descontando márgenes)
+      const leftColWidth = pageWidth * 0.3; // 30% para la imagen
+      const rightColWidth = pageWidth * 0.7; // 70% para el texto
+      const marginX = 50; // Margen izquierdo
+
+      // **1. Agregar imagen en la columna izquierda (30%)**
+      try {
+        const imagePath = join(__dirname, '..', 'assets', 'logo.png');
+        doc.image(imagePath, marginX, 50, { width: leftColWidth - 10 });
+      } catch (error) {
+        console.error('Error al cargar la imagen:', error.message);
+      }
+
+      // **2. Agregar contenido en la columna derecha (70%)**
+      const contentX = marginX + leftColWidth + 10; // Inicia después de la imagen
+      let contentY = 50;
+
       doc
         .fontSize(16)
-        .text('HOJA DE CONTRATO DE SERVICIO', { align: 'center' })
-        .moveDown(1);
+        .text('HOJA DE CONTRATO DE SERVICIO', contentX, contentY, {
+          width: rightColWidth,
+          align: 'left',
+        });
+      contentY += 30;
+
       doc
         .fontSize(12)
-        .text(`FECHA DE INGRESO: ${new Date().toLocaleDateString('es-ES')}`);
+        .text(
+          `FECHA DE INGRESO: ${new Date().toLocaleDateString('es-ES')}`,
+          contentX,
+          contentY,
+          { width: rightColWidth },
+        );
 
-      doc.moveDown(2);
+      contentY += 40;
 
-      // **2. Datos del Cliente**
+      // **3. Datos del Cliente**
       doc
         .fontSize(14)
-        .text('DATOS DEL CLIENTE', { underline: true })
-        .moveDown(1);
+        .text('DATOS DEL CLIENTE', contentX, contentY, {
+          width: rightColWidth,
+          underline: true,
+        });
+      contentY += 20;
+
       doc
         .fontSize(12)
-        .text(`NOMBRE: ${equipment.clientName || 'No disponible'}`);
-      doc.text(`C.C / NIT: ${equipment.clientId || 'No disponible'}`);
-      doc.text(`DIRECCIÓN: ${equipment.clientAddress || 'No disponible'}`);
-      doc.text(`TEL/CEL: ${equipment.clientPhone || 'No disponible'}`);
-      doc.text(`CONTACTO: ${equipment.clientContact || 'No disponible'}`);
+        .text(
+          `NOMBRE: ${equipment.clientName || 'No disponible'}`,
+          contentX,
+          contentY,
+        );
+      contentY += 15;
+      doc.text(
+        `C.C / NIT: ${equipment.clientId || 'No disponible'}`,
+        contentX,
+        contentY,
+      );
+      contentY += 15;
+      doc.text(
+        `DIRECCIÓN: ${equipment.clientAddress || 'No disponible'}`,
+        contentX,
+        contentY,
+      );
+      contentY += 15;
+      doc.text(
+        `TEL/CEL: ${equipment.clientPhone || 'No disponible'}`,
+        contentX,
+        contentY,
+      );
+      contentY += 15;
+      doc.text(
+        `CONTACTO: ${equipment.clientContact || 'No disponible'}`,
+        contentX,
+        contentY,
+      );
 
-      doc.moveDown(2);
+      contentY += 30;
 
-      // **3. Datos del Equipo**
+      // **4. Datos del Equipo**
       doc
         .fontSize(14)
-        .text('DATOS DEL EQUIPO', { underline: true })
-        .moveDown(1);
-      doc.fontSize(12).text(`EQUIPO: ${equipment.name}`);
-      doc.text(`MARCA: ${equipment.brand}`);
-      doc.text(`MODELO: ${equipment.model}`);
-      doc.text(`SERIAL: ${equipment.serial || 'N/A'}`);
-      doc.text(`ACCESORIOS: ${equipment.accessories || 'No disponible'}`);
-      doc.text(`DEFECTOS: ${equipment.issue || 'No especificado'}`);
+        .text('DATOS DEL EQUIPO', contentX, contentY, {
+          width: rightColWidth,
+          underline: true,
+        });
+      contentY += 20;
 
-      doc.moveDown(2);
+      doc.fontSize(12).text(`EQUIPO: ${equipment.name}`, contentX, contentY);
+      contentY += 15;
+      doc.text(`MARCA: ${equipment.brand}`, contentX, contentY);
+      contentY += 15;
+      doc.text(`MODELO: ${equipment.model}`, contentX, contentY);
+      contentY += 15;
+      doc.text(`SERIAL: ${equipment.serial || 'N/A'}`, contentX, contentY);
+      contentY += 15;
+      doc.text(
+        `ACCESORIOS: ${equipment.accessories || 'No disponible'}`,
+        contentX,
+        contentY,
+      );
+      contentY += 15;
+      doc.text(
+        `DEFECTOS: ${equipment.issue || 'No especificado'}`,
+        contentX,
+        contentY,
+      );
 
-      // **4. Ficha Técnica**
-      doc.fontSize(14).text('FICHA TÉCNICA', { underline: true }).moveDown(1);
+      contentY += 30;
+
+      // **5. Ficha Técnica**
+      doc
+        .fontSize(14)
+        .text('FICHA TÉCNICA', contentX, contentY, {
+          width: rightColWidth,
+          underline: true,
+        });
+      contentY += 20;
+
       doc
         .fontSize(12)
         .text(
           `FALLA REPORTADA POR EL CLIENTE: ${equipment.issue || 'No especificado'}`,
+          contentX,
+          contentY,
         );
 
-      doc.moveDown(2);
+      contentY += 30;
 
-      // **5. Diagnóstico Técnico**
+      // **6. Diagnóstico Técnico**
       doc
         .fontSize(14)
-        .text('DIAGNÓSTICO TÉCNICO', { underline: true })
-        .moveDown(1);
-      doc.fontSize(12).text(equipment.diagnosis || 'Pendiente de revisión.');
+        .text('DIAGNÓSTICO TÉCNICO', contentX, contentY, {
+          width: rightColWidth,
+          underline: true,
+        });
+      contentY += 20;
 
-      doc.moveDown(2);
+      doc
+        .fontSize(12)
+        .text(
+          equipment.diagnosis || 'Pendiente de revisión.',
+          contentX,
+          contentY,
+        );
 
-      // **6. Recepción del Equipo**
+      contentY += 30;
+
+      // **7. Recepción del Equipo**
       doc
         .fontSize(14)
-        .text('RECEPCIÓN EQUIPO', { underline: true })
-        .moveDown(1);
-      doc.fontSize(12).text(`Código de Recepción: ${equipment._id}`);
-      doc.text('APROBACIÓN DEL CLIENTE: SI [ ]   NO [ ]');
+        .text('RECEPCIÓN EQUIPO', contentX, contentY, {
+          width: rightColWidth,
+          underline: true,
+        });
+      contentY += 20;
 
-      doc.moveDown(2);
+      doc
+        .fontSize(12)
+        .text(`Código de Recepción: ${equipment._id}`, contentX, contentY);
+      contentY += 15;
+      doc.text('APROBACIÓN DEL CLIENTE: SI [ ]   NO [ ]', contentX, contentY);
 
-      // **7. Términos y Condiciones**
+      contentY += 30;
+
+      // **8. Términos y Condiciones**
       doc
         .fontSize(14)
-        .text('TÉRMINOS Y CONDICIONES DE SERVICIO', { underline: true })
-        .moveDown(1);
+        .text('TÉRMINOS Y CONDICIONES DE SERVICIO', contentX, contentY, {
+          width: rightColWidth,
+          underline: true,
+        });
+      contentY += 20;
+
       doc
         .fontSize(10)
         .text(
@@ -174,12 +276,21 @@ export class EquipmentService {
             '2. La empresa no se hace responsable por equipos dejados más de 30 días... \n' +
             '3. La garantía cubre solo la pieza reparada... \n' +
             '4. Se comenzará a cobrar un 3% por día después de 10 días sin retiro del equipo...',
+          contentX,
+          contentY,
+          { width: rightColWidth },
         );
 
-      doc.moveDown(3);
+      contentY += 60;
 
-      // **8. Firma del Cliente**
-      doc.fontSize(12).text('Firma del cliente: ____________________________');
+      // **9. Firma del Cliente**
+      doc
+        .fontSize(12)
+        .text(
+          'Firma del cliente: ____________________________',
+          contentX,
+          contentY,
+        );
 
       // **Finalizar PDF**
       doc.end();
