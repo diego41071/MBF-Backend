@@ -149,6 +149,17 @@ export class EquipmentService {
           align: 'center',
         });
 
+        doc.fontSize(10).text('FECHA AUTORIZACIÓN: ', marginX, cellY + 25, {
+          width: cellWidth + 80,
+          align: 'center',
+        });
+
+        doc
+          .fontSize(10)
+          .text('FECHA ENTREGA AL CLIENTE: ', marginX, cellY + 35, {
+            width: cellWidth + 80,
+            align: 'center',
+          });
         doc
           .fontSize(10)
           .text('Cra 45D #60-72, Medellín, Colombia', marginX, textY + 170, {
