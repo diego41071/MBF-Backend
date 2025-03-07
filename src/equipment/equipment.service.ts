@@ -108,6 +108,15 @@ export class EquipmentService {
         console.error('Error al cargar la imagen:', error.message);
       }
 
+      // **2. Dibujar línea vertical divisoria**
+      const lineX = marginX + leftColWidth + 5; // Posición X de la línea
+      doc
+        .moveTo(lineX, 40) // Punto de inicio
+        .lineTo(lineX, doc.page.height - 50) // Punto de fin
+        .lineWidth(1) // Grosor de la línea
+        .strokeColor('#000') // Color negro
+        .stroke(); // Dibujar la línea
+
       // **2. Agregar contenido en la columna derecha (70%)**
       const contentX = marginX + leftColWidth + 10; // Inicia después de la imagen
       let contentY = 50;
@@ -132,12 +141,10 @@ export class EquipmentService {
       contentY += 40;
 
       // **3. Datos del Cliente**
-      doc
-        .fontSize(14)
-        .text('DATOS DEL CLIENTE', contentX, contentY, {
-          width: rightColWidth,
-          underline: true,
-        });
+      doc.fontSize(14).text('DATOS DEL CLIENTE', contentX, contentY, {
+        width: rightColWidth,
+        underline: true,
+      });
       contentY += 20;
 
       doc
@@ -175,12 +182,10 @@ export class EquipmentService {
       contentY += 30;
 
       // **4. Datos del Equipo**
-      doc
-        .fontSize(14)
-        .text('DATOS DEL EQUIPO', contentX, contentY, {
-          width: rightColWidth,
-          underline: true,
-        });
+      doc.fontSize(14).text('DATOS DEL EQUIPO', contentX, contentY, {
+        width: rightColWidth,
+        underline: true,
+      });
       contentY += 20;
 
       doc.fontSize(12).text(`EQUIPO: ${equipment.name}`, contentX, contentY);
@@ -206,12 +211,10 @@ export class EquipmentService {
       contentY += 30;
 
       // **5. Ficha Técnica**
-      doc
-        .fontSize(14)
-        .text('FICHA TÉCNICA', contentX, contentY, {
-          width: rightColWidth,
-          underline: true,
-        });
+      doc.fontSize(14).text('FICHA TÉCNICA', contentX, contentY, {
+        width: rightColWidth,
+        underline: true,
+      });
       contentY += 20;
 
       doc
@@ -225,12 +228,10 @@ export class EquipmentService {
       contentY += 30;
 
       // **6. Diagnóstico Técnico**
-      doc
-        .fontSize(14)
-        .text('DIAGNÓSTICO TÉCNICO', contentX, contentY, {
-          width: rightColWidth,
-          underline: true,
-        });
+      doc.fontSize(14).text('DIAGNÓSTICO TÉCNICO', contentX, contentY, {
+        width: rightColWidth,
+        underline: true,
+      });
       contentY += 20;
 
       doc
@@ -244,12 +245,10 @@ export class EquipmentService {
       contentY += 30;
 
       // **7. Recepción del Equipo**
-      doc
-        .fontSize(14)
-        .text('RECEPCIÓN EQUIPO', contentX, contentY, {
-          width: rightColWidth,
-          underline: true,
-        });
+      doc.fontSize(14).text('RECEPCIÓN EQUIPO', contentX, contentY, {
+        width: rightColWidth,
+        underline: true,
+      });
       contentY += 20;
 
       doc
