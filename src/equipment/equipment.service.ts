@@ -104,6 +104,39 @@ export class EquipmentService {
       try {
         const imagePath = join(__dirname, '..', 'assets', 'logo.png');
         doc.image(imagePath, marginX, 50, { width: leftColWidth - 10 });
+
+        // **Calcular posición para el texto debajo de la imagen**
+        const imageHeight = leftColWidth - 10; // La altura de la imagen (igual al ancho en este caso)
+        const textY = 50 + imageHeight + 10; // 50 (posición Y inicial) + altura imagen + espacio extra
+
+        doc
+          .fontSize(12)
+          .text('IMPORTACIONES MEDIBÁSCULAS ZOMAC S.A.S', marginX, textY, {
+            width: leftColWidth - 10,
+            align: 'center',
+          });
+
+        doc.fontSize(10).text('NIT: 901.561.138-2', marginX, textY + 50, {
+          width: leftColWidth - 10,
+          align: 'center',
+        });
+
+        doc
+          .fontSize(10)
+          .text('Cra 45D #60-72, Medellín, Colombia', marginX, textY + 70, {
+            width: leftColWidth - 10,
+            align: 'center',
+          });
+
+        doc.fontSize(10).text('Tel: +57 304 130 1189', marginX, textY + 100, {
+          width: leftColWidth - 10,
+          align: 'center',
+        });
+
+        doc.fontSize(10).text('www.medibasculas.com', marginX, textY + 120, {
+          width: leftColWidth - 10,
+          align: 'center',
+        });
       } catch (error) {
         console.error('Error al cargar la imagen:', error.message);
       }
