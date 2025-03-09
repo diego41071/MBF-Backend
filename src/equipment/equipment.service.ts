@@ -227,7 +227,7 @@ doc
   .strokeColor('#000') // Color negro
   .stroke(); // Dibujar la línea
 
-
+  
       contentY += 40;
 
       // **3. Datos del Cliente**
