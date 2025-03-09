@@ -11,7 +11,7 @@ export class EquipmentService {
   constructor(
     @InjectModel(Equipment.name)
     private equipmentModel: Model<EquipmentDocument>,
-  ) {}
+  ) { }
 
   // Crear un nuevo equipo con fotos y factura
   async create(
@@ -190,10 +190,10 @@ export class EquipmentService {
         .stroke(); // Dibujar la línea
 
       // **2. Agregar contenido en la columna derecha (70%)**
-      const contentX = marginX + leftColWidth + 10; // Inicia después de la imagen
+      const contentX = marginX + leftColWidth + 30; // Inicia después de la imagen
       let contentY = 50;
-      
-      const text = 'FECHA DE INGRESO:';
+
+      const text = `FECHA DE INGRESO: ${new Date().toLocaleDateString('es-ES')}`;
       const textX = contentX;
       const textY = contentY;
 
@@ -205,29 +205,34 @@ export class EquipmentService {
 
       contentY += 30;
 
- // Texto a mostrar
-const textTitle = `HOJA DE CONTRATO DE SERVICIO: ${new Date().toLocaleDateString('es-ES')}`;
-const textXTitle = contentX;
-const textYTitle = contentY;
+      // Texto a mostrar
+      const textTitle = `HOJA DE CONTRATO DE SERVICIO: `;
+      const textXTitle = contentX;
+      const textYTitle = contentY;
 
-// **Dibujar el texto**
-doc.fontSize(12).text(textTitle, textXTitle, textYTitle, {
-  width: rightColWidth,
-});
+      // **Dibujar el texto centrado**
+      doc.fontSize(12).text(textTitle, textXTitle, textYTitle, {
+        width: rightColWidth,
+        align: 'center',
+      });
 
-// **Obtener el ancho del texto para la línea**
-const textWidthTitle = doc.widthOfString(textTitle);
-const textHeightTitle = doc.currentLineHeight(); // Altura del texto
+      // **Obtener el ancho del texto para la línea**
+      const textWidthTitle = doc.widthOfString(textTitle);
+      const textHeightTitle = doc.currentLineHeight(); // Altura del texto
 
-// **Dibujar la línea de subrayado debajo del texto**
-doc
-  .moveTo(textXTitle, textYTitle + textHeightTitle + 2) // Punto de inicio (debajo del texto)
-  .lineTo(textXTitle + textWidthTitle, textYTitle + textHeightTitle + 2) // Punto final
-  .lineWidth(1) // Grosor de la línea
-  .strokeColor('#000') // Color negro
-  .stroke(); // Dibujar la línea
+      // **Calcular la posición X para centrar la línea**
+      const centerX = textXTitle + (rightColWidth - textWidthTitle) / 2;
 
-  
+      // **Dibujar la línea centrada debajo del texto**
+      doc
+        .moveTo(centerX, textYTitle + textHeightTitle + 2) // Punto de inicio (centrado)
+        .lineTo(centerX + textWidthTitle, textYTitle + textHeightTitle + 2) // Punto final
+        .lineWidth(1) // Grosor de la línea
+        .strokeColor('#000') // Color negro
+        .stroke(); // Dibujar la línea
+
+
+
       contentY += 40;
 
       // **3. Datos del Cliente**
@@ -362,9 +367,9 @@ doc
         .fontSize(10)
         .text(
           '1. No nos hacemos responsables por fallas ocultas no declaradas por el cliente... \n' +
-            '2. La empresa no se hace responsable por equipos dejados más de 30 días... \n' +
-            '3. La garantía cubre solo la pieza reparada... \n' +
-            '4. Se comenzará a cobrar un 3% por día después de 10 días sin retiro del equipo...',
+          '2. La empresa no se hace responsable por equipos dejados más de 30 días... \n' +
+          '3. La garantía cubre solo la pieza reparada... \n' +
+          '4. Se comenzará a cobrar un 3% por día después de 10 días sin retiro del equipo...',
           contentX,
           contentY,
           { width: rightColWidth },
