@@ -192,8 +192,8 @@ export class EquipmentService {
       // **2. Agregar contenido en la columna derecha (70%)**
       const contentX = marginX + leftColWidth + 10; // Inicia después de la imagen
       let contentY = 50;
-
-      const text = 'HOJA DE CONTRATO DE SERVICIO';
+      
+      const text = 'FECHA DE INGRESO:';
       const textX = contentX;
       const textY = contentY;
 
@@ -203,27 +203,30 @@ export class EquipmentService {
         align: 'left',
       });
 
-      // **Dibujar la línea debajo del texto (subrayado)**
-      const textWidth = doc.widthOfString(text); // Ancho del texto
-      const textHeight = doc.currentLineHeight(); // Altura del texto
-
-      doc
-        .moveTo(textX, textY + textHeight + 2) // Inicio de la línea (debajo del texto)
-        .lineTo(textX + textWidth, textY + textHeight + 2) // Fin de la línea
-        .lineWidth(1) // Grosor de la línea
-        .strokeColor('#000') // Color negro
-        .stroke(); // Dibujar la línea
-
       contentY += 30;
 
-      doc
-        .fontSize(12)
-        .text(
-          `FECHA DE INGRESO: ${new Date().toLocaleDateString('es-ES')}`,
-          contentX,
-          contentY,
-          { width: rightColWidth },
-        );
+ // Texto a mostrar
+const textTitle = `HOJA DE CONTRATO DE SERVICIO: ${new Date().toLocaleDateString('es-ES')}`;
+const textXTitle = contentX;
+const textYTitle = contentY;
+
+// **Dibujar el texto**
+doc.fontSize(12).text(textTitle, textXTitle, textYTitle, {
+  width: rightColWidth,
+});
+
+// **Obtener el ancho del texto para la línea**
+const textWidthTitle = doc.widthOfString(textTitle);
+const textHeightTitle = doc.currentLineHeight(); // Altura del texto
+
+// **Dibujar la línea de subrayado debajo del texto**
+doc
+  .moveTo(textXTitle, textYTitle + textHeightTitle + 2) // Punto de inicio (debajo del texto)
+  .lineTo(textXTitle + textWidthTitle, textYTitle + textHeightTitle + 2) // Punto final
+  .lineWidth(1) // Grosor de la línea
+  .strokeColor('#000') // Color negro
+  .stroke(); // Dibujar la línea
+
 
       contentY += 40;
 
