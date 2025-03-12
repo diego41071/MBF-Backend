@@ -133,18 +133,20 @@ export class EquipmentService {
         const cellHeight = 20; // Alto de cada celda
         const cellY = textY + 110; // Posición Y de las celdas
 
+        const offsetX = 20; // Ajuste en el eje X
+
         // **Dibujar la celda "SI"**
-        doc.rect(marginX, cellY, cellWidth, cellHeight).stroke(); // Dibuja el rectángulo
-        doc.fontSize(10).text('SI', marginX, cellY + 5, {
+        doc.rect(marginX + 10 + offsetX, cellY, cellWidth, cellHeight).stroke(); // Dibuja el rectángulo
+        doc.fontSize(10).text('SI', marginX + 10 + offsetX, cellY + 5, {
           width: cellWidth,
           align: 'center',
         });
 
         // **Dibujar la celda "NO"**
         doc
-          .rect(marginX + cellWidth + 10, cellY, cellWidth, cellHeight)
+          .rect(marginX + cellWidth + 10 + offsetX, cellY, cellWidth, cellHeight)
           .stroke(); // Dibuja el rectángulo
-        doc.fontSize(10).text('NO', marginX + cellWidth + 10, cellY + 5, {
+        doc.fontSize(10).text('NO', marginX + cellWidth + 10 + offsetX, cellY + 5, {
           width: cellWidth,
           align: 'center',
         });
@@ -153,7 +155,10 @@ export class EquipmentService {
           width: cellWidth + 80,
           align: 'center',
         });
-
+        doc.fontSize(10).text('fecha', marginX, cellY + 50, {
+          width: cellWidth + 80,
+          align: 'center',
+        });
         doc
           .fontSize(10)
           .text('FECHA ENTREGA AL CLIENTE: ', marginX, cellY + 35, {
@@ -193,12 +198,12 @@ export class EquipmentService {
       const contentX = marginX + leftColWidth + 30; // Inicia después de la imagen
       let contentY = 50;
 
-      const text = `FECHA DE INGRESO: ${new Date().toLocaleDateString('es-ES')}`;
+      const text = `FECHA DE INGRESO: ${new Date().toLocaleDateString('es-ES')} RECEPCIÓN EQUIPO RE-0496`;
       const textX = contentX;
       const textY = contentY;
 
       // **Dibujar el texto**
-      doc.fontSize(16).text(text, textX, textY, {
+      doc.fontSize(10).text(text, textX, textY, {
         width: rightColWidth,
         align: 'left',
       });
@@ -336,21 +341,6 @@ export class EquipmentService {
           contentX,
           contentY,
         );
-
-      contentY += 30;
-
-      // **7. Recepción del Equipo**
-      doc.fontSize(14).text('RECEPCIÓN EQUIPO', contentX, contentY, {
-        width: rightColWidth,
-        underline: true,
-      });
-      contentY += 20;
-
-      doc
-        .fontSize(12)
-        .text(`Código de Recepción: ${equipment._id}`, contentX, contentY);
-      contentY += 15;
-      doc.text('APROBACIÓN DEL CLIENTE: SI [ ]   NO [ ]', contentX, contentY);
 
       contentY += 30;
 
