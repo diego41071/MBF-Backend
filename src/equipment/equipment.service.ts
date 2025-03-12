@@ -151,17 +151,14 @@ export class EquipmentService {
           align: 'center',
         });
 
-        doc.fontSize(10).text('FECHA AUTORIZACIÓN: ', marginX, cellY + 25, {
+        doc.fontSize(10).text('FECHA AUTORIZACIÓN: ', marginX + 12, cellY + 25, {
           width: cellWidth + 80,
           align: 'center',
         });
-        doc.fontSize(10).text('fecha', marginX, cellY + 50, {
-          width: cellWidth + 80,
-          align: 'center',
-        });
+
         doc
           .fontSize(10)
-          .text('FECHA ENTREGA AL CLIENTE: ', marginX, cellY + 35, {
+          .text('FECHA ENTREGA AL CLIENTE: ', marginX + 12, cellY + 35, {
             width: cellWidth + 80,
             align: 'center',
           });
