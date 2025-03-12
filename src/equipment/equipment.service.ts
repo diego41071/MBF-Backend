@@ -164,19 +164,19 @@ export class EquipmentService {
           });
         doc
           .fontSize(10)
-          .text('Cra 45D #60-72, Medellín, Colombia', marginX, textY + 170, {
+          .text('Cra 45D #60-72, Medellín, Colombia', marginX, textY + 370, {
             width: leftColWidth - 10,
-            align: 'center',
+            align: 'left',
           });
 
-        doc.fontSize(10).text('Tel: +57 304 130 1189', marginX, textY + 200, {
+        doc.fontSize(10).text('Tel: +57 304 130 1189', marginX, textY + 400, {
           width: leftColWidth - 10,
-          align: 'center',
+          align: 'left',
         });
 
-        doc.fontSize(10).text('www.medibasculas.com', marginX, textY + 220, {
+        doc.fontSize(10).text('www.medibasculas.com', marginX, textY + 420, {
           width: leftColWidth - 10,
-          align: 'center',
+          align: 'left',
         });
       } catch (error) {
         console.error('Error al cargar la imagen:', error.message);
