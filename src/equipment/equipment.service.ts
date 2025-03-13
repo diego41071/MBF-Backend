@@ -400,7 +400,9 @@ export class EquipmentService {
           { width: rightColWidth },
         );
 
-      doc.font("Helvetica")
+      contentY -= 230;
+
+      doc.font("Helvetica-Bold")
         .fontSize(10)
         .text(
           'He leído y acepto los términos y condiciones:', contentX,
@@ -408,10 +410,10 @@ export class EquipmentService {
           { width: rightColWidth },
         );
 
-      contentY += 80;
+      contentY += 30;
 
       // **9. Firma del Cliente**
-      doc
+      doc.font("Helvetica")
         .fontSize(12)
         .text(
           'Firma del cliente: ____________________________',
