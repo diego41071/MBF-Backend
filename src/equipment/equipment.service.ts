@@ -109,14 +109,14 @@ export class EquipmentService {
         const imageHeight = leftColWidth - 10; // La altura de la imagen (igual al ancho en este caso)
         const textY = 50 + imageHeight + 10; // 50 (posición Y inicial) + altura imagen + espacio extra
 
-        doc
+        doc.font("Helvetica-Bold")
           .fontSize(12)
           .text('IMPORTACIONES MEDIBÁSCULAS ZOMAC S.A.S', marginX, textY, {
             width: leftColWidth - 10,
             align: 'center',
           });
 
-        doc.fontSize(10).text('NIT: 901.561.138-2', marginX, textY + 50, {
+        doc.font("Helvetica").fontSize(10).text('NIT: 901.561.138-2', marginX, textY + 50, {
           width: leftColWidth - 10,
           align: 'center',
         });
@@ -131,7 +131,7 @@ export class EquipmentService {
         });
         const cellWidth = 40; // Ancho de cada celda
         const cellHeight = 20; // Alto de cada celda
-        const cellY = textY + 110; // Posición Y de las celdas
+        const cellY = textY + 100; // Posición Y de las celdas
 
         const offsetX = 20; // Ajuste en el eje X
 
@@ -151,14 +151,14 @@ export class EquipmentService {
           align: 'center',
         });
 
-        doc.fontSize(10).text('FECHA AUTORIZACIÓN: ', marginX + 12, cellY + 25, {
+        doc.fontSize(10).text('FECHA AUTORIZACIÓN: ', marginX + 12, cellY + 35, {
           width: cellWidth + 80,
           align: 'center',
         });
 
         doc
           .fontSize(10)
-          .text('FECHA ENTREGA AL CLIENTE: ', marginX + 12, cellY + 35, {
+          .text('FECHA ENTREGA AL CLIENTE: ', marginX + 12, cellY + 55, {
             width: cellWidth + 80,
             align: 'center',
           });
@@ -195,17 +195,40 @@ export class EquipmentService {
       const contentX = marginX + leftColWidth + 30; // Inicia después de la imagen
       let contentY = 50;
 
-      const text = `FECHA DE INGRESO: ${new Date().toLocaleDateString('es-ES')} RECEPCIÓN EQUIPO RE-0496`;
-      const textX = contentX;
-      const textY = contentY;
 
-      // **Dibujar el texto**
-      doc.fontSize(10).text(text, textX, textY, {
-        width: rightColWidth,
-        align: 'left',
-      });
+      // **Texto de la fecha**
+      doc
+        .fontSize(12)
+        .font('Helvetica-Bold')
+        .text('FECHA DE INGRESO: ', contentX, contentY + 8, { continued: true })
+        .font('Helvetica')
+        .text(new Date().toLocaleDateString('es-ES'));
 
-      contentY += 30;
+      // **Caja de "Recepción Equipo"**
+      const boxX = 450; // Posición en X (ajustar según diseño)
+      const boxY = contentY - 5; // Posición en Y
+      const boxWidth = 120;
+      const boxHeight = 40;
+
+      // Dibujar el cuadro
+      doc.rect(boxX, boxY, boxWidth, boxHeight).stroke();
+
+      // Dibujar línea divisoria interna
+      doc.moveTo(boxX, boxY + 20).lineTo(boxX + boxWidth, boxY + 20).stroke();
+
+      // Texto dentro del cuadro
+      doc
+        .fontSize(10)
+        .font('Helvetica-Bold')
+        .text('RECEPCIÓN EQUIPO', boxX, boxY + 5, { width: boxWidth, align: 'center' });
+
+      doc
+        .fontSize(12)
+        .font('Helvetica-Bold')
+        .text('RE-0496', boxX, boxY + 25, { width: boxWidth, align: 'center' });
+
+
+      contentY += 75;
 
       // Texto a mostrar
       const textTitle = `HOJA DE CONTRATO DE SERVICIO: `;
@@ -213,7 +236,7 @@ export class EquipmentService {
       const textYTitle = contentY;
 
       // **Dibujar el texto centrado**
-      doc.fontSize(12).text(textTitle, textXTitle, textYTitle, {
+      doc.font("Helvetica-Bold").fontSize(12).text(textTitle, textXTitle, textYTitle, {
         width: rightColWidth,
         align: 'center',
       });
@@ -245,70 +268,93 @@ export class EquipmentService {
       contentY += 20;
 
       doc
-        .fontSize(12)
-        .text(
-          `NOMBRE: ${equipment.clientName || 'No disponible'}`,
-          contentX,
-          contentY,
-        );
+        .font('Helvetica-Bold') // Poner en negrita
+        .text('NOMBRE: ', contentX, contentY, { continued: true }) // `continued: true` mantiene la misma línea
+        .font('Helvetica') // Volver a texto normal
+        .text(equipment.clientName || 'No disponible');
+
       contentY += 15;
-      doc.text(
-        `C.C / NIT: ${equipment.clientId || 'No disponible'}`,
-        contentX,
-        contentY,
-      );
+      doc
+        .font('Helvetica-Bold')
+        .text('C.C / NIT: ', contentX, contentY, { continued: true })
+        .font('Helvetica')
+        .text(equipment.clientId || 'No disponible');
       contentY += 15;
-      doc.text(
-        `DIRECCIÓN: ${equipment.clientAddress || 'No disponible'}`,
-        contentX,
-        contentY,
-      );
+
+      doc
+        .font('Helvetica-Bold')
+        .text('DIRECCIÓN: ', contentX, contentY, { continued: true })
+        .font('Helvetica')
+        .text(equipment.clientAddress || 'No disponible');
       contentY += 15;
-      doc.text(
-        `TEL/CEL: ${equipment.clientPhone || 'No disponible'}`,
-        contentX,
-        contentY,
-      );
+
+      doc
+        .font('Helvetica-Bold')
+        .text('TEL/CEL: ', contentX, contentY, { continued: true })
+        .font('Helvetica')
+        .text(equipment.clientPhone || 'No disponible');
       contentY += 15;
-      doc.text(
-        `CONTACTO: ${equipment.clientContact || 'No disponible'}`,
-        contentX,
-        contentY,
-      );
+
+      doc
+        .font('Helvetica-Bold')
+        .text('CONTACTO: ', contentX, contentY, { continued: true })
+        .font('Helvetica')
+        .text(equipment.clientContact || 'No disponible');
 
       contentY += 30;
 
       // **4. Datos del Equipo**
-      doc.fontSize(14).text('DATOS DEL EQUIPO', contentX, contentY, {
+      doc.font("Helvetica-Bold").fontSize(14).text('DATOS DEL EQUIPO', contentX, contentY, {
         width: rightColWidth,
         underline: true,
       });
       contentY += 20;
 
-      doc.fontSize(12).text(`EQUIPO: ${equipment.name}`, contentX, contentY);
+      doc
+        .fontSize(12)
+        .font('Helvetica-Bold')
+        .text('EQUIPO: ', contentX, contentY, { continued: true })
+        .font('Helvetica')
+        .text(equipment.name || 'No disponible');
       contentY += 15;
-      doc.text(`MARCA: ${equipment.brand}`, contentX, contentY);
-      contentY += 15;
-      doc.text(`MODELO: ${equipment.model}`, contentX, contentY);
-      contentY += 15;
-      doc.text(`SERIAL: ${equipment.serial || 'N/A'}`, contentX, contentY);
-      contentY += 15;
-      doc.text(
-        `ACCESORIOS: ${equipment.accessories || 'No disponible'}`,
-        contentX,
-        contentY,
-      );
-      contentY += 15;
-      doc.text(
-        `DEFECTOS: ${equipment.issue || 'No especificado'}`,
-        contentX,
-        contentY,
-      );
 
+      doc
+        .font('Helvetica-Bold')
+        .text('MARCA: ', contentX, contentY, { continued: true })
+        .font('Helvetica')
+        .text(equipment.brand || 'No disponible');
+      contentY += 15;
+
+      doc
+        .font('Helvetica-Bold')
+        .text('MODELO: ', contentX, contentY, { continued: true })
+        .font('Helvetica')
+        .text(equipment.model || 'No disponible');
+      contentY += 15;
+
+      doc
+        .font('Helvetica-Bold')
+        .text('SERIAL: ', contentX, contentY, { continued: true })
+        .font('Helvetica')
+        .text(equipment.serial || 'N/A');
+      contentY += 15;
+
+      doc
+        .font('Helvetica-Bold')
+        .text('ACCESORIOS: ', contentX, contentY, { continued: true })
+        .font('Helvetica')
+        .text(equipment.accessories || 'No disponible');
+      contentY += 15;
+
+      doc
+        .font('Helvetica-Bold')
+        .text('DEFECTOS: ', contentX, contentY, { continued: true })
+        .font('Helvetica')
+        .text(equipment.issue || 'No especificado');
       contentY += 30;
 
       // **5. Ficha Técnica**
-      doc.fontSize(14).text('FICHA TÉCNICA', contentX, contentY, {
+      doc.font("Helvetica-Bold").fontSize(14).text('FICHA TÉCNICA', contentX, contentY, {
         width: rightColWidth,
         underline: true,
       });
@@ -316,16 +362,14 @@ export class EquipmentService {
 
       doc
         .fontSize(12)
-        .text(
-          `FALLA REPORTADA POR EL CLIENTE: ${equipment.issue || 'No especificado'}`,
-          contentX,
-          contentY,
-        );
-
+        .font('Helvetica-Bold')
+        .text('FALLA REPORTADA POR EL CLIENTE: ', contentX, contentY, { continued: true })
+        .font('Helvetica')
+        .text(equipment.issue || 'No especificado');
       contentY += 30;
 
       // **6. Diagnóstico Técnico**
-      doc.fontSize(14).text('DIAGNÓSTICO TÉCNICO', contentX, contentY, {
+      doc.font("Helvetica-Bold").fontSize(14).text('DIAGNÓSTICO TÉCNICO', contentX, contentY, {
         width: rightColWidth,
         underline: true,
       });
@@ -333,24 +377,21 @@ export class EquipmentService {
 
       doc
         .fontSize(12)
-        .text(
-          equipment.diagnosis || 'Pendiente de revisión.',
-          contentX,
-          contentY,
-        );
-
+        .font('Helvetica-Bold')
+        .text('DIAGNÓSTICO: ', contentX, contentY, { continued: true })
+        .font('Helvetica')
+        .text(equipment.diagnosis || 'Pendiente de revisión.');
       contentY += 30;
 
       // **8. Términos y Condiciones**
-      doc
-        .fontSize(14)
-        .text('TÉRMINOS Y CONDICIONES DE SERVICIO', contentX, contentY, {
-          width: rightColWidth,
-          underline: true,
-        });
+      doc.font("Helvetica-Bold").fontSize(14).text('TÉRMINOS Y CONDICIONES DE SERVICIO', contentX, contentY, {
+        width: rightColWidth,
+        underline: true,
+      });
       contentY += 20;
 
-      doc
+
+      doc.font("Helvetica")
         .fontSize(10)
         .text(
           '1. No nos hacemos responsables por fallas ocultas no declaradas por el cliente... \n' +
