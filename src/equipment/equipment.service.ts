@@ -102,7 +102,7 @@ export class EquipmentService {
 
       // **1. Agregar imagen en la columna izquierda (30%)**
       try {
-        const imagePath = join(__dirname, '..', 'assets', 'logo.png');
+        const imagePath = join(__dirname, '..', 'assets', 'logo1.png');
         doc.image(imagePath, marginX, 50, { width: leftColWidth - 10 });
 
         // **Calcular posición para el texto debajo de la imagen**
@@ -111,8 +111,8 @@ export class EquipmentService {
 
         doc.font("Helvetica-Bold")
           .fontSize(12)
-          .text('IMPORTACIONES MEDIBÁSCULAS ZOMAC S.A.S', marginX, textY, {
-            width: leftColWidth - 10,
+          .text('IMPORTACIONES MEDIBÁSCULAS ZOMAC S.A.S', marginX - 30, textY, {
+            width: leftColWidth + 30,
             align: 'center',
           });
 
@@ -403,7 +403,7 @@ export class EquipmentService {
           { width: rightColWidth },
         );
 
-      contentY += 60;
+      contentY += 80;
 
       // **9. Firma del Cliente**
       doc
