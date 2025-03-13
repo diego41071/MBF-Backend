@@ -394,11 +394,16 @@ export class EquipmentService {
       doc.font("Helvetica")
         .fontSize(10)
         .text(
-          '1. No nos hacemos responsables por fallas ocultas no declaradas por el cliente... \n' +
-          '2. La empresa no se hace responsable por equipos dejados más de 30 días... \n' +
-          '3. La garantía cubre solo la pieza reparada... \n' +
-          '4. Se comenzará a cobrar un 3% por día después de 10 días sin retiro del equipo...',
+          'PARA LOS EFECTOS DE CONVENIO ENTIENDASE LA EMPRESA IMPORTACIONES MEDIBÁSCULAS ZOMAC S.A.S como prestador del servicio; y como cliente a quien firma la presente. EL CLIENTE acepta y convenio expresamente lo siguiente: 1. No nos hacemos responsables por fallas ocultas no declaradas por el cliente, presentes en el equipo que solo son identificadas en una revisión técnica exhaustiva. 2. La empresa no se hace responsable por equipos dejados en el taller, pasado los 30 días, perdiendo el cliente todo el derecho sobre el/los equipos en cuestión, y el equipo pasará a ser reciclado y desechado 3. La garantía cubre solo la pieza reparada y/o reemplazada del equipo y será válida por 01 un mes desde la fecha de entrega siempre que este no tenga el sello de garantía alterado y con la presente hoja de servicio, 4. al cumplir 10 días hábiles de notificarle que su equipo está listo para ser retirado, se comenzará a cobrar 3% por día del precio del servicio prestado, por concepto de almacenaje hasta lo expresado en la cláusula 2. 5. La empresa no se hace responsable si durante el tiempo establecido en la cláusula 4 el equipo sufre daños o perdidas en nuestras instalaciones por algún desastre de índole natural, inundaciones, terremotos, sismos, lluvia, incendios, hurtos, robos, causando estos el daño parcial o total en el quipo o la desaparición. 6 las fallas reportadas por el cliente al momento de solicitar el servicio no son únicas ni absolutas y serán verificadas al momento de la de la revisión y las fallas encontradas serán notificadas al cliente para validar la reparación. 7. En caso de que una prueba de funcionamiento demuestre que el desperfecto no radica en el equipo, la empresa cobrara el valor vigente de la revisión. 8 la empresa dará un presupuesto con el valor del servicio, sin que ello constituya compromiso alguno, y se le notificará al cliente, quien dentro de los (03) tres días hábiles siguiente debe autorizar o no el servicio y quedará escrito en esta hoja con la respectiva fecha. 9. La empresa cobrara el valor de revisión si el cliente no aprueba el servicio de reparación. 10. La empresa no recibirá el equipo por garantía cuando el lapso de esta haya culminado y sin presentar esta hoja donde está expuesto el repuesto y/o falla reparada. 11 la garantía no cubre cuando el equipo es reparado, revisado o manipulado por un tercero y/o haya sido adaptado o conectado algún equipo o accesorio ajeno a su modelo de fabricación.',
           contentX,
+          contentY,
+          { width: rightColWidth },
+        );
+
+      doc.font("Helvetica")
+        .fontSize(10)
+        .text(
+          'He leído y acepto los términos y condiciones:', contentX,
           contentY,
           { width: rightColWidth },
         );
