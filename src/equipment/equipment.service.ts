@@ -156,9 +156,36 @@ export class EquipmentService {
           align: 'center',
         });
 
+        const tableX = marginX + 18; // Posición X de la tabla
+        const tableY = cellY + 50; // Posición Y de la tabla
+        const cellWidthDate = 100; // Ancho de la celda
+        const cellHeightDate = 30; // Alto de la celda
+        const marginXDate = 5; // Margen interno de la celda
+
+        // Dibujar la celda con un rectángulo
+        doc.rect(tableX, tableY, cellWidthDate, cellHeightDate).stroke();
+
+        // Medir el tamaño del texto
+        const fontSize = 10;
+        doc.fontSize(fontSize);
+        const text = '12/10/25';
+        const textWidth = doc.widthOfString(text);
+        const textHeight = doc.currentLineHeight();
+
+        // Calcular coordenadas exactas para centrar el texto en la celda
+        const textX = tableX + (cellWidthDate - textWidth) / 2;
+        const textYDate = tableY + (cellHeightDate - textHeight) / 2;
+
+        // Agregar el texto centrado en la celda
+        doc.text(text, textX, textYDate, {
+          width: textWidth,
+          align: 'center'
+        });
+
+
         doc
           .fontSize(10)
-          .text('FECHA ENTREGA AL CLIENTE: ', marginX + 12, cellY + 55, {
+          .text('FECHA ENTREGA AL CLIENTE: ', marginX + 12, cellY + 85, {
             width: cellWidth + 80,
             align: 'center',
           });
