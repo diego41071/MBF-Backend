@@ -98,7 +98,7 @@ export class EquipmentService {
       const pageWidth = doc.page.width - 100; // Ancho total (descontando márgenes)
       const leftColWidth = pageWidth * 0.3; // 30% para la imagen
       const rightColWidth = pageWidth * 0.7; // 70% para el texto
-      const marginX = 50; // Margen izquierdo
+      const marginX = 35; // Margen izquierdo
 
       // **1. Agregar imagen en la columna izquierda (30%)**
       try {
@@ -215,18 +215,30 @@ export class EquipmentService {
           align: 'center'
         });
         doc
-          .fontSize(10)
-          .text('Cra 45D #60-72, Medellín, Colombia', marginX, textY + 370, {
+          .fontSize(8)
+          .text('Tel: +57 304 130 1189', marginX, textY + 390, {
             width: leftColWidth - 10,
             align: 'left',
           });
 
-        doc.fontSize(10).text('Tel: +57 304 130 1189', marginX, textY + 400, {
+        doc.fontSize(8).text('info@medibasculas.com', marginX, textY + 401, {
           width: leftColWidth - 10,
           align: 'left',
         });
 
-        doc.fontSize(10).text('www.medibasculas.com', marginX, textY + 420, {
+        doc.fontSize(8).text('Cra 45D #60-72, Medellin Colombia', marginX, textY + 412, {
+          width: leftColWidth - 10,
+          align: 'left',
+        });
+        doc.fontSize(8).text('+57 304 130 1189', marginX, textY + 449, {
+          width: leftColWidth - 10,
+          align: 'left',
+        });
+        doc.fontSize(8).text('serviciotecnico@medibasculas.com', marginX, textY + 460, {
+          width: leftColWidth - 10,
+          align: 'left',
+        });
+        doc.fontSize(8).text('http://www.medibasculas.com/', marginX, textY + 471, {
           width: leftColWidth - 10,
           align: 'left',
         });
