@@ -439,6 +439,73 @@ export class EquipmentService {
       });
       contentY += 20;
 
+      const imageWidth = 100;
+      const imageHeight = 50;
+      const margin = 50;
+
+      if (equipment.photos && Array.isArray(equipment.photos)) {
+        equipment.photos.forEach((photoBinary, index) => {
+          try {
+            let base64String;
+
+            // 📌 Detectar si el formato es Binary en lugar de String
+            if (typeof photoBinary !== "string") {
+              console.warn(`⚠️ La imagen en posición ${index} no es un string, intentando extraer Base64...`);
+
+              // Si el objeto tiene un método toString(), se usa
+              if (photoBinary.toString) {
+                base64String = photoBinary.toString("base64");
+              } else {
+                console.error(`🚨 No se pudo convertir la imagen en posición ${index} a Base64.`);
+                return;
+              }
+            } else {
+              base64String = photoBinary;
+            }
+
+            // 📌 Agregar el prefijo Base64 si falta
+            if (!base64String.startsWith("data:image")) {
+              console.warn(`⚠️ No tiene prefijo Base64 en posición ${index}, agregando "data:image/png;base64,"...`);
+              base64String = `data:image/png;base64,${base64String}`;
+            }
+
+            // Extraer solo la parte de la imagen
+            const base64Data = base64String.split(",")[1];
+
+            // Convertir a Buffer
+            const imageBuffer = Buffer.from(base64Data, "base64");
+
+            // Validar si el buffer es suficientemente grande
+            if (imageBuffer.length < 500) {
+              console.error(`🚨 El buffer generado para la imagen en posición ${index} es demasiado pequeño (${imageBuffer.length} bytes).`);
+              return;
+            }
+
+            // Si la posición Y supera la altura del documento, agregar nueva página
+            if (contentY + imageHeight + margin > doc.page.height) {
+              doc.addPage();
+              contentY = margin;
+            }
+
+            // Agregar la imagen al PDF
+            doc.image(imageBuffer, contentX, contentY, { width: imageWidth, height: imageHeight });
+
+            // Ajustar la posición Y para la siguiente imagen
+            contentY += imageHeight + 10;
+
+            console.log(`✅ Imagen en posición ${index} agregada correctamente.`);
+          } catch (error) {
+            console.error(`❌ Error al procesar imagen en posición ${index}:`, error.message);
+          }
+        });
+      } else {
+        console.error("❌ equipment.photos no es un array o está vacío:", equipment.photos);
+      }
+
+
+
+
+
       doc
         .fontSize(12)
         .font('Helvetica-Bold')
