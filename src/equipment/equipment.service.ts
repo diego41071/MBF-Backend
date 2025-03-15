@@ -116,12 +116,12 @@ export class EquipmentService {
             align: 'center',
           });
 
-        doc.font("Helvetica").fontSize(10).text('NIT: 901.561.138-2', marginX, textY + 50, {
+        doc.font("Helvetica").fontSize(10).text('NIT: 901.561.138-2', marginX, textY + 30, {
           width: leftColWidth - 10,
           align: 'center',
         });
 
-        doc.fontSize(10).text('RESPONSABLE DE IVA', marginX, textY + 60, {
+        doc.fontSize(10).text('RESPONSABLE DE IVA', marginX, textY + 45, {
           width: leftColWidth - 10,
           align: 'center',
         });
