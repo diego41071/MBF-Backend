@@ -160,7 +160,6 @@ export class EquipmentService {
         const tableY = cellY + 50; // Posición Y de la tabla
         const cellWidthDate = 100; // Ancho de la celda
         const cellHeightDate = 30; // Alto de la celda
-        const marginXDate = 5; // Margen interno de la celda
 
         // Dibujar la celda con un rectángulo
         doc.rect(tableX, tableY, cellWidthDate, cellHeightDate).stroke();
@@ -185,10 +184,36 @@ export class EquipmentService {
 
         doc
           .fontSize(10)
-          .text('FECHA ENTREGA AL CLIENTE: ', marginX + 12, cellY + 85, {
+          .text('FECHA ENTREGA AL CLIENTE: ', marginX + 12, cellY + 105, {
             width: cellWidth + 80,
             align: 'center',
           });
+
+
+        const tableXClient = marginX + 18; // Posición X de la tabla
+        const tableYClient = cellY + 135; // Posición Y de la tabla
+        const cellWidthDateClient = 100; // Ancho de la celda
+        const cellHeightDateClient = 30; // Alto de la celda
+
+        // Dibujar la celda con un rectángulo
+        doc.rect(tableXClient, tableYClient, cellWidthDateClient, cellHeightDateClient).stroke();
+
+        // Medir el tamaño del texto
+        const fontSizeClient = 10;
+        doc.fontSize(fontSizeClient);
+        const textClient = '12/10/25';
+        const textWidthClient = doc.widthOfString(text);
+        const textHeightClient = doc.currentLineHeight();
+
+        // Calcular coordenadas exactas para centrar el texto en la celda
+        const textXClient = tableXClient + (cellWidthDateClient - textWidthClient) / 2;
+        const textYDateClient = tableYClient + (cellHeightDateClient - textHeightClient) / 2;
+
+        // Agregar el texto centrado en la celda
+        doc.text(textClient, textXClient, textYDateClient, {
+          width: textWidth,
+          align: 'center'
+        });
         doc
           .fontSize(10)
           .text('Cra 45D #60-72, Medellín, Colombia', marginX, textY + 370, {
